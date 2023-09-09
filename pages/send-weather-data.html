@@ -3,12 +3,34 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Data</title>
+    <script src="../scripts/send-weather-data.js" type="module" defer></script>
 </head>
 
 <body>
-    <h1>Welcome to the Weather Data Page</h1>
-    <script src="index.js"></script>
+    <header>
+        <nav>
+            <a href="../index.html">Home</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Send weather data</h1>
+        <div id="data-input-container">
+            <label for="measurement-type-selection">Select city:</label>
+            <select id="measurement-type-selection">
+                <option hidden selected>Select a measurement...</option>
+                <option value="temperature">Temperature</option>
+                <option value="precipitation">Precipitation</option>
+                <option value="wind speed">Wind speed</option>
+                <option value="cloud coverage">Cloud coverage</option>
+            </select>
+            <input id="time-input" type="datetime-local" placeholder="Enter time..." />
+            <input id="place-input" type="text" placeholder="Enter city..." />
+            <input id="value-input" type="number" />
+        </div>
+        <button id="send-btn">Send data</button>
+        <p id="status-message"></p>
+    </main>
 </body>
-
 </html>
