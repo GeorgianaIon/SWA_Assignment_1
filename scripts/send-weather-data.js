@@ -52,7 +52,7 @@ const getInputData = () => {
 }
 
 const removeAdditionalInputIfPresent = () => {
-    const additionalInput = document.getElementById("additional-input")
+    const additionalInput = document.getElementById("additional-input-container")
 
     if (additionalInput) {
         additionalInput.remove()
@@ -81,9 +81,20 @@ const sendWeatherData = async () => {
 }
 
 const insertAdditionalInput = (values) => {
+    const div = document.createElement("div")
+    const label = document.createElement("label")
     const input = document.createElement("select")
+
+    div.setAttribute("id", "additional-input-container")
+    div.classList.add("form-container")
+    div.appendChild(label)
+    div.appendChild(input)
+
+    label.setAttribute("for", "additional-input")
+
     input.setAttribute("id", "additional-input")
-    form.insertBefore(input, form.children[form.childElementCount - 1])
+    
+    form.insertBefore(div, form.children[form.childElementCount - 1])
 
     const option = input.appendChild(document.createElement("option"))
     option.setAttribute("value", "")
@@ -91,9 +102,11 @@ const insertAdditionalInput = (values) => {
     switch (measurementTypeInput.value) {
         case MeasurementTypes.precipitation:
             option.innerHTML = "Select a precipitation"
+            label.innerHTML = "Precipitation:"
             break
         case MeasurementTypes.windSpeed:
             option.innerHTML = "Select a wind direction"
+            label.innerHTML = "Wind direction:"
             break
         default:
             throw new Exception("Unhandled measurement type")

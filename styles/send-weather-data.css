@@ -5,3 +5,41 @@
 .input-success {
     color: rgb(19, 173, 19);
 }
+
+.form-button {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    margin: 3rem 0 !important;
+}
+
+.form-button button {
+    padding: 15px;
+    margin-bottom: 3rem;
+    font-size: large;
+    border: 2px solid rgb(2, 158, 185);
+    border-radius: 10px;
+    color: #eee;
+    background-color: rgb(2, 158, 185);
+    transition: 0.3s ease;
+}
+
+.form-button button:hover {
+    color: rgb(2, 158, 185);
+    background-color: #fff;
+}
+
+.form-container {
+    margin-bottom: 3rem;
+    width: 30rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+input, select {
+    width: 18rem;
+    font-size: large;
+    box-sizing:border-box !important;
+}

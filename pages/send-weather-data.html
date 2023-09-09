@@ -7,18 +7,25 @@
     <title>Weather Data</title>
     <script src="../scripts/send-weather-data.js" type="module" defer></script>
     <link rel="stylesheet" href="../styles/send-weather-data.css">
+    <link rel="stylesheet" href="../styles/styles.css">
 </head>
 
 <body>
     <header>
-        <nav>
-            <a href="../index.html">Home</a>
+        <h2>
+            Weather Report
+        </h2>
+        <nav class="navbar">
+            <a href="./weather-data.html">Weather Data</a>
+            <a href="./weather-forecast.html">Weather Forecast</a>
+            <a href="./send-weather-data.html">Send Weather Data</a>
         </nav>
     </header>
     <main>
         <h1>Send weather data</h1>
-            <form id="data-input-form">
-                <label for="measurement-type-input">Select measurement:</label>
+        <form id="data-input-form">
+            <div class="form-container">
+                <label for="measurement-type-input">Measurement:</label>
                 <select id="measurement-type-input">
                     <option hidden selected value="">Select a measurement</option>
                     <option value="temperature">Temperature</option>
@@ -26,17 +33,28 @@
                     <option value="wind speed">Wind speed</option>
                     <option value="cloud coverage">Cloud coverage</option>
                 </select>
+            </div>
+            <div class="form-container">
+                <label for="time-input">Time of day:</label>
                 <input id="time-input" type="datetime-local" placeholder="Enter time..." />
+            </div>
+            <div class="form-container">
+                <label for="place-input">City:</label>
                 <select id="place-input">
                     <option hidden selected value="">Select a city</option>
                     <option value="Aarhus">Aarhus</option>
                     <option value="Copenhagen">Copenhagen</option>
                     <option value="Horsens">Horsens</option>
                 </select>
+            </div>
+            <div class="form-container">
+                <label for="value-input">Value:</label>
                 <input id="value-input" type="number" />
-                <button id="send-btn" type="submit">Send data</button>
-            </form>
-        </div>
+            </div>
+            <div class="form-button">
+                <button type="submit">Send data</button>
+            </div>
+        </form>
         <p id="status-message"></p>
     </main>
 </body>
