@@ -1,6 +1,7 @@
 import { AARHUS_ROUTE, COPENHAGEN_ROUTE, HORSENS_ROUTE } from "./constants.js";
 import HttpClient from "./scripts/HttpClient.js";
 import { constructCard } from "./generateHtml/construct-card.js";
+import model from "./model.js"
 
 const { getWeatherData } = HttpClient();
 
@@ -14,6 +15,8 @@ const getWeatherForAllCities = async () => {
 
 const [horsensWeather, aarhusWeather, copenhagenWeather] =
     await getWeatherForAllCities();
+
+console.log(model(horsensWeather).latestMeasurements[0].getType())
 
 const latestHorsensWeather = horsensWeather[0];
 const latestAarhusWeather = aarhusWeather[2];
