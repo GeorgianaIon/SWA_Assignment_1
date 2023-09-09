@@ -8,6 +8,8 @@ const HttpClient = () => {
         const data = await response.json();
         return data;
     };
+
+    return { getWeatherData };
 }
 
 export default HttpClient;
