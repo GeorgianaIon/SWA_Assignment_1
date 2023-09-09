@@ -4,13 +4,13 @@ export function constructCard(weatherData) {
   const div = document.createElement("div");
   div.classList.add("weather-card");
 
-  const cardIcon = icons[weatherData.type];
+  const cardIcon = icons[weatherData.getType()];
 
   const htmlString = `
-    <h1>${weatherData.place}</h1>
-    <p>${weatherData.type} is at</p>
+    <h1>${weatherData.getPlace()}</h1>
+    <p>${weatherData.getType()} is at</p>
     <img src='../icons/${cardIcon}' class="weather-icon"></img>
-    <h2>${weatherData.value} ${weatherData.unit}</h2>
+    <h2>${weatherData.getValue()} ${weatherData.getUnit()}</h2>
   `;
 
   div.innerHTML = htmlString;
