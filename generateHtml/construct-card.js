@@ -1,4 +1,4 @@
-import { icons } from "../constants.js";
+import { icons } from "../scripts/constants.js";
 
 export function constructCard(weatherData) {
   const div = document.createElement("div");

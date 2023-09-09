@@ -1,6 +1,6 @@
 import { AARHUS_ROUTE, COPENHAGEN_ROUTE, HORSENS_ROUTE } from "./constants.js";
-import HttpClient from "./scripts/HttpClient.js";
-import { constructCard } from "./generateHtml/construct-card.js";
+import HttpClient from "./HttpClient.js";
+import { constructCard } from "../generateHtml/construct-card.js";
 import model from "./model.js"
 import { MinTemperature, MaxTemperature, AverageWindSpeed, TotalPrecipitation } from "./model.js"
 

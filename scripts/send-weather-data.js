@@ -1,6 +1,6 @@
 import HttpClient from "./HttpClient.js"
 import { capitalizeFirstLetter } from "./utils.js"
-import { API_URI, API_ROUTE, MeasurementTypes } from "../constants.js"
+import { API_URI, API_ROUTE, MeasurementTypes } from "./constants.js"
 
 const form = document.getElementById("data-input-form")
 const statusOutput = document.getElementById("status-message")
@@ -40,7 +40,7 @@ const getAdditionalWeatherData = () => {
 
 const getInputData = () => {
     const additionalWeatherData = getAdditionalWeatherData()
-    
+
     return {
         value: Number(valueInput.value),
         type: measurementTypeInput.value,
@@ -69,7 +69,7 @@ const sendWeatherData = async () => {
     const httpClient = HttpClient()
 
     try {
-        await httpClient.postFetchAsync({data: inputData, url: `${API_URI}/${API_ROUTE}`})
+        await httpClient.postFetchAsync({ data: inputData, url: `${API_URI}/${API_ROUTE}` })
         statusOutput.classList.add("input-success")
         statusOutput.classList.remove("input-failure")
         statusOutput.innerText = "Weather data successfully added!"
@@ -93,7 +93,7 @@ const insertAdditionalInput = (values) => {
     label.setAttribute("for", "additional-input")
 
     input.setAttribute("id", "additional-input")
-    
+
     form.insertBefore(div, form.children[form.childElementCount - 1])
 
     const option = input.appendChild(document.createElement("option"))
@@ -139,9 +139,8 @@ const isModelValid = () => {
         errors.push("Please specify a value")
     }
 
-    if (measurementTypeInput.value === MeasurementTypes.precipitation || 
-        measurementTypeInput.value === MeasurementTypes.windSpeed)
-    {
+    if (measurementTypeInput.value === MeasurementTypes.precipitation ||
+        measurementTypeInput.value === MeasurementTypes.windSpeed) {
         const additionalInput = document.getElementById("additional-input")
         let errorMessage
 
@@ -165,7 +164,7 @@ const isModelValid = () => {
         for (let i = 0; i < errors.length; i++) {
             statusOutput.innerText += `${errors[i]}\n`
         }
-        
+
         statusOutput.classList.add("input-failure")
         statusOutput.classList.remove("input-success")
         return false
@@ -178,7 +177,7 @@ measurementTypeInput.addEventListener("change", e => {
     const measurement = e.target.value
 
     removeAdditionalInputIfPresent()
-    
+
     if (measurement === MeasurementTypes.precipitation) {
         insertAdditionalInput(["hail", "rain", "sleet", "snow"])
     }
