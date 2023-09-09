@@ -7,7 +7,7 @@ function DataMeasurement(type, time, place, unit) {
     }
 }
 
-function HistoricalMeasurement({type, time, place, unit, value}){
+function HistoricalMeasurement({type, time, place, unit, value}) {
     const dataMeasurement = DataMeasurement(type, time, place, unit)
     return {
         ... dataMeasurement,
@@ -16,7 +16,7 @@ function HistoricalMeasurement({type, time, place, unit, value}){
 }
 
 function ForecastMeasurement({type, time, place, value, unit, from, to, precipitation_types, directions}) {
-    const measurement = DataMeasurement(type, time, place, value, unit)
+    const measurement = HistoricalMeasurement(type, time, place, unit, value)
     return {...measurement,
         getFrom: ()=> from, 
         getTo: () => to,
