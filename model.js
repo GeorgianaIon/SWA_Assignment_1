@@ -53,3 +53,35 @@ const model = (weatherData) => {
     }
 }
 export default model
+
+export function MinTemperature(weatherData) {
+    let min = weatherData[0].getValue()
+    let lastDay = FindLastDay()
+    for(let i = 0; i < weatherData.length; i++) {
+        if(weatherData[i].getType() === WEATHER_TYPES[0] && weatherData[i].getTime() === lastDay) {
+            min = Math.min(min, weatherData[i].getValue())
+        }
+    }
+    return min
+}
+
+export function MaxTemperature(weatherData) {
+    let max = weatherData[0].getValue()
+    let lastDay = FindLastDay()
+    for(let i = 0; i < weatherData.length; i++) {
+        if(weatherData[i].getType === WEATHER_TYPES[0] && weatherData[i].getTime() === lastDay) {
+            max = Math.max(max, weatherData[i].getValue())
+        }
+    }
+    return max
+}
+
+function FindLastDay(weatherData) {
+    let lastDay = null
+    for (let i = 0; i < weatherData.length; i++) {
+        if (!lastDay || weatherData[i].getTime() > lastDay) {
+            lastDay = weatherData[i].getTime()
+        }
+    }
+    return lastDay
+}
