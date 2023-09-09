@@ -4,15 +4,15 @@ import { constructCard } from "./generateHtml/construct-card.js";
 import model from "./model.js"
 import { MinTemperature, MaxTemperature, AverageWindSpeed, TotalPrecipitation } from "./model.js"
 
-const { getWeatherData } = HttpClient();
+const { getFetchAsync } = HttpClient();
 const resultsContainer = document.getElementsByClassName("weather-data")[0];
 
 
 const getWeatherForAllCities = async () => {
     return await Promise.all([
-        getWeatherData(HORSENS_ROUTE),
-        getWeatherData(AARHUS_ROUTE),
-        getWeatherData(COPENHAGEN_ROUTE),
+        getFetchAsync(HORSENS_ROUTE),
+        getFetchAsync(AARHUS_ROUTE),
+        getFetchAsync(COPENHAGEN_ROUTE),
     ]);
 };
 
@@ -31,5 +31,5 @@ weatherData.forEach(element => {
 const [horsensWeather, aarhusWeather, copenhagenWeather] =
     await getWeatherForAllCities();
 
-console.log(TotalPrecipitation(model(horsensWeather).historicalMeasurements))
+console.log(MaxTemperature(model(horsensWeather).historicalMeasurements))
 
