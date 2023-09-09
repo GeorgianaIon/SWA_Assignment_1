@@ -2,7 +2,7 @@ import { AARHUS_ROUTE, COPENHAGEN_ROUTE, HORSENS_ROUTE } from "./constants.js";
 import HttpClient from "./scripts/HttpClient.js";
 import { constructCard } from "./generateHtml/construct-card.js";
 import model from "./model.js"
-import { MinTemperature, MaxTemperature } from "./model.js"
+import { MinTemperature, MaxTemperature, AverageWindSpeed, TotalPrecipitation } from "./model.js"
 
 const { getWeatherData } = HttpClient();
 const resultsContainer = document.getElementsByClassName("weather-data")[0];
@@ -31,5 +31,5 @@ weatherData.forEach(element => {
 const [horsensWeather, aarhusWeather, copenhagenWeather] =
     await getWeatherForAllCities();
 
-console.log(MaxTemperature(model(horsensWeather).historicalMeasurements))
+console.log(TotalPrecipitation(model(horsensWeather).historicalMeasurements))
 
