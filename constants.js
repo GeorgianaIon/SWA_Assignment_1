@@ -11,3 +11,10 @@ export const icons = {
   "wind speed": "wind.png",
   "cloud coverage": "cloud-coverage.png",
 };
+
+export const WEATHER_TYPES = [
+  "temperature",
+  "precipitation",
+  "cloud coverage",
+  "wind speed"
+]
