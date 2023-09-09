@@ -1,79 +1,184 @@
 import HttpClient from "./HttpClient.js"
+import { capitalizeFirstLetter } from "./utils.js"
+import { API_URI, API_ROUTE, MeasurementTypes } from "../constants.js"
 
-const dataInputContainer = document.getElementById("data-input-container")
-const sendBtn = document.getElementById("send-btn")
+const form = document.getElementById("data-input-form")
 const statusOutput = document.getElementById("status-message")
-const measurementTypeSelection = document.getElementById("measurement-type-selection")
+const measurementTypeInput = document.getElementById("measurement-type-input")
 const timeInput = document.getElementById("time-input")
 const placeInput = document.getElementById("place-input")
 const valueInput = document.getElementById("value-input")
 
-const sendWeatherData = async () => {
+const getAdditionalWeatherData = () => {
     let unit
-    switch (measurementTypeSelection.value) {
-        case "temperature":
+    let additionalInput
+    switch (measurementTypeInput.value) {
+        case MeasurementTypes.temperature:
             unit = "C"
             break
-        case "precipitation":
+        case MeasurementTypes.precipitation:
             unit = "mm"
+            additionalInput = {
+                "precipitation_type": document.getElementById("additional-input").value
+            }
             break
-        case "wind speed":
+        case MeasurementTypes.windSpeed:
             unit = "m/s"
+            additionalInput = {
+                "direction": document.getElementById("additional-input").value
+            }
             break
-        case "cloud coverage":
+        case MeasurementTypes.cloudCoverage:
             unit = "%"
             break
         default:
-            statusOutput.innerText = `Invalid measurement type: '${measurementTypeSelection.value}'`
-            return
+            throw new Exception(`Invalid measurement type: '${measurementTypeInput.value}'`)
     }
 
-    // <!-- conditional rendering, if type is windspeed, add direction
-    // if type is temperature, default to unit C -->
+    return { unit, additionalInput }
+}
+
+const getInputData = () => {
+    const additionalWeatherData = getAdditionalWeatherData()
     
-    const inputData = {
+    return {
         value: Number(valueInput.value),
-        type: measurementTypeSelection.value,
-        unit: unit,
+        type: measurementTypeInput.value,
+        unit: additionalWeatherData.unit,
         time: `${timeInput.value}:00.000Z`,
         place: placeInput.value,
+        ...additionalWeatherData.additionalInput
     }
+}
 
-    const headers = {
-        "Content-Type": "application/json", 
-        Accept: "application/json"
+const removeAdditionalInputIfPresent = () => {
+    const additionalInput = document.getElementById("additional-input")
+
+    if (additionalInput) {
+        additionalInput.remove()
     }
+}
 
+const resetForm = () => {
+    form.reset()
+    removeAdditionalInputIfPresent()
+}
+
+const sendWeatherData = async () => {
+    const inputData = getInputData()
     const httpClient = HttpClient()
 
     try {
-        await httpClient.postFetchAsync(headers, inputData, `http://localhost:8080/data`)
+        await httpClient.postFetchAsync({data: inputData, url: `${API_URI}/${API_ROUTE}`})
+        statusOutput.classList.add("input-success")
+        statusOutput.classList.remove("input-failure")
         statusOutput.innerText = "Weather data successfully added!"
+        resetForm()
     }
     catch (ex) {
         statusOutput.innerText = ex
     }
 }
 
-const insertDirectionInput = () => {
-    const input = dataInputContainer.appendChild(document.createElement("input"))
-    input.setAttribute("id", "wind-direction-input")
-    input.setAttribute("type", "text")
+const insertAdditionalInput = (values) => {
+    const input = document.createElement("select")
+    input.setAttribute("id", "additional-input")
+    form.insertBefore(input, form.children[form.childElementCount - 1])
+
+    const option = input.appendChild(document.createElement("option"))
+    option.setAttribute("value", "")
+
+    switch (measurementTypeInput.value) {
+        case MeasurementTypes.precipitation:
+            option.innerHTML = "Select a precipitation"
+            break
+        case MeasurementTypes.windSpeed:
+            option.innerHTML = "Select a wind direction"
+            break
+        default:
+            throw new Exception("Unhandled measurement type")
+    }
+
+    for (let i = 0; i < values.length; i++) {
+        const option = input.appendChild(document.createElement("option"))
+        option.setAttribute("value", values[i])
+        option.innerHTML = capitalizeFirstLetter(values[i])
+    }
 }
 
-measurementTypeSelection.addEventListener("change", e => {
+const isModelValid = () => {
+    statusOutput.innerText = ""
+    const errors = []
+
+    if (!measurementTypeInput.value) {
+        errors.push("Please specify a measurement type")
+    }
+
+    if (!timeInput.value) {
+        errors.push("Please specify a time of day")
+    }
+
+    if (!placeInput.value) {
+        errors.push("Please specify a city")
+    }
+
+    if (!valueInput.value) {
+        errors.push("Please specify a value")
+    }
+
+    if (measurementTypeInput.value === MeasurementTypes.precipitation || 
+        measurementTypeInput.value === MeasurementTypes.windSpeed)
+    {
+        const additionalInput = document.getElementById("additional-input")
+        let errorMessage
+
+        if (!additionalInput.value) {
+            switch (measurementTypeInput.value) {
+                case MeasurementTypes.precipitation:
+                    errorMessage = "Please specify a precipitation type"
+                    break
+                case MeasurementTypes.windSpeed:
+                    errorMessage = "Please specify a wind direction"
+                    break
+                default:
+                    throw new Exception("Unhandled measurement type")
+            }
+
+            errors.push(errorMessage)
+        }
+    }
+
+    if (errors.length > 0) {
+        for (let i = 0; i < errors.length; i++) {
+            statusOutput.innerText += `${errors[i]}\n`
+        }
+        
+        statusOutput.classList.add("input-failure")
+        statusOutput.classList.remove("input-success")
+        return false
+    }
+
+    return true
+}
+
+measurementTypeInput.addEventListener("change", e => {
     const measurement = e.target.value
 
-
+    removeAdditionalInputIfPresent()
     
-    if (measurement === "precipitation") {
-
+    if (measurement === MeasurementTypes.precipitation) {
+        insertAdditionalInput(["hail", "rain", "sleet", "snow"])
     }
-    else if (measurement === "wind speed") {
-        insertDirectionInput()
+    else if (measurement === MeasurementTypes.windSpeed) {
+        insertAdditionalInput(["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"])
     }
 })
 
-sendBtn.addEventListener("click", e => {
+form.addEventListener("submit", e => {
+    e.preventDefault()
+    if (!isModelValid()) {
+        return
+    }
+
     sendWeatherData()
 })
