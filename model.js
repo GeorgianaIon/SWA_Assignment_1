@@ -55,7 +55,7 @@ export default model
 
 export function MinTemperature(weatherData) {
     let min = weatherData[0].getValue()
-    let lastDay = FindLastDay()
+    let lastDay = FindLastDay(weatherData)
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].getType() === WEATHER_TYPES[0] && weatherData[i].getTime() === lastDay) {
             min = Math.min(min, weatherData[i].getValue())
@@ -66,7 +66,7 @@ export function MinTemperature(weatherData) {
 
 export function MaxTemperature(weatherData) {
     let max = weatherData[0].getValue()
-    let lastDay = FindLastDay()
+    let lastDay = FindLastDay(weatherData)
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].getType === WEATHER_TYPES[0] && weatherData[i].getTime() === lastDay) {
             max = Math.max(max, weatherData[i].getValue())
@@ -77,7 +77,7 @@ export function MaxTemperature(weatherData) {
 
 export function TotalPrecipitation(weatherData) {
     let totalPrecipitation = 0
-    let lastDay = FindLastDay()
+    let lastDay = FindLastDay(weatherData)
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].getType === WEATHER_TYPES[1] && weatherData[i].getTime() === lastDay) {
             totalPrecipitation += weatherData[i].getValue()
@@ -89,7 +89,7 @@ export function TotalPrecipitation(weatherData) {
 export function AverageWindSpeed(weatherData) {
     let sum = 0
     let count = 0
-    let lastDay = FindLastDay()
+    let lastDay = FindLastDay(weatherData)
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].getType === WEATHER_TYPES[3] && weatherData[i].getTime() === lastDay) {
             sum += weatherData[i].getValue()
