@@ -19,7 +19,7 @@ function HistoricalMeasurement({type, time, place, unit, value}) {
 
 function ForecastMeasurement({type, time, place, value, unit, from, to, precipitation_types, directions}) {
     const measurement = HistoricalMeasurement(type, time, place, unit, value)
-    return { 
+    return {
         ...measurement,
         getFrom: ()=> from, 
         getTo: () => to,
@@ -74,6 +74,35 @@ export function MaxTemperature(weatherData) {
         }
     }
     return max
+}
+
+export function TotalPrecipitation(weatherData) {
+    let totalPrecipitation = 0
+    let lastDay = FindLastDay()
+    for(let i = 0; i < weatherData.length; i++) {
+        if(weatherData[i].getType === WEATHER_TYPES[1] && weatherData[i].getTime() === lastDay){
+            totalPrecipitation += weatherData[i].getValue()
+        }
+    }
+    return Math.round(totalPrecipitation * 100) / 100
+}
+
+export function AverageWindSpeed(weatherData) {
+    let sum = 0
+    let count = 0
+    let lastDay = FindLastDay()
+    for(let i = 0; i < weatherData.length; i++) {
+        if(weatherData[i].getType === WEATHER_TYPES[3] && weatherData[i].getTime() === lastDay) {
+            sum += weatherData[i].getValue()
+            count++
+        }
+    }
+
+    if (count === 0) {
+        return 0
+    } else {
+        return sum / count
+    }
 }
 
 function FindLastDay(weatherData) {
