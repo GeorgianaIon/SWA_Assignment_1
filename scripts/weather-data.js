@@ -2,6 +2,7 @@ import { AARHUS_ROUTE, COPENHAGEN_ROUTE, HORSENS_ROUTE } from "./constants.js";
 import HttpClient from "./HttpClient.js";
 import { constructCard } from "../generateHtml/construct-card.js";
 import model from "./model.js"
+import { MinTemperature, MaxTemperature } from "./model.js";
 
 const { getFetchAsync } = HttpClient();
 const resultsContainer = document.getElementsByClassName("weather-data")[0];
@@ -17,39 +18,63 @@ const getWeatherForAllCities = async () => {
 
 
 //all weather data
-const weatherData = await getWeatherForAllCities();
+// const weatherData = await getWeatherForAllCities();
 
 selectCity.addEventListener('change', () => {
     const selectedCity = selectCity.value;
-    displayWeatherData(selectedCity);
+    displayLatestWeatherData(selectedCity);
+    updateTemperatureInfo(selectedCity);
 });
 
 //weather data for each city
 const [horsensWeather, aarhusWeather, copenhagenWeather] =
     await getWeatherForAllCities();
 
-const displayWeatherData = (selectedCity) => {
+const displayLatestWeatherData = (selectedCity) => {
     resultsContainer.innerHTML = '';
 
     const selectedWeather = getSelectedWeatherData(selectedCity);
+    const selectedLatestWeather = selectedWeather.latestMeasurements;
 
-    selectedWeather.forEach(element => {
+    selectedLatestWeather.forEach(element => {
         resultsContainer.appendChild(constructCard(element));
     });
 };
 
 const getSelectedWeatherData = (selectedCity) => {
     switch (selectedCity) {
-        case 'horsens':
-            return model(horsensWeather).latestMeasurements;
-        case 'aarhus':
-            return model(aarhusWeather).latestMeasurements;
-        case 'copenhagen':
-            return model(copenhagenWeather).latestMeasurements;
+        case 'Horsens':
+            return model(horsensWeather);
+        case 'Aarhus':
+            return model(aarhusWeather);
+        case 'Copenhagen':
+            return model(copenhagenWeather);
         default:
             return [];
     }
 };
 
-displayWeatherData('horsens');
+displayLatestWeatherData('Horsens');
+
+const minAndMaxTempContainer = document.getElementById("minAndMaxTemp");
+
+const updateTemperatureInfo = (selectedCity) => {
+    minAndMaxTempContainer.innerHTML = '';
+
+    const selectedWeather = getSelectedWeatherData(selectedCity);
+    const selectedHistoricalWeather = selectedWeather.historicalMeasurements;
+
+    const minTempElement = document.createElement('div');
+    minTempElement.textContent = `Minimum temperature in ${selectedCity}: ${MinTemperature(selectedHistoricalWeather)}`;
+    minAndMaxTempContainer.appendChild(minTempElement);
+
+    const maxTempElement = document.createElement('div');
+    maxTempElement.textContent = `Maximum temperature in ${selectedCity}: ${MaxTemperature(selectedHistoricalWeather)}`;
+    minAndMaxTempContainer.appendChild(maxTempElement);
+};
+
+updateTemperatureInfo('Horsens')
+
+console.log(MaxTemperature(model(copenhagenWeather).historicalMeasurements))
+
 
