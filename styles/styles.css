@@ -18,8 +18,11 @@ main {
 }
 
 h1 {
-    margin-left: 2rem;
     padding: 2rem 0;
+}
+
+.margin {
+    margin-left: 2rem;
 }
 
 .weather-card {
@@ -45,6 +48,7 @@ h1 {
 .weather-icon {
     width: 3rem;
     height: 3rem;
+    margin: 1rem 0;
 }
 
 header {
