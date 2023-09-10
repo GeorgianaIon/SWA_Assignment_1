@@ -1,10 +1,12 @@
 import { AARHUS_ROUTE, COPENHAGEN_ROUTE, HORSENS_ROUTE } from "./constants.js";
 import HttpClient from "./HttpClient.js";
 import { constructCard } from "../generateHtml/construct-card.js";
+import { weatherDetailsCard } from "../generateHtml/weather-details-card.js";
 import model from "./model.js"
 
 const { getFetchAsync } = HttpClient();
 const resultsContainer = document.getElementsByClassName("weather-data")[0];
+const weatherDetailsContainer = document.getElementsByClassName("weather-details")[0];
 const selectCity = document.getElementById("city-select");
 
 const getWeatherForAllCities = async () => {
@@ -55,29 +57,16 @@ const getSelectedWeatherData = (selectedCity) => {
 
 displayLatestWeatherData('Horsens');
 
-const minAndMaxTempContainer = document.getElementById("minAndMaxTemp");
+//const minAndMaxTempContainer = document.getElementById("minAndMaxTemp");
 
 const updateTemperatureInfo = (selectedCity) => {
-    minAndMaxTempContainer.innerHTML = '';
+    weatherDetailsContainer.innerHTML = '';
 
     const selectedWeather = getSelectedWeatherData(selectedCity);
-    const selectedHistoricalWeather = selectedWeather.historicalMeasurements;
-
-    const minTempElement = document.createElement('div');
-    minTempElement.textContent = `Minimum temperature in ${selectedCity}: ${selectedWeather.minTemperature}`;
-    minAndMaxTempContainer.appendChild(minTempElement);
-
-    const maxTempElement = document.createElement('div');
-    maxTempElement.textContent = `Maximum temperature in ${selectedCity}: ${selectedWeather.maxTemperature}`;
-    minAndMaxTempContainer.appendChild(maxTempElement);
-
-    const avgWindSpeedElement = document.createElement('div');
-    avgWindSpeedElement.textContent = `Average wind speed in ${selectedCity}: ${selectedWeather.avgWindSpeed}`;
-    minAndMaxTempContainer.appendChild(avgWindSpeedElement);
-
-    const totalPrecipitationElement = document.createElement('div');
-    totalPrecipitationElement.textContent = `Total precipitation in ${selectedCity}: ${selectedWeather.totalPrecipitation}`;
-    minAndMaxTempContainer.appendChild(totalPrecipitationElement);
+    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.minTemperature));
+    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.maxTemperature));
+    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.avgWindSpeed));
+    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.avgWindSpeed));
 };
 
 updateTemperatureInfo('Horsens')

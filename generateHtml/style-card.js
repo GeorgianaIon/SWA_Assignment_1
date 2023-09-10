@@ -10,3 +10,12 @@ export function customCardIcon({ type }) {
       return "cloud-coverage.png";
   }
 }
+
+export function customWeatherCardIcon(type) {
+  switch(type) {
+    case "maxtemperature" : "maxtemperature.png"
+    case "mintemperature" : "mintemperature.png"
+    case "precipitation" : "precipitation.png"
+    case "wind" : "wind.png"
+  }
+}
