@@ -2,7 +2,6 @@ import { AARHUS_ROUTE, COPENHAGEN_ROUTE, HORSENS_ROUTE } from "./constants.js";
 import HttpClient from "./HttpClient.js";
 import { constructCard } from "../generateHtml/construct-card.js";
 import model from "./model.js"
-import { MinTemperature, MaxTemperature } from "./model.js";
 
 const { getFetchAsync } = HttpClient();
 const resultsContainer = document.getElementsByClassName("weather-data")[0];
@@ -65,16 +64,22 @@ const updateTemperatureInfo = (selectedCity) => {
     const selectedHistoricalWeather = selectedWeather.historicalMeasurements;
 
     const minTempElement = document.createElement('div');
-    minTempElement.textContent = `Minimum temperature in ${selectedCity}: ${MinTemperature(selectedHistoricalWeather)}`;
+    minTempElement.textContent = `Minimum temperature in ${selectedCity}: ${selectedWeather.minTemperature}`;
     minAndMaxTempContainer.appendChild(minTempElement);
 
     const maxTempElement = document.createElement('div');
-    maxTempElement.textContent = `Maximum temperature in ${selectedCity}: ${MaxTemperature(selectedHistoricalWeather)}`;
+    maxTempElement.textContent = `Maximum temperature in ${selectedCity}: ${selectedWeather.maxTemperature}`;
     minAndMaxTempContainer.appendChild(maxTempElement);
+
+    const avgWindSpeedElement = document.createElement('div');
+    avgWindSpeedElement.textContent = `Average wind speed in ${selectedCity}: ${selectedWeather.avgWindSpeed}`;
+    minAndMaxTempContainer.appendChild(avgWindSpeedElement);
+
+    const totalPrecipitationElement = document.createElement('div');
+    totalPrecipitationElement.textContent = `Total precipitation in ${selectedCity}: ${selectedWeather.totalPrecipitation}`;
+    minAndMaxTempContainer.appendChild(totalPrecipitationElement);
 };
 
 updateTemperatureInfo('Horsens')
-
-console.log(MaxTemperature(model(copenhagenWeather).historicalMeasurements))
 
 
