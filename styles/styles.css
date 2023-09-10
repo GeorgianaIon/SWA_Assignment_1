@@ -93,3 +93,30 @@ header {
         align-items: center;
     }
 }
+
+.filter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    margin-left: 2rem;
+}
+
+.filter label {
+    font-size: 16px;
+    margin-right: 10px;
+    color: #333;
+}
+
+.filter select {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+    cursor: pointer;
+}
+
+.filter select:hover {
+    border-color: #555;
+}
