@@ -38,7 +38,7 @@ const displayLatestWeatherData = (selectedCity) => {
     const selectedLatestWeather = selectedWeather.latestMeasurements;
 
     selectedLatestWeather.forEach(element => {
-        resultsContainer.appendChild(constructCard(element));
+        resultsContainer.appendChild(constructCard({ weatherData: element }));
     });
 };
 
@@ -61,10 +61,10 @@ const updateTemperatureInfo = (selectedCity) => {
     weatherDetailsContainer.innerHTML = '';
 
     const selectedWeather = getSelectedWeatherData(selectedCity);
-    weatherDetailsContainer.appendChild(weatherDetailsCard(0, selectedWeather.minTemperature));
-    weatherDetailsContainer.appendChild(weatherDetailsCard(1, selectedWeather.maxTemperature));
-    weatherDetailsContainer.appendChild(weatherDetailsCard(2, selectedWeather.avgWindSpeed));
-    weatherDetailsContainer.appendChild(weatherDetailsCard(3, selectedWeather.totalPrecipitation));
+    weatherDetailsContainer.appendChild(constructCard({ type: 'temperature', text: 'Min Temperature', value: selectedWeather.minTemperature }));
+    weatherDetailsContainer.appendChild(constructCard({ type: 'temperature', text: 'Max Temperature', value: selectedWeather.maxTemperature }));
+    weatherDetailsContainer.appendChild(constructCard({ type: 'wind speed', text: 'Average Wind Speed', value: selectedWeather.avgWindSpeed }));
+    weatherDetailsContainer.appendChild(constructCard({ type: 'precipitation', text: 'Total Precipitation', value: selectedWeather.totalPrecipitation }));
 };
 
 updateTemperatureInfo('Horsens')

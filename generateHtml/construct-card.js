@@ -1,16 +1,25 @@
 import { icons } from "../scripts/constants.js";
 
-export function constructCard(weatherData) {
+export function constructCard({ weatherData, type, text, value }) {
   const div = document.createElement("div");
   div.classList.add("weather-card");
 
-  const cardIcon = icons[weatherData.getType()];
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  let iconType, title, valueText;
+
+  iconType = weatherData ? weatherData.getType() : type;
+  title = weatherData ? capitalizeFirstLetter(weatherData.getType()) : text;
+  valueText = weatherData ? `${weatherData.getValue()} ${weatherData.getUnit()}` : value;
+
+  const cardIcon = icons[iconType];
 
   const htmlString = `
-    <h1 class="margin">${weatherData.getPlace()}</h1>
-    <p>${weatherData.getType()} is at</p>
+    <h2>${title}</h2>
     <img src='../icons/${cardIcon}' class="weather-icon"></img>
-    <h2>${weatherData.getValue()} ${weatherData.getUnit()}</h2>
+    <h2>${valueText}</h2>
   `;
 
   div.innerHTML = htmlString;
