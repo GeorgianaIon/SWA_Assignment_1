@@ -19,6 +19,11 @@ main {
 
 h1 {}
 
+.title {
+    margin: 2rem auto;
+    align-items: center;
+}
+
 .margin {
     margin: 2rem;
 }

@@ -25,3 +25,17 @@ export const MeasurementTypes = {
   cloudCoverage: "cloud coverage",
   windSpeed: "wind speed"
 }
+
+export const weatherDetailsIcons = [
+  "maxtemperature.png", 
+  "mintemperature.png",
+  "wind.png",
+  "precipitation.png"
+]
+
+export const weatherDetails = [
+  "Max temperature",
+  "Min temperature",
+  "Average wind speed",
+  "Total precipitation"
+]
