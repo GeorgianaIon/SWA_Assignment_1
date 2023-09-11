@@ -1,7 +1,6 @@
 import { AARHUS_ROUTE, COPENHAGEN_ROUTE, HORSENS_ROUTE } from "./constants.js";
 import HttpClient from "./HttpClient.js";
 import { constructCard } from "../generateHtml/construct-card.js";
-import { weatherDetailsCard } from "../generateHtml/weather-details-card.js";
 import model from "./model.js"
 
 const { getFetchAsync } = HttpClient();
@@ -16,10 +15,6 @@ const getWeatherForAllCities = async () => {
         getFetchAsync(COPENHAGEN_ROUTE),
     ]);
 };
-
-
-//all weather data
-// const weatherData = await getWeatherForAllCities();
 
 selectCity.addEventListener('change', () => {
     const selectedCity = selectCity.value;
