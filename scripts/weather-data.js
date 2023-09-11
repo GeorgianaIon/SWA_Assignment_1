@@ -57,8 +57,6 @@ const getSelectedWeatherData = (selectedCity) => {
 
 displayLatestWeatherData('Horsens');
 
-//const minAndMaxTempContainer = document.getElementById("minAndMaxTemp");
-
 const updateTemperatureInfo = (selectedCity) => {
     weatherDetailsContainer.innerHTML = '';
 

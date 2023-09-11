@@ -17,15 +17,14 @@ main {
     flex-direction: column;
 }
 
-h1 {
-    padding: 2rem 0;
-}
+h1 {}
 
 .margin {
-    margin-left: 2rem;
+    margin: 2rem;
 }
 
-.weather-card, .weather-details-card {
+.weather-card,
+.weather-details-card {
     width: 16rem;
     height: 16rem;
     background-color: #eee;
@@ -37,7 +36,8 @@ h1 {
     margin-bottom: 2rem;
 }
 
-.weather-data, .weather-details {
+.weather-data,
+.weather-details {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -88,7 +88,9 @@ header {
 }
 
 @media screen and (max-width: 768px) {
-    .weather-data, .weather-details {
+
+    .weather-data,
+    .weather-details {
         flex-direction: column;
         align-items: center;
     }
