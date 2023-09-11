@@ -67,51 +67,59 @@ function LatestMeasurements(historicalMeasurements) {
 function MinTemperature(weatherData) {
     let min = weatherData[0].value
     let lastDay = FindLastDay(weatherData)
+    let unit =  ``
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].type === WEATHER_TYPES[0] && weatherData[i].time === lastDay) {
             min = Math.min(min, weatherData[i].value)
+            unit = weatherData[i].unit
         }
     }
-    return min
+    return `${min} ${unit}`
 }
 
 function MaxTemperature(weatherData) {
     let max = weatherData[0].value
     let lastDay = FindLastDay(weatherData)
+    let unit = ``
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].type === WEATHER_TYPES[0] && weatherData.time === lastDay) {
             max = Math.max(max, weatherData[i].value)
+            unit = weatherData[i].unit
         }
     }
-    return max
+    return `${max} ${unit}`
 }
 
 function TotalPrecipitation(weatherData) {
     let totalPrecipitation = 0
+    let unit = ``
     let lastDay = FindLastDay(weatherData)
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].type === WEATHER_TYPES[1] && weatherData[i].time === lastDay) {
             totalPrecipitation += weatherData[i].value
+            unit = weatherData[i].unit
         }
     }
-    return Math.round(totalPrecipitation * 100) / 100
+    return `${Math.round(totalPrecipitation * 100) / 100} ${unit}`
 }
 
 function AverageWindSpeed(weatherData) {
     let sum = 0
     let count = 0
     let lastDay = FindLastDay(weatherData)
+    let unit = ``
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].type === WEATHER_TYPES[3] && weatherData[i].time === lastDay) {
             sum += weatherData[i].value
             count++
+            unit = weatherData[i].unit
         }
     }
 
     if (count === 0) {
-        return 0
+        return `${0} ${unit}`
     } else {
-        return sum / count
+        return `${sum / count} ${unit}`
     }
 }
 

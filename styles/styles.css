@@ -21,6 +21,11 @@ h1 {
     padding: 2rem 0;
 }
 
+.title {
+    margin: 2rem auto;
+    align-items: center;
+}
+
 .margin {
     margin-left: 2rem;
 }

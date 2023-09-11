@@ -57,16 +57,14 @@ const getSelectedWeatherData = (selectedCity) => {
 
 displayLatestWeatherData('Horsens');
 
-//const minAndMaxTempContainer = document.getElementById("minAndMaxTemp");
-
 const updateTemperatureInfo = (selectedCity) => {
     weatherDetailsContainer.innerHTML = '';
 
     const selectedWeather = getSelectedWeatherData(selectedCity);
-    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.minTemperature));
-    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.maxTemperature));
-    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.avgWindSpeed));
-    weatherDetailsContainer.appendChild(weatherDetailsCard(selectedCity, selectedWeather.avgWindSpeed));
+    weatherDetailsContainer.appendChild(weatherDetailsCard(0, selectedWeather.minTemperature));
+    weatherDetailsContainer.appendChild(weatherDetailsCard(1, selectedWeather.maxTemperature));
+    weatherDetailsContainer.appendChild(weatherDetailsCard(2, selectedWeather.avgWindSpeed));
+    weatherDetailsContainer.appendChild(weatherDetailsCard(3, selectedWeather.totalPrecipitation));
 };
 
 updateTemperatureInfo('Horsens')
