@@ -1,0 +1,20 @@
+h1 {
+    margin: 3rem 0 !important;
+}
+
+select {
+    width: 18rem;
+    font-size: large;
+    box-sizing:border-box !important;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 3rem;
+}
+
+table, th, td {
+    border: 1px solid;
+    padding: 5px;
+    word-wrap: break-word;
+}
