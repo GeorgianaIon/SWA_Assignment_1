@@ -25,18 +25,6 @@ main {
 }
 
 .weather-card,
-.weather-details-card {
-    width: 16rem;
-    height: 16rem;
-    background-color: #eee;
-    border-radius: 1rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2rem;
-}
 
 .weather-data,
 .weather-details {
