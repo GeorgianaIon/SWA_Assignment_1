@@ -2,12 +2,11 @@ import { AARHUS_ROUTE_FORECAST, COPENHAGEN_ROUTE_FORECAST, HORSENS_ROUTE_FORECAS
 import HttpClient from "./HttpClient.js";
 import model from "./model.js"
 
-const { getFetchAsync } = HttpClient();
+const { getFetchAsync, getXmlHttpRequest } = HttpClient();
 const selectCity = document.getElementById("city-select")
 const tableBody = document.getElementById("table-forecast")
 
-const getForcastForAllCities = async () => 
-{
+const getForcastForAllCities = async () => {
     return await Promise.all([
         getFetchAsync(HORSENS_ROUTE_FORECAST),
         getFetchAsync(AARHUS_ROUTE_FORECAST),
@@ -15,8 +14,15 @@ const getForcastForAllCities = async () =>
     ]);
 };
 
-selectCity.addEventListener('change', () => 
-{
+// const getForcastForAllCities = async () => {
+//     return await Promise.all([
+//         getXmlHttpRequest(HORSENS_ROUTE_FORECAST),
+//         getXmlHttpRequest(AARHUS_ROUTE_FORECAST),
+//         getXmlHttpRequest(COPENHAGEN_ROUTE_FORECAST)
+//     ]);
+// };
+
+selectCity.addEventListener('change', () => {
     const selectedCity = selectCity.value
     displayWeatherForecast(selectedCity)
 });
@@ -25,10 +31,9 @@ selectCity.addEventListener('change', () =>
 const [horsensForecast, aarhusForecast, copenhagenForecast] =
     await getForcastForAllCities()
 
-const displayWeatherForecast = (selectedCity) => 
-{
+const displayWeatherForecast = (selectedCity) => {
     refreshTable();
-    const forecast = getSelectedForecast(selectedCity)    
+    const forecast = getSelectedForecast(selectedCity)
 
     for (let i = 0; i < forecast.length; i++) {
         const tr = document.createElement("tr")
@@ -54,15 +59,13 @@ const displayWeatherForecast = (selectedCity) =>
         tr.appendChild(tdTo)
 
         const tdPrecipitationTypes = document.createElement("td")
-        if (forecast[i].getPrecipitationTypes()) 
-        {
+        if (forecast[i].getPrecipitationTypes()) {
             tdPrecipitationTypes.innerHTML = forecast[i].getPrecipitationTypes().join(', ')
         }
         tr.appendChild(tdPrecipitationTypes)
 
         const tdWindDirections = document.createElement("td")
-        if (forecast[i].getDirections()) 
-        {
+        if (forecast[i].getDirections()) {
             tdWindDirections.innerHTML = forecast[i].getDirections().join(', ')
         }
         tr.appendChild(tdWindDirections)
@@ -70,14 +73,12 @@ const displayWeatherForecast = (selectedCity) =>
     }
 }
 
-const refreshTable = () =>
-{
+const refreshTable = () => {
     const dataRows = Array.from(document.getElementsByClassName("forecast-data"))
     dataRows.forEach(row => row.remove())
 }
 
-const getSelectedForecast = (selectedCity) => 
-{
+const getSelectedForecast = (selectedCity) => {
     switch (selectedCity) {
         case Cities.Horsens:
             return model(horsensForecast).forecastMeasurements
