@@ -1,7 +1,7 @@
 const HttpClient = () => {
     const getFetchAsync = async (url) => {
-        const headers = {Accept: "application/json"}
-        const response = await fetch(url, {headers})
+        const headers = { Accept: "application/json" }
+        const response = await fetch(url, { headers })
 
         if (!response.ok) {
             throw new Exception(response.status)
@@ -9,11 +9,11 @@ const HttpClient = () => {
 
         return response.json()
     }
-		
-    const postFetchAsync = async ({headers, data, url}) => {
-        headers ??= {"Content-Type": "application/json", Accept: "application/json"}
+
+    const postFetchAsync = async ({ headers, data, url }) => {
+        headers ??= { "Content-Type": "application/json", Accept: "application/json" }
         const json = JSON.stringify(data)
-        const response = await fetch(url, {headers, method: "POST", body: json})
+        const response = await fetch(url, { headers, method: "POST", body: json })
 
         if (!response.ok) {
             throw new Exception(response.status)

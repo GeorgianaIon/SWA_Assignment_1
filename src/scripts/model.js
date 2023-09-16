@@ -67,7 +67,7 @@ function LatestMeasurements(historicalMeasurements) {
 function MinTemperature(weatherData) {
     let min = weatherData[0].value
     let lastDay = FindLastDay(weatherData)
-    let unit =  ``
+    let unit = ``
     for (let i = 0; i < weatherData.length; i++) {
         if (weatherData[i].type === WEATHER_TYPES[0] && weatherData[i].time === lastDay) {
             min = Math.min(min, weatherData[i].value)
