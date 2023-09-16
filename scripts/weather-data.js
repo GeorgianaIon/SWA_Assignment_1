@@ -3,17 +3,30 @@ import HttpClient from "./HttpClient.js";
 import { constructCard } from "../generateHtml/construct-card.js";
 import model from "./model.js"
 
-const { getFetchAsync } = HttpClient();
+const { getFetchAsync, getXmlHttpRequest } = HttpClient();
 const resultsContainer = document.getElementsByClassName("weather-data")[0];
 const weatherDetailsContainer = document.getElementsByClassName("weather-details")[0];
 const selectCity = document.getElementById("city-select");
 
+// const getWeatherForAllCities = async () => {
+//     return await Promise.all([
+//         getFetchAsync(HORSENS_ROUTE),
+//         getFetchAsync(AARHUS_ROUTE),
+//         getFetchAsync(COPENHAGEN_ROUTE),
+//     ]);
+// };
+
+
 const getWeatherForAllCities = async () => {
     return await Promise.all([
-        getFetchAsync(HORSENS_ROUTE),
-        getFetchAsync(AARHUS_ROUTE),
-        getFetchAsync(COPENHAGEN_ROUTE),
+        getXmlHttpRequest(HORSENS_ROUTE, parseWeatherData),
+        getXmlHttpRequest(AARHUS_ROUTE, parseWeatherData),
+        getXmlHttpRequest(COPENHAGEN_ROUTE, parseWeatherData)
     ]);
+};
+
+const parseWeatherData = (data) => {
+    return data;
 };
 
 selectCity.addEventListener('change', () => {
