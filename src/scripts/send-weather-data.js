@@ -70,6 +70,7 @@ const sendWeatherData = async () => {
 
     try {
         await httpClient.postFetchAsync({ data: inputData, url: `${API_URI}/${API_ROUTE}` })
+        // await httpClient.postXmlHttpRequest({data: inputData ,url:`${API_URI}/${API_ROUTE}` })
         statusOutput.classList.add("input-success")
         statusOutput.classList.remove("input-failure")
         statusOutput.innerText = "Weather data successfully added!"

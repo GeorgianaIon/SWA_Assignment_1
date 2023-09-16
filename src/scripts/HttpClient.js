@@ -22,23 +22,28 @@ const HttpClient = () => {
         return response.json()
     }
 
-    const getXmlHttpRequest = (url, callback) => {
-        const request = new XMLHttpRequest()
+    const getXmlHttpRequest = (url) => {
+        return new Promise((resolve, reject) => {
+            const request = new XMLHttpRequest()
         request.open("GET", url)
         request.setRequestHeader("Accept", "application/json")
         request.onload = () => {
             const response = request.responseText
             const data = JSON.parse(response)
-            callback(data)
+            resolve(data)
         }
         request.onerror = () => {
-            throw new Exception(request.responseText)
+            reject(request.responseText)
         }
         request.send()
+        })
     }
 
-    const postXmlHttpRequest = ({headers, data, url, callback}) => {
-        if (!headers) {
+    const postXmlHttpRequest = ({headers, data, url}) => {
+        const request = new XMLHttpRequest()
+        request.open("POST", url)
+        return new Promise((resolve, reject) => {
+            if (!headers) {
             request.setRequestHeader("Accept", "application/json")
             request.setRequestHeader("Content-Type", "application/json")
         }
@@ -48,20 +53,19 @@ const HttpClient = () => {
             }
         }
 
-        const request = new XMLHttpRequest()
-        request.open("POST", url)
         request.onload = () => {
             const response = request.responseText
             const data = JSON.parse(response)
-            callback(data)
+            resolve(data)
         }
         request.onerror = () => {
-            throw new Exception(request.responseText)
+            reject(request.responseText)
         }
         request.send(JSON.stringify(data))
+        })
     }
 		
-		return { getFetchAsync, postFetchAsync, getXmlHttpRequest, postXmlHttpRequest }
+    return { getFetchAsync, postFetchAsync, getXmlHttpRequest, postXmlHttpRequest }
 }
 
 export default HttpClient;

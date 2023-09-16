@@ -3,7 +3,7 @@ import HttpClient from "./HttpClient.js";
 import { constructCard } from "../generateHtml/construct-card.js";
 import model from "./model.js"
 
-const { getFetchAsync } = HttpClient();
+const { getFetchAsync, getXmlHttpRequest } = HttpClient();
 const resultsContainer = document.getElementsByClassName("weather-data")[0];
 const weatherDetailsContainer = document.getElementsByClassName("weather-details")[0];
 const selectCity = document.getElementById("city-select");
@@ -15,6 +15,14 @@ const getWeatherForAllCities = async () => {
         getFetchAsync(COPENHAGEN_ROUTE),
     ]);
 };
+
+// const getWeatherForAllCities = async () => {
+//     return await Promise.all([
+//         getXmlHttpRequest(HORSENS_ROUTE),
+//         getXmlHttpRequest(AARHUS_ROUTE),
+//         getXmlHttpRequest(COPENHAGEN_ROUTE),
+//     ]);
+// };
 
 selectCity.addEventListener('change', () => {
     const selectedCity = selectCity.value;
