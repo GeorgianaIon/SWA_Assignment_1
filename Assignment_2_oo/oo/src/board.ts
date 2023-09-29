@@ -32,7 +32,7 @@ export class Board<T> {
     generator: Generator<T>;
     pieces: Piece<T>[]
 
-    constructor(columns: number, rows: number, generator: Generator<T>) {
+    constructor(generator: Generator<T>, columns: number, rows: number) {
         this.width = columns;
         this.height = rows;
         this.generator = generator;
@@ -41,8 +41,12 @@ export class Board<T> {
         this.listeners.push(listener);
     }
 
-    piece(p: Position): T | undefined {
-
+    piece(position: Position): T | undefined {
+        //check for undefined
+        if(this.#incorectPosition(position)){
+            return undefined;
+        }
+        this.#piecePosition(position);
     }
 
     canMove(first: Position, second: Position): boolean {
@@ -62,6 +66,22 @@ export class Board<T> {
 
             }
         }
+    }
+
+    /**
+     * Prevents the player from making incorrect moves
+     * Swapping two pieces that are outside the board
+     * @param piece that is to be moved
+     * @returns boolean
+     */
+    #incorectPosition(piece: Position) : boolean {
+        if(piece.row >= this.height) {
+            return false;
+        }
+        if(piece.col >= this.width) {
+            return false;
+        }
+        return true;
     }
 
     /**
