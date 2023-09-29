@@ -43,10 +43,20 @@ export class Board<T> {
 
     piece(position: Position): T | undefined {
         //check for undefined
-        if(this.#incorectPosition(position)){
+        if(this.isIncorectPosition(position)) {
             return undefined;
         }
-        this.#piecePosition(position);
+        this.piecePosition(position);
+    }
+
+    positions() : Position[] {
+        const positions: Position[] = [];
+        for (let row = 0; row < this.height; row++) {
+            for (let col = 0; col < this.width; col++) {
+                positions.push({ row, col });
+            }
+        }
+        return positions;
     }
 
     canMove(first: Position, second: Position): boolean {
@@ -54,13 +64,13 @@ export class Board<T> {
     }
     
     move(first: Position, second: Position) {
-        const firstPiece = this.#piecePosition(first);
-        const secondPiece = this.#piecePosition(second);
+        const firstPiece = this.piecePosition(first);
+        const secondPiece = this.piecePosition(second);
 
         
     }
 
-    #refillBoardEvent(): void {
+    refillBoardEvent(): void {
         for(let row = 0; row < this.height; row++) {
             for(let col =0; col< this.width; col++) {
 
@@ -70,18 +80,21 @@ export class Board<T> {
 
     /**
      * Prevents the player from making incorrect moves
-     * Swapping two pieces that are outside the board
-     * @param piece that is to be moved
+     * Swapping two positions that are outside the board
+     * @param position that is to be moved
      * @returns boolean
      */
-    #incorectPosition(piece: Position) : boolean {
-        if(piece.row >= this.height) {
-            return false;
+    isIncorectPosition(position: Position | undefined) : boolean {
+        if (position === undefined) {
+            return true;
         }
-        if(piece.col >= this.width) {
-            return false;
+        if(position.row >= this.height || position.row < 0) {
+            return true;
         }
-        return true;
+        if(position.col >= this.width || position.col < 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -89,7 +102,7 @@ export class Board<T> {
      * @param index of column
      * @returns an array of all pieces in a specified column
      */
-    #getPiecesInColumn(index: number): Piece<T>[] {
+    getPiecesInColumn(index: number): Piece<T>[] {
         return this.pieces.filter(element => {
             return element.position.col === index;
         })
@@ -100,7 +113,7 @@ export class Board<T> {
      * @param index of the row
      * @returns an array of all pieces in the specified row
      */
-    #getPiecesInRow(index: number): Piece<T>[] {
+    getPiecesInRow(index: number): Piece<T>[] {
         return this.pieces.filter(element => {
             return element.position.row === index;
         })
@@ -110,7 +123,7 @@ export class Board<T> {
     * Returns the piece on the position given
     * @param position
     */
-    #piecePosition(position: Position) : Piece<T> {
+    piecePosition(position: Position) : Piece<T> {
         return this.pieces.find(element => {
             if(element.position.row === position.row && element.position.col === position.col) {
                 return element;
