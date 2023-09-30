@@ -30,14 +30,13 @@ export class Board<T> {
     height: number;
     listeners: BoardListener<T>[] = [];
     generator: Generator<T>;
-    grid: Piece<T>[][];
-    tiles: T[][]
+    tiles: Piece<T>[][];
 
     constructor(generator: Generator<T>, columns: number, rows: number) {
         this.width = columns;
         this.height = rows;
         this.generator = generator;
-        this.grid = this.initializeBoard();
+        this.tiles = this.initializeBoard();
     }
 
     private initializeBoard(): Piece<T>[][] {
@@ -64,7 +63,7 @@ export class Board<T> {
         if (this.isIncorectPosition(position)) {
             return undefined;
         }
-        const piece = this.grid[position.row][position.col];
+        const piece = this.tiles[position.row][position.col];
         return piece ? piece.value : undefined;
     }
 
@@ -79,7 +78,19 @@ export class Board<T> {
     }
 
     canMove(first: Position, second: Position): boolean {
+        if(this.isIncorectPosition(first) || this.isIncorectPosition(second)) {
+            return false;
+        }
 
+        if(first.col === second.col && first.row == second.row) {
+            return false;
+        }
+
+        if(!(first.col === second.col || first.row === second.row)) {
+            return false;
+        }
+        // another check for the missing test
+        return true;
     }
 
     move(first: Position, second: Position) {
@@ -138,7 +149,7 @@ export class Board<T> {
     * Returns the piece on the position given
     * @param position
     */
-    piecePosition(position: Position): T[] {
+    piecePosition(position: Position): Piece<T>[] {
         return this.tiles.find(element => {
             if (element[position.row][position.col]) {
                 return element;
