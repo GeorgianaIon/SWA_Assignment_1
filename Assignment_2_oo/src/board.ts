@@ -60,7 +60,19 @@ export class Board<T> {
     }
 
     canMove(first: Position, second: Position): boolean {
+        if(this.isIncorectPosition(first) || this.isIncorectPosition(second)) {
+            return false;
+        }
 
+        if(first.col === second.col && first.row == second.row) {
+            return false;
+        }
+
+        if(!(first.col === second.col || first.row === second.row)) {
+            return false;
+        }
+        // another check for the missing test
+        return true;
     }
     
     move(first: Position, second: Position) {
@@ -76,6 +88,11 @@ export class Board<T> {
 
             }
         }
+    }
+
+    getRowMatches(row: number): void {
+        let pieces = this.getPiecesInRow(row);
+        
     }
 
     /**
