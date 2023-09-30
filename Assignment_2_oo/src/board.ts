@@ -78,15 +78,15 @@ export class Board<T> {
     }
 
     canMove(first: Position, second: Position): boolean {
-        if(this.isIncorectPosition(first) || this.isIncorectPosition(second)) {
+        if (this.isIncorectPosition(first) || this.isIncorectPosition(second)) {
             return false;
         }
 
-        if(first.col === second.col && first.row == second.row) {
+        if (first.col === second.col && first.row == second.row) {
             return false;
         }
 
-        if(!(first.col === second.col || first.row === second.row)) {
+        if (!(first.col === second.col || first.row === second.row)) {
             return false;
         }
         // another check for the missing test
@@ -94,6 +94,11 @@ export class Board<T> {
     }
 
     move(first: Position, second: Position) {
+        const firstPiece = this.tiles[first.row][first.col];
+        const secondPiece = this.tiles[second.row][second.col];
+
+        this.tiles[first.row][first.col] = secondPiece;
+        this.tiles[second.row][second.col] = firstPiece;
     }
 
     refillBoardEvent(): void {
