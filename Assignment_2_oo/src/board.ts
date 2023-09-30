@@ -30,7 +30,7 @@ export class Board<T> {
     height: number;
     listeners: BoardListener<T>[] = [];
     generator: Generator<T>;
-    pieces: Piece<T>[]
+    tiles: T[][]
 
     constructor(generator: Generator<T>, columns: number, rows: number) {
         this.width = columns;
@@ -76,9 +76,6 @@ export class Board<T> {
     }
     
     move(first: Position, second: Position) {
-        const firstPiece = this.piecePosition(first);
-        const secondPiece = this.piecePosition(second);
-
         
     }
 
@@ -90,10 +87,6 @@ export class Board<T> {
         }
     }
 
-    getRowMatches(row: number): void {
-        let pieces = this.getPiecesInRow(row);
-        
-    }
 
     /**
      * Prevents the player from making incorrect moves
@@ -119,30 +112,30 @@ export class Board<T> {
      * @param index of column
      * @returns an array of all pieces in a specified column
      */
-    getPiecesInColumn(index: number): Piece<T>[] {
-        return this.pieces.filter(element => {
-            return element.position.col === index;
-        })
-    }
+    // getPiecesInColumn(index: number): Piece<T>[] {
+    //     return this.pieces.filter(element => {
+    //         return element.position.col === index;
+    //     })
+    // }
 
     /**
      * 
      * @param index of the row
      * @returns an array of all pieces in the specified row
      */
-    getPiecesInRow(index: number): Piece<T>[] {
-        return this.pieces.filter(element => {
-            return element.position.row === index;
-        })
-    }
+    // getPiecesInRow(index: number): Piece<T>[] {
+    //     return this.pieces.filter(element => {
+    //         return element.position.row === index;
+    //     })
+    // }
 
     /**
     * Returns the piece on the position given
     * @param position
     */
-    piecePosition(position: Position) : Piece<T> {
-        return this.pieces.find(element => {
-            if(element.position.row === position.row && element.position.col === position.col) {
+    piecePosition(position: Position) : T[] {
+        return this.tiles.find(element => {
+            if(element[position.row][position.col]) {
                 return element;
             }
         });
