@@ -1,4 +1,4 @@
-export type Generator<T>= { next:() => T } 
+export type Generator<T> = { next: () => T }
 
 export type Position = {
     row: number,
@@ -31,25 +31,44 @@ export class Board<T> {
     listeners: BoardListener<T>[] = [];
     generator: Generator<T>;
     pieces: Piece<T>[]
+    grid: Piece<T>[][];
 
     constructor(generator: Generator<T>, columns: number, rows: number) {
         this.width = columns;
         this.height = rows;
         this.generator = generator;
+        this.grid = this.initializeBoard();
     }
+
+    private initializeBoard(): Piece<T>[][] {
+        const grid: Piece<T>[][] = [];
+
+        for (let row = 0; row < this.height; row++) {
+            const rowArray: Piece<T>[] = [];
+            for (let col = 0; col < this.width; col++) {
+                const value = this.generator.next();
+                rowArray.push({ position: { row, col }, value });
+            }
+            grid.push(rowArray);
+        }
+
+        return grid;
+    }
+
     addListener(listener: BoardListener<T>) {
         this.listeners.push(listener);
     }
 
     piece(position: Position): T | undefined {
         //check for undefined
-        if(this.isIncorectPosition(position)) {
+        if (this.isIncorectPosition(position)) {
             return undefined;
         }
-        this.piecePosition(position);
+        const piece = this.grid[position.row][position.col];
+        return piece ? piece.value : undefined;
     }
 
-    positions() : Position[] {
+    positions(): Position[] {
         const positions: Position[] = [];
         for (let row = 0; row < this.height; row++) {
             for (let col = 0; col < this.width; col++) {
@@ -60,39 +79,22 @@ export class Board<T> {
     }
 
     canMove(first: Position, second: Position): boolean {
-        if(this.isIncorectPosition(first) || this.isIncorectPosition(second)) {
-            return false;
-        }
 
-        if(first.col === second.col && first.row == second.row) {
-            return false;
-        }
-
-        if(!(first.col === second.col || first.row === second.row)) {
-            return false;
-        }
-        // another check for the missing test
-        return true;
     }
-    
+
     move(first: Position, second: Position) {
         const firstPiece = this.piecePosition(first);
         const secondPiece = this.piecePosition(second);
 
-        
+
     }
 
     refillBoardEvent(): void {
-        for(let row = 0; row < this.height; row++) {
-            for(let col =0; col< this.width; col++) {
+        for (let row = 0; row < this.height; row++) {
+            for (let col = 0; col < this.width; col++) {
 
             }
         }
-    }
-
-    getRowMatches(row: number): void {
-        let pieces = this.getPiecesInRow(row);
-        
     }
 
     /**
@@ -101,14 +103,14 @@ export class Board<T> {
      * @param position that is to be moved
      * @returns boolean
      */
-    isIncorectPosition(position: Position | undefined) : boolean {
+    isIncorectPosition(position: Position | undefined): boolean {
         if (position === undefined) {
             return true;
         }
-        if(position.row >= this.height || position.row < 0) {
+        if (position.row >= this.height || position.row < 0) {
             return true;
         }
-        if(position.col >= this.width || position.col < 0) {
+        if (position.col >= this.width || position.col < 0) {
             return true;
         }
         return false;
@@ -140,9 +142,9 @@ export class Board<T> {
     * Returns the piece on the position given
     * @param position
     */
-    piecePosition(position: Position) : Piece<T> {
+    piecePosition(position: Position): Piece<T> {
         return this.pieces.find(element => {
-            if(element.position.row === position.row && element.position.col === position.col) {
+            if (element.position.row === position.row && element.position.col === position.col) {
                 return element;
             }
         });
