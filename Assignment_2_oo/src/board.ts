@@ -99,7 +99,20 @@ export class Board<T> {
 
         this.tiles[first.row][first.col] = secondPiece;
         this.tiles[second.row][second.col] = firstPiece;
+
+        this.replaceTopRow(this.generator);
     }
+
+    replaceTopRow(generator: Generator<T>): void {
+        const newRow: Piece<T>[] = [];
+        for (let col = 0; col < this.width; col++) {
+            const value = generator.next();
+            newRow.push({ position: { row: 0, col }, value });
+        }
+        this.tiles.shift(); // Remove the top row.
+        this.tiles.unshift(newRow); // Add the new row at the top.
+    }
+
 
     refillBoardEvent(): void {
         for (let row = 0; row < this.height; row++) {
