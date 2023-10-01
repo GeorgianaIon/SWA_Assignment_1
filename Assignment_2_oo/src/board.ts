@@ -137,6 +137,7 @@ export class Board<T> {
                     this.HandleMatches(match, matches);
                 }
             }
+            this.HandleMatches(match, matches);
         }
         // Vertical - from top to bottom
         for (let j = board.width - 1; j >= 0; j--) {
