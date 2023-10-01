@@ -78,15 +78,15 @@ export class Board<T> {
     }
 
     canMove(first: Position, second: Position): boolean {
-        if(this.isIncorectPosition(first) || this.isIncorectPosition(second)) {
+        if (this.isIncorectPosition(first) || this.isIncorectPosition(second)) {
             return false;
         }
 
-        if(first.col === second.col && first.row == second.row) {
+        if (first.col === second.col && first.row == second.row) {
             return false;
         }
 
-        if(!(first.col === second.col || first.row === second.row)) {
+        if (!(first.col === second.col || first.row === second.row)) {
             return false;
         }
 
@@ -103,6 +103,15 @@ export class Board<T> {
     }
 
     move(first: Position, second: Position) {
+        if(this.canMove(first, second)){
+            const firstPiece = this.tiles[first.row][first.col];
+            const secondPiece = this.tiles[second.row][second.col];
+    
+            this.tiles[first.row][first.col] = secondPiece;
+            this.tiles[second.row][second.col] = firstPiece;
+    
+            this.replaceTopRow(this.generator);
+        }
     }
 
     findMatches(board:  Board<T>) : Match<T>[] {
@@ -128,7 +137,6 @@ export class Board<T> {
                     this.HandleMatches(match, matches);
                 }
             }
-            this.HandleMatches(match, matches);
         }
         // Vertical - from top to bottom
         for (let j = board.width - 1; j >= 0; j--) {
@@ -149,6 +157,16 @@ export class Board<T> {
             this.HandleMatches(match, matches);
         }
         return matches;
+    }
+
+    private replaceTopRow(generator: Generator<T>): void {
+        const newRow: Piece<T>[] = [];
+        for (let col = 0; col < this.width; col++) {
+            const value = generator.next();
+            newRow.push({ position: { row: 0, col }, value });
+        }
+        this.tiles.shift(); // Remove the top row.
+        this.tiles.unshift(newRow); // Add the new row at the top.
     }
 
     private HandleMatches(match: Match<T>, matches: Match<T>[]) : void {
