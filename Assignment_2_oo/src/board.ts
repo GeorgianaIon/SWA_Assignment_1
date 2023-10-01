@@ -54,7 +54,7 @@ export class Board<T> {
         return grid;
     }
 
-    addListener(listener: BoardListener<T>) {
+    private addListener(listener: BoardListener<T>) {
         this.listeners.push(listener);
     }
 
@@ -89,21 +89,77 @@ export class Board<T> {
         if(!(first.col === second.col || first.row === second.row)) {
             return false;
         }
-        // another check for the missing test
+
+        if (this.piece(second) && this.piece(first)) {
+            if (first.col === second.col || first.row === second.row) {
+                // initialises a new board after the swipes of the 2 pieces
+                const board: Board<T> = JSON.parse(JSON.stringify(this)) as Board<T>;
+                board.tiles[first.row][first.col] = this.tiles[second.row][second.col];
+                board.tiles[second.row][second.col] = this.tiles[first.row][first.col];
+                if (this.findMatches(board).length <= 0) return false;
+            }
+        }
         return true;
     }
 
     move(first: Position, second: Position) {
     }
 
-    refillBoardEvent(): void {
-        for (let row = 0; row < this.height; row++) {
-            for (let col = 0; col < this.width; col++) {
-
+    findMatches(board:  Board<T>) : Match<T>[] {
+        const matches: Match<T>[] = [];
+        // keep track of current match
+        // Horizontal moves - left to right
+        const match: Match<T> = { matched: undefined, positions: []};
+        for (let i = 0; i < board.height; i++) {
+            for (let j = 0; j < board.width - 1; j++) {
+                // checking whether the current element's value is the same as the next one
+                if (board.tiles[i][j].value === board.tiles[i][j + 1].value) {
+                    const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
+                    const isDiffPositionFromMatches = !(lastPositionInMatch === board.tiles[i][j].position);
+                    if(isDiffPositionFromMatches)
+                    {
+                        match.positions.push({row: i, col: j})
+                    } 
+                    // set position to the next element
+                    match.matched = board.tiles[i][j + 1].value;
+                    // push position of the next val
+                    match.positions.push({row: i, col: j + 1})
+                } else {
+                    this.HandleMatches(match, matches);
+                }
             }
+            this.HandleMatches(match, matches);
         }
+        // Vertical - from top to bottom
+        for (let j = board.width - 1; j >= 0; j--) {
+            for (let i = 0; i < board.height - 1; i++) {
+                if (board.tiles[i][j].value === board.tiles[i + 1][j].value) {
+                        const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
+                        const isDiffPositionFromMatches = !(lastPositionInMatch === board.tiles[i][j].position);
+                        if(isDiffPositionFromMatches) 
+                        {
+                            match.positions.push({row: i, col: j})
+                        }
+                        match.matched = board.tiles[i + 1][j].value;
+                        match.positions.push({row: i + 1, col: j})
+                } else {
+                    this.HandleMatches(match, matches);
+                } 
+            }
+            this.HandleMatches(match, matches);
+        }
+        return matches;
     }
 
+    private HandleMatches(match: Match<T>, matches: Match<T>[]) : void {
+        if (match.positions.length < 3) {
+            // Reset
+            match.positions = [];
+        } else {
+            matches.push({ ...match });
+            match.positions = [];
+        }    
+    }
     /**
      * Prevents the player from making incorrect moves
      * Swapping two positions that are outside the board
@@ -121,40 +177,6 @@ export class Board<T> {
             return true;
         }
         return false;
-    }
-
-    /**
-     * 
-     * @param index of column
-     * @returns an array of all pieces in a specified column
-     */
-    // getPiecesInColumn(index: number): Piece<T>[] {
-    //     return this.pieces.filter(element => {
-    //         return element.position.col === index;
-    //     })
-    // }
-
-    /**
-     * 
-     * @param index of the row
-     * @returns an array of all pieces in the specified row
-     */
-    // getPiecesInRow(index: number): Piece<T>[] {
-    //     return this.pieces.filter(element => {
-    //         return element.position.row === index;
-    //     })
-    // }
-
-    /**
-    * Returns the piece on the position given
-    * @param position
-    */
-    piecePosition(position: Position): Piece<T>[] {
-        return this.tiles.find(element => {
-            if (element[position.row][position.col]) {
-                return element;
-            }
-        });
     }
 }
 
