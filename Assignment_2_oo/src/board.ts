@@ -103,36 +103,37 @@ export class Board<T> {
     }
 
     move(first: Position, second: Position) {
-        if(this.canMove(first, second)){
+        if (this.canMove(first, second)) {
             const firstPiece = this.tiles[first.row][first.col];
             const secondPiece = this.tiles[second.row][second.col];
-    
+
             this.tiles[first.row][first.col] = secondPiece;
             this.tiles[second.row][second.col] = firstPiece;
-    
-            this.replaceTopRow(this.generator);
+
+            const matches = this.findMatches(this);
+
+            this.updateBoardAfterMove(matches)
         }
     }
 
-    findMatches(board:  Board<T>) : Match<T>[] {
+    findMatches(board: Board<T>): Match<T>[] {
         const matches: Match<T>[] = [];
         // keep track of current match
         // Horizontal moves - left to right
-        const match: Match<T> = { matched: undefined, positions: []};
+        const match: Match<T> = { matched: undefined, positions: [] };
         for (let i = 0; i < board.height; i++) {
             for (let j = 0; j < board.width - 1; j++) {
                 // checking whether the current element's value is the same as the next one
                 if (board.tiles[i][j].value === board.tiles[i][j + 1].value) {
                     const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
                     const isDiffPositionFromMatches = !(lastPositionInMatch === board.tiles[i][j].position);
-                    if(isDiffPositionFromMatches)
-                    {
-                        match.positions.push({row: i, col: j})
-                    } 
+                    if (isDiffPositionFromMatches) {
+                        match.positions.push({ row: i, col: j })
+                    }
                     // set position to the next element
                     match.matched = board.tiles[i][j + 1].value;
                     // push position of the next val
-                    match.positions.push({row: i, col: j + 1})
+                    match.positions.push({ row: i, col: j + 1 })
                 } else {
                     this.HandleMatches(match, matches);
                 }
@@ -143,42 +144,64 @@ export class Board<T> {
         for (let j = board.width - 1; j >= 0; j--) {
             for (let i = 0; i < board.height - 1; i++) {
                 if (board.tiles[i][j].value === board.tiles[i + 1][j].value) {
-                        const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
-                        const isDiffPositionFromMatches = !(lastPositionInMatch === board.tiles[i][j].position);
-                        if(isDiffPositionFromMatches) 
-                        {
-                            match.positions.push({row: i, col: j})
-                        }
-                        match.matched = board.tiles[i + 1][j].value;
-                        match.positions.push({row: i + 1, col: j})
+                    const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
+                    const isDiffPositionFromMatches = !(lastPositionInMatch === board.tiles[i][j].position);
+                    if (isDiffPositionFromMatches) {
+                        match.positions.push({ row: i, col: j })
+                    }
+                    match.matched = board.tiles[i + 1][j].value;
+                    match.positions.push({ row: i + 1, col: j })
                 } else {
                     this.HandleMatches(match, matches);
-                } 
+                }
             }
             this.HandleMatches(match, matches);
         }
         return matches;
     }
 
-    private replaceTopRow(generator: Generator<T>): void {
-        const newRow: Piece<T>[] = [];
-        for (let col = 0; col < this.width; col++) {
-            const value = generator.next();
-            newRow.push({ position: { row: 0, col }, value });
-        }
-        this.tiles.shift(); // Remove the top row.
-        this.tiles.unshift(newRow); // Add the new row at the top.
-    }
-
-    private HandleMatches(match: Match<T>, matches: Match<T>[]) : void {
+    private HandleMatches(match: Match<T>, matches: Match<T>[]): void {
         if (match.positions.length < 3) {
             // Reset
             match.positions = [];
         } else {
             matches.push({ ...match });
             match.positions = [];
-        }    
+        }
     }
+
+    updateBoardAfterMove(matches: Match<T>[]) {
+        const boardCopy = JSON.parse(JSON.stringify(this)) as Board<T>;
+
+        for (const match of matches) {
+            for (const position of match.positions) {
+                boardCopy.tiles[position.row][position.col] = null;
+            }
+        }
+
+        for (let col = 0; col < this.width; col++) {
+            let emptyTileCount = 0;
+
+            for (let row = this.height - 1; row >= 0; row--) {
+                if (boardCopy.tiles[row][col] === null) {
+                    emptyTileCount++;
+                } else if (emptyTileCount > 0) {
+                    boardCopy.tiles[row + emptyTileCount][col] = boardCopy.tiles[row][col];
+                    boardCopy.tiles[row][col] = null;
+                }
+            }
+
+            for (let i = emptyTileCount - 1; i >= 0; i--) {
+                const value = this.generator.next();
+                boardCopy.tiles[i][col] = { position: { row: i, col }, value };
+            }
+        }
+
+        this.tiles = boardCopy.tiles;
+    }
+
+
+
     /**
      * Prevents the player from making incorrect moves
      * Swapping two positions that are outside the board
