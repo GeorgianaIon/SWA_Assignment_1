@@ -17,10 +17,10 @@ export type Match<T> = {
 
 export type BoardEvent<T> = {
     kind: `Match` | `Refill`,
-    match: Match<T>[]
+    match?: Match<T>
 };
 
-export type BoardListener<T> = (event: T) => void
+export type BoardListener<T> = (e: BoardEvent<T>) => any
 
 /**
  * @param 
@@ -28,7 +28,7 @@ export type BoardListener<T> = (event: T) => void
 export class Board<T> {
     width: number;
     height: number;
-    listeners: BoardListener<T>[] = [];
+    listener: BoardListener<T>;
     generator: Generator<T>;
     tiles: Piece<T>[][];
 
@@ -55,7 +55,7 @@ export class Board<T> {
     }
 
     private addListener(listener: BoardListener<T>) {
-        this.listeners.push(listener);
+        this.listener = listener;
     }
 
     piece(position: Position): T | undefined {
@@ -174,6 +174,10 @@ export class Board<T> {
         const boardCopy = JSON.parse(JSON.stringify(this)) as Board<T>;
 
         for (const match of matches) {
+            if (this.listener) {
+                this.listener({kind: 'Match', match: match})
+            }
+
             for (const position of match.positions) {
                 boardCopy.tiles[position.row][position.col] = null;
             }
@@ -196,8 +200,11 @@ export class Board<T> {
                 boardCopy.tiles[i][col] = { position: { row: i, col }, value };
             }
         }
-
         this.tiles = boardCopy.tiles;
+
+        if (this.listener) {
+            this.listener({kind: 'Refill'})
+        }
     }
 
 
