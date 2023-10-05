@@ -60,13 +60,12 @@ export function canMove<T>(board: Board<T>, first: Position, second: Position): 
         return false
     }
 
-    swap(board, first, second)
-    if (!isValidMatch(board, first) && !isValidMatch(board, second))
+    let copyBoard: Board<T> = JSON.parse(JSON.stringify(board))
+    swap(copyBoard, first, second)
+    if (!isValidMatch(copyBoard, first) && !isValidMatch(copyBoard, second))
     {
-        swap(board, first, second)
         return false
     }
-    swap(board, first, second)
     return true
 }
 
@@ -80,37 +79,12 @@ export function move<T>(generator: Generator<T>, board: Board<T>, first: Positio
             effects
         }
     }
-    
     swap(board, first, second)
-    let matches = getValidMatches(board, second)
-    matches = matches.concat(getValidMatches(board, first))
-
-    effects = matches.map((match) => {
-        return {
-            kind: "Match",
-            match
-        }
-    })
-
-    let replacePositions: Position[] = []
-    matches.forEach(match => {
-        replacePositions = replacePositions.concat(match.positions)
-    });
-
-    for (let i = 0; i < board.height; i++) {
-        for (let j = 0; j < board.width; j++) {
-            if (replacePositions.includes({row: i, col: j}))
-            {
-                board.pieces[i][j] = undefined;
-            }
-        }
-    }
-
-    effects.push({
-        kind: "Refill",
-        board
-    })
-    
+    let replacePositions = GetAllMatches(board, effects, first, second)
+    RemoveMatches(board, replacePositions)
+    ShiftTilesDown(board);
+    Refill(generator, board, effects)
+    HandleNewMatches(generator, board, effects)
     return {
         board,
         effects
@@ -177,4 +151,108 @@ function swap<T>(board: Board<T>, first: Position, second: Position): void {
 
     board.pieces[first.row][first.col] = value2
     board.pieces[second.row][second.col] = value1
+}
+
+function GetAllMatches<T>(board: Board<T>, effects: Effect<T>[], first: Position = undefined, second: Position = undefined): Position[]
+{
+    let matches: Match<T>[] = []
+
+    if(first !== undefined && second !== undefined)
+    {
+        matches = matches.concat(getValidMatches(board, first))
+        matches = matches.concat(getValidMatches(board, second))
+    }
+    else 
+    {
+        for (let i = 0; i < board.height; i++) {
+            for (let j = 0; j < board.width; j++) {
+                if (!matches.some(match => match.positions.some(position => position.row === i && position.col === j)))
+                {
+                matches = matches.concat(getValidMatches(board, {row : i, col : j}))
+                }
+            }
+        }
+    }
+
+    matches.forEach((match) => {
+        effects.push({
+            kind: "Match",
+            match
+        })
+    })
+
+    let replacePositions: Position[] = []
+    matches.forEach(match => {
+        replacePositions = replacePositions.concat(match.positions)
+    })
+
+
+    return replacePositions
+}
+
+
+function RemoveMatches<T>(board: Board<T>, replacePositions: Position[]): void {
+    for (let i = 0; i < board.height; i++) {
+        for (let j = 0; j < board.width; j++) {
+            if (replacePositions.some(position => {return position.row === i && position.col === j}))
+            {
+                board.pieces[i][j] = undefined;
+            }
+        }
+    }
+}
+
+function Refill<T>(generator: Generator<T>, board: Board<T>, effects: Effect<T>[]): void {
+    
+    let doesRefill = false
+    for (let i = 0; i < board.width; i++) 
+    {
+        if (board.pieces[0][i] === undefined)
+        {
+            board.pieces[0][i] = generator.next()
+            doesRefill = true
+        }
+    }
+    ShiftTilesDown(board)
+
+    if (doesRefill) {
+        Refill(generator, board, effects)
+    }
+    else {
+        effects.push({
+            kind: "Refill",
+            board
+        })
+    }
+}
+
+function ShiftTilesDown<T>(board: Board<T>): void {
+    let shifted = false;
+    for (let i = 0; i < board.height - 1; i++) {
+        for (let j = 0; j < board.width; j++) {
+            if (board.pieces[i][j] !== undefined && board.pieces[i+1][j] === undefined) 
+            {
+                board.pieces[i+1][j] = board.pieces[i][j]
+                board.pieces[i][j] = undefined
+                shifted = true
+            }
+        }
+    }
+    if (shifted)
+    {
+        ShiftTilesDown(board)
+    }
+}
+
+
+function HandleNewMatches<T>(generator: Generator<T>, board: Board<T>, effects: Effect<T>[])
+{
+    let replacePositions = GetAllMatches(board, effects)
+    if (replacePositions.length)
+    {
+        RemoveMatches(board, replacePositions)
+        ShiftTilesDown(board);
+        Refill(generator, board, effects)
+        HandleNewMatches(generator, board, effects)
+    }
 }
