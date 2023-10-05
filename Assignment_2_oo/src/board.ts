@@ -121,16 +121,20 @@ export class Board<T> {
         // keep track of current match
         // Horizontal moves - left to right
         const match: Match<T> = { matched: undefined, positions: [] };
+
         for (let i = 0; i < board.height; i++) {
             for (let j = 0; j < board.width - 1; j++) {
                 // checking whether the current element's value is the same as the next one
                 if (board.tiles[i][j].value === board.tiles[i][j + 1].value) {
-                    const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
-                    const isDiffPositionFromMatches = !(lastPositionInMatch &&
-                        lastPositionInMatch.row === board.tiles[i][j].position.row &&
-                        lastPositionInMatch.col === board.tiles[i][j].position.col);
-                    if (isDiffPositionFromMatches) {
-                        match.positions.push({ row: i, col: j })
+                    const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined;
+
+                    const newPosition = { row: i, col: j };
+                    const isPositionInMatch = lastPositionInMatch &&
+                        lastPositionInMatch.row === newPosition.row &&
+                        lastPositionInMatch.col === newPosition.col;
+
+                    if (!isPositionInMatch) {
+                        match.positions.push(newPosition);
                     }
                     // set position to the next element
                     match.matched = board.tiles[i][j + 1].value;
@@ -146,12 +150,15 @@ export class Board<T> {
         for (let j = board.width - 1; j >= 0; j--) {
             for (let i = 0; i < board.height - 1; i++) {
                 if (board.tiles[i][j].value === board.tiles[i + 1][j].value) {
-                    const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
-                    const isDiffPositionFromMatches = !(lastPositionInMatch &&
-                        lastPositionInMatch.row === board.tiles[i][j].position.row &&
-                        lastPositionInMatch.col === board.tiles[i][j].position.col);
-                    if (isDiffPositionFromMatches) {
-                        match.positions.push({ row: i, col: j })
+                    const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined;
+
+                    const newPosition = { row: i, col: j };
+                    const isPositionInMatch = lastPositionInMatch &&
+                        lastPositionInMatch.row === newPosition.row &&
+                        lastPositionInMatch.col === newPosition.col;
+
+                    if (!isPositionInMatch) {
+                        match.positions.push(newPosition);
                     }
                     match.matched = board.tiles[i + 1][j].value;
                     match.positions.push({ row: i + 1, col: j })
@@ -208,6 +215,12 @@ export class Board<T> {
 
         if (this.listener) {
             this.listener({ kind: 'Refill' })
+        }
+
+        //recursive
+        const newMatches = this.findMatches(this);
+        if (newMatches.length > 0) {
+            this.updateBoardAfterMove(newMatches);
         }
     }
 
