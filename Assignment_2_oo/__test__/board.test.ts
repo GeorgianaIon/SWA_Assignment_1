@@ -186,6 +186,7 @@ describe("Board", () => {
             it("finds single horizontal match when moving first piece to a match", () => {
                 generator.prepare('C', 'D', 'A')
                 board.move({ row: 2, col: 1 }, { row: 0, col: 1 })
+                console.log("Events " + JSON.stringify(events.slice(0, 1)));
                 expect(events.slice(0, 1)).toEqual([{ kind: 'Match', match: { matched: 'A', positions: [{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 0, col: 2 }] } }])
             })
             it("finds single horizontal match when moving second piece to a match", () => {
