@@ -54,7 +54,7 @@ export class Board<T> {
         return grid;
     }
 
-    private addListener(listener: BoardListener<T>) {
+    addListener(listener: BoardListener<T>) {
         this.listener = listener;
     }
 
@@ -126,7 +126,9 @@ export class Board<T> {
                 // checking whether the current element's value is the same as the next one
                 if (board.tiles[i][j].value === board.tiles[i][j + 1].value) {
                     const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
-                    const isDiffPositionFromMatches = !(lastPositionInMatch === board.tiles[i][j].position);
+                    const isDiffPositionFromMatches = !(lastPositionInMatch &&
+                        lastPositionInMatch.row === board.tiles[i][j].position.row &&
+                        lastPositionInMatch.col === board.tiles[i][j].position.col);
                     if (isDiffPositionFromMatches) {
                         match.positions.push({ row: i, col: j })
                     }
@@ -145,7 +147,9 @@ export class Board<T> {
             for (let i = 0; i < board.height - 1; i++) {
                 if (board.tiles[i][j].value === board.tiles[i + 1][j].value) {
                     const lastPositionInMatch = match.positions.length > 0 ? match.positions[match.positions.length - 1] : undefined
-                    const isDiffPositionFromMatches = !(lastPositionInMatch === board.tiles[i][j].position);
+                    const isDiffPositionFromMatches = !(lastPositionInMatch &&
+                        lastPositionInMatch.row === board.tiles[i][j].position.row &&
+                        lastPositionInMatch.col === board.tiles[i][j].position.col);
                     if (isDiffPositionFromMatches) {
                         match.positions.push({ row: i, col: j })
                     }
@@ -175,7 +179,7 @@ export class Board<T> {
 
         for (const match of matches) {
             if (this.listener) {
-                this.listener({kind: 'Match', match: match})
+                this.listener({ kind: 'Match', match: match })
             }
 
             for (const position of match.positions) {
@@ -203,7 +207,7 @@ export class Board<T> {
         this.tiles = boardCopy.tiles;
 
         if (this.listener) {
-            this.listener({kind: 'Refill'})
+            this.listener({ kind: 'Refill' })
         }
     }
 
