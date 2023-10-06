@@ -294,14 +294,14 @@ describe("Board", () => {
                     'C', 'B', 'D',
                 )
                 board = new Board(generator, 3, 4)
-                generator.prepare('D', 'C', 'B', 'B', 'A')
+                generator.prepare('X', 'C', 'B', 'B', 'A')
                 board.move({ row: 0, col: 1 }, { row: 2, col: 1 })
                 require(board).toMatch(
                     '*', '*', '*',
                     'D', '*', 'A',
                     'D', '*', 'C',
                     'C', 'A', 'D',
-                ).withPieces('A', 'B', 'B', 'C', 'D')
+                ).withPieces('A', 'B', 'B', 'C', 'X')
             })
         })
 
