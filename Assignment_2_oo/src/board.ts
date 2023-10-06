@@ -194,21 +194,27 @@ export class Board<T> {
             }
         }
 
-        for (let col = 0; col < this.width; col++) {
-            let emptyTileCount = 0;
-
-            for (let row = this.height - 1; row >= 0; row--) {
-                if (boardCopy.tiles[row][col] === null) {
-                    emptyTileCount++;
-                } else if (emptyTileCount > 0) {
-                    boardCopy.tiles[row + emptyTileCount][col] = boardCopy.tiles[row][col];
-                    boardCopy.tiles[row][col] = null;
+        for (let i = this.height - 1; i >= 0; i--) {
+            for (let j = 0; j < this.width; j++) {
+                //check if tile is empty
+                if (!boardCopy.tiles[i][j]) {
+                    for (let r = i; r > 0; r--) {
+                        boardCopy.tiles[i][j] = boardCopy.tiles[r - 1][j];
+                        boardCopy.tiles[r - 1][j] = null;
+                        // stops at non empty tiles
+                        if (boardCopy.tiles[i][j]){
+                            break;
+                        } 
+                    }
                 }
             }
-
-            for (let i = emptyTileCount - 1; i >= 0; i--) {
-                const value = this.generator.next();
-                boardCopy.tiles[i][col] = { position: { row: i, col }, value };
+        }
+        for (let i = this.height - 1; i >= 0; i--) {
+            for (let j = 0; j < this.width; j++) {
+                if (!boardCopy.tiles[i][j]) {
+                    const value = this.generator.next();
+                    boardCopy.tiles[i][j] ={ position: { row: i, col: j }, value };
+                } 
             }
         }
         this.tiles = boardCopy.tiles;
