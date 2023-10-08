@@ -8,3 +8,9 @@
 - Running the webpack:
     - Dev: ``` npm run build```
     - Prod: ``` npm run prod```
+ 
+Contributors:
+- Georgiana Ion - 304216 - SWA1X
+- Ioan Vlad Dirlea - 304182 - SWA1X
+- Morten Frederik Hansen - 304668 -SWA1Y
+- Stefania Gabriela Tomuta - 304173 - SWA1X
