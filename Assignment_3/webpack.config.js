@@ -6,11 +6,13 @@ entry: './src/main.tsx',
 devtool: 'inline-source-map',
 output: {
 path: path.join(__dirname, '/dist'),
-filename: 'bundle.js'
+filename: 'bundle.js',
+publicPath: '/'
 },
 devtool: 'inline-source-map',
 devServer: {
 static: './dist',
+historyApiFallback: true,
 },
 module: {
 rules: [
