@@ -1,7 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
+import AppRouter from "./AppRouter";
 function App() {
-return (
-<div>{'react setup from scratch without cra testing ts'}</div>
-);
+  return (
+    <>
+      <AppRouter />
+    </>
+  );
 }
 export default App;
