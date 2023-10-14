@@ -1,7 +1,9 @@
 import * as BoardModel from '../models/board'
 import { Generator } from '../models/board'
+import { useDispatch } from 'react-redux'
+import { setImageSrc } from '../actions/imageAction'
 
-// should be maybe moved to the components folder?
+// to be replaced with a random image
 class CyclicGenerator implements Generator<string> {
     private sequence: string
     private index: number
@@ -27,4 +29,9 @@ const InitialState = {
     maxMoves: 25,
     completed: false,
     currentMoveNumber: 0
+}
+
+interface Action<T> {
+    type: string;
+    payload: T
 }
