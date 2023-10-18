@@ -1,10 +1,12 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { loginUser } from "../api/gameapi";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  let navigate = useNavigate();
 
   const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -19,7 +21,7 @@ const LoginPage = () => {
 
     try {
       await loginUser(username, password);
-      alert("Redirecting to game...");
+      navigate("/board");
     } catch (error) {
       alert(`failed`);
     }

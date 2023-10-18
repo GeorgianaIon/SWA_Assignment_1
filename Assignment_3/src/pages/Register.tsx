@@ -1,10 +1,12 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { createUser } from "../api/gameapi";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  let navigate = useNavigate();
 
   const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -30,7 +32,10 @@ const RegisterPage = () => {
 
     try {
       await createUser(username, password);
-      alert("Registration successful!");
+      navigate("/");
+      alert(
+        "Registration successful! You're being redirected to the login page."
+      );
     } catch (error) {
       alert(`Registration failed: ${error.message}`);
     }
