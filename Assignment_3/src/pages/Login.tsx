@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { loginUser } from "../api/gameapi";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -12,8 +13,15 @@ const LoginPage = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    try {
+      await loginUser(username, password);
+      alert("Redirecting to game...");
+    } catch (error) {
+      alert(`failed`);
+    }
   };
 
   return (

@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { createUser } from "../api/gameapi";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -19,7 +20,7 @@ const RegisterPage = () => {
     setConfirmPassword(event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
@@ -27,7 +28,12 @@ const RegisterPage = () => {
       return;
     }
 
-    // TODO: Add logic to submit the registration form
+    try {
+      await createUser(username, password);
+      alert("Registration successful!");
+    } catch (error) {
+      alert(`Registration failed: ${error.message}`);
+    }
   };
 
   return (
