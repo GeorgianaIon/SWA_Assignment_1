@@ -17,7 +17,7 @@ class RandomGenerator implements Generator<ImageModel> {
     }
 }
 
-let images: ImageModel[] = [{src : "../images/cat1.png"}, {src : "../images/cat2.png"}, {src : "../images/cat3.png"}, {src : "../images/cat4.png"}]
+let images: ImageModel[] = [{src : "../images/cat1.png"}, {src : "../images/cat2.png"}, {src : "../images/cat3.png"}, {src : "../images/cat5.jpg"}]
 const generator: RandomGenerator = new RandomGenerator(images)
 
 const initialState = {
