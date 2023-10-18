@@ -1,5 +1,7 @@
 import {GameData} from '../models/gameData'
 const PATH = `http://localhost:9090/`
+const headers = { "Content-Type": "application/json", Accept: "application/json" }
+
 // must be handled with tokens
 
 interface FetchAsyncOptions {
@@ -23,7 +25,6 @@ async function getFetchAsync({url}: FetchAsyncOptions) {
 }
 	
 async function postFetchAsync({ data, url }: ModifyFetchAsyncOptions): Promise<any> {
-    const headers = { "Content-Type": "application/json", Accept: "application/json" }
     const json = JSON.stringify(data)
     const response = await fetch(url, { headers, method: "POST", body: json })
   
@@ -35,7 +36,6 @@ async function postFetchAsync({ data, url }: ModifyFetchAsyncOptions): Promise<a
 }
 
 async function patchFetchAsync({data, url}: ModifyFetchAsyncOptions): Promise<any> {
-    const headers = { "Content-Type": "application/json", Accept: "application/json" }
     const json = JSON.stringify(data)
     const response = await fetch(url, { headers, method: "PATCH", body: json })
     if (!response.ok) {
@@ -66,7 +66,7 @@ export async function createGame(token: string) {
     return await response.json()
 }
 
-export async function updateGame(id: number, token: string, gameData: GameData) {
+export async function updateGame<T>(id: number, token: string, gameData: GameData<T>) {
     const url = `${PATH}/${`games/`+ id + `?token=` + token}`
     const data = JSON.stringify(gameData)
     const response = await patchFetchAsync({data, url})
