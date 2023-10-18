@@ -7,9 +7,9 @@ interface ImageProps {
 }
 
 const Image: React.FC<ImageProps> = ({src, alt}) => {
-    const imageSrc = useSelector((state: any) => state.imageSrc)
+    //const imageSrc = useSelector((state: any) => state.imageSrc)
     return (
-        <img src={imageSrc} alt= {alt}/>
+        <img src={src} alt= {alt}/>
     )
 }
 export default Image;

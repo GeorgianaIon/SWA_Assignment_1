@@ -1,10 +1,10 @@
 import { Board } from "./board";
+import { ImageModel } from "../reducers/game";
 
-export interface GameData {
+export interface GameData<T> {
     userId: number,
-    points: number,
-    score: number, // not sure if score is necessary
-    completed: boolean,
+    score: number,
+    maxMoveNumber: number,
     currentMoveNumber: number,
-    board: Board<string>
+    board: Board<T>
 }
