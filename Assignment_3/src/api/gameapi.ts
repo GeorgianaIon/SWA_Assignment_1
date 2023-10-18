@@ -46,7 +46,7 @@ async function patchFetchAsync({data, url}: ModifyFetchAsyncOptions): Promise<an
 }
 
 export async function getAllUserGames(token: string) {
-    const url = `${PATH}/${`games?token=`}` + token
+    const url = `${PATH}${`games?token=`}` + token
     const response = await getFetchAsync({url})
     if(!response.ok) {
         console.log(response.statusText)
@@ -57,7 +57,7 @@ export async function getAllUserGames(token: string) {
 
 export async function createGame(token: string) {
     // Not sure if we should include a body here bcs it says the request body is ignored?
-    const url = `${PATH}/${`games?token=`}` + token
+    const url = `${PATH}${`games?token=`}` + token
     const response = await postFetchAsync({url})
     if(!response.ok) {
         console.log(response.statusText)
@@ -76,3 +76,26 @@ export async function updateGame<T>(id: number, token: string, gameData: GameDat
     }
     return await response.json()
 }
+
+export async function createUser(username: string, password: string) {
+    const url = `${PATH}users`
+    const data = {username, password}
+    const response = await postFetchAsync({data, url})
+    if(!response.ok) {
+        console.log(response.statusText)
+        return
+    }
+    return await response.json()
+}
+
+export async function loginUser(username: string, password: string) {
+    const url = `${PATH}login`
+    const data = {username, password}
+    const response = await postFetchAsync({data, url})
+    if(!response.ok) {
+        console.log(response.statusText)
+        return
+    }
+    return await response.json()
+}
+
