@@ -1,7 +1,5 @@
 import * as BoardModel from '../models/board'
 import { Generator } from '../models/board'
-import { useDispatch } from 'react-redux'
-import { setImageSrc } from '../actions/imageAction'
 import { GameData } from '../models/gameData'
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -19,24 +17,7 @@ class RandomGenerator implements Generator<ImageModel> {
     }
 }
 
-let images: ImageModel[] = [];
-let cat1: ImageModel = {
-    src : "../images/cat1.png"
-}
-let cat2: ImageModel = {
-    src: "../images/cat2.png"
-}
-let cat3: ImageModel = {
-    src: "../images/cat3.png"
-}
-let cat4: ImageModel = {
-    src: "../images/cat4.png" 
-}
-images.push(cat1)
-images.push(cat2)
-images.push(cat3)
-images.push(cat4)
-
+let images: ImageModel[] = [{src : "../images/cat1.png"}, {src : "../images/cat2.png"}, {src : "../images/cat3.png"}, {src : "../images/cat4.png"}]
 const generator: RandomGenerator = new RandomGenerator(images)
 
 const initialState = {
@@ -51,7 +32,7 @@ export const gameSlice = createSlice({
     initialState: initialState, 
     reducers : {
         setInitialBoardGame: (state: GameData<ImageModel>) => {
-            const initialBoard = BoardModel.create(generator,6,6)
+            const initialBoard = BoardModel.create(generator, 6, 6)
             state = {...initialState, board: initialBoard}
             return state;
         }

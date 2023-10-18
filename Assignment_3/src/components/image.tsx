@@ -1,15 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 interface ImageProps {
     src: string;
-    alt: string;
 }
 
-const Image: React.FC<ImageProps> = ({src, alt}) => {
-    //const imageSrc = useSelector((state: any) => state.imageSrc)
+const Image: React.FC<ImageProps> = ({src}) => {
     return (
-        <img src={src} alt= {alt}/>
+        <img src={require(src).default}></img>
     )
 }
 export default Image;

@@ -1,10 +1,11 @@
-import Image  from '../components/image'
-import useImage from "react-hook-image"
+import Board  from '../components/board'
+import { AppDispatch } from '../config/store';
+import { useDispatch } from 'react-redux'
+import { setInitialBoardGame} from '../reducers/game'
 
-
-const BoardPage = ({}) => {
-    let src =  require('../images/cat1.png').default
-    return ( <Image src={src} alt= 'cat'/>)
-
+const BoardPage = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    dispatch(setInitialBoardGame());
+    return ( <Board/>)
 }
 export default BoardPage;
