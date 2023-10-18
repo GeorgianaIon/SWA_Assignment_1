@@ -54,3 +54,12 @@
   .login-form-button:hover, .register-form-button:hover {
     background-color: #005b8e;
   }
+
+  .go-to-register {
+    text-align: center;
+  }
+
+  .go-to-register a {
+    color: #005288;
+    text-decoration: none;
+  }

@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { Link } from "react-router-dom";
 import { loginUser } from "../api/gameapi";
 
 const LoginPage = () => {
@@ -55,6 +56,12 @@ const LoginPage = () => {
         <button className="login-form-button" type="submit">
           Login
         </button>
+        <div className="go-to-register">
+          <p>Don't have an account? </p>
+          <Link to="/register" className="go-to-register-link">
+            Register here
+          </Link>
+        </div>
       </form>
     </div>
   );
