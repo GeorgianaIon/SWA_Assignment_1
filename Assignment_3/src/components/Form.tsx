@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import FormGroup from "./FormGroup";
 
 interface FormProps {
   onSubmit: (credentials: { username: string; password: string }) => void;
@@ -35,43 +36,25 @@ const Form: React.FC<FormProps> = ({ onSubmit, isRegister = false }) => {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label className="form-label" htmlFor="username">
-          Username:
-        </label>
-        <input
-          className="form-input"
-          type="text"
-          id="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-      </div>
-      <div className="form-group">
-        <label className="form-label" htmlFor="password">
-          Password:
-        </label>
-        <input
-          className="form-input"
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </div>
+      <FormGroup
+        label="Username:"
+        type="text"
+        value={username}
+        onChange={handleUsernameChange}
+      />
+      <FormGroup
+        label="Password:"
+        type="password"
+        value={password}
+        onChange={handlePasswordChange}
+      />
       {isRegister && (
-        <div className="form-group">
-          <label className="form-label" htmlFor="confirm-password">
-            Confirm Password:
-          </label>
-          <input
-            className="form-input"
-            type="password"
-            id="confirm-password"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
-        </div>
+        <FormGroup
+          label="Confirm Password:"
+          type="password"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+        />
       )}
       <button className="form-button" type="submit">
         {isRegister ? "Register" : "Login"}

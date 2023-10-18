@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">Login</h1>
+      <h1>Login</h1>
       <Form onSubmit={handleLogin} />
       <LoginLink />
     </div>
