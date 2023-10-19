@@ -61,3 +61,10 @@ interface Action<T> {
 export interface ImageModel {
     src: string
 }
+
+export interface GameModel {
+    id: number,
+    user: number,
+    score: number,
+    completed: boolean
+}

@@ -45,7 +45,7 @@ async function patchFetchAsync({data, url}: ModifyFetchAsyncOptions): Promise<an
     return response.json()
 }
 
-export async function getAllUserGames(token: string) {
+export async function getAllGames(token: string) {
     const url = `${PATH}${`games?token=`}` + token
     const response = await getFetchAsync({url})
     if(!response.ok) {

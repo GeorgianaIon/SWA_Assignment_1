@@ -27,13 +27,21 @@ export type MoveResult<T> = {
     effects: Effect<T>[]
 }    
 
-export function create<T>(generator: Generator<T>, width: number, height: number): Board<T> {
-    return {
-        width,
-        height,
-        pieces: [...new Array(height)].map(_ => [...new Array(width)].map(_ => generator.next()))
+export function create<T>(generator: Generator<T>, width: number, height: number): Board<T> {    
+    return createValidBoard({
+        width, 
+        height, 
+        pieces: [...new Array(height)].map(_ => [...new Array(width)].map(_ => generator.next()))},
+        generator)
+}   
+
+const createValidBoard = <T>(board: Board<T>, generator: Generator<T>): Board<T> => {
+    if (getAllMatches(board, []).length) {
+        return create(generator, board.width, board.height)
     }
-}    
+
+    return board
+}
 
 export function piece<T>(board: Board<T>, p: Position): T | undefined {    
     return board.pieces[p.row] ? board.pieces[p.row][p.col] : undefined
