@@ -111,7 +111,6 @@ export async function getAllGames(token: string) {
 }
 
 export async function createGame(token: string) {
-    // Not sure if we should include a body here bcs it says the request body is ignored?
     const url = `${PATH}${`games?token=`}` + token
     const data = {}
     const response = await postFetchAsync({data, url})

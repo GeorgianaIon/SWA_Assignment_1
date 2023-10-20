@@ -14,26 +14,22 @@ const AppRouter = () => {
   const dispatch = useAppDispatch();
 
   const logOut = async() => {
-    await logoutUser(token).then(() => dispatch(logout()));
+    await logoutUser(token).then(() => dispatch(logout())).catch(() => dispatch(logout()));
   };
   
   return (
     <BrowserRouter>
-     <div>
-        <nav>
-          <div>
-            {token ? (
-              <>
-                <Link to="board" className='btn btn-outline-info'>Board</Link>
-                <Link to="/highscore" className='btn btn-outline-info'>High Scores</Link>
-                <Link to="/" onClick={logOut} className='btn btn-outline-info'>Logout</Link>
-              </>
-            )
-            :  <> </>
-            }
-          </div>
-        </nav>
-      </div>
+      {token && 
+        <div>
+          <nav>
+            <div>
+              <Link to="board" className='btn btn-outline-info'>Board</Link>
+              <Link to="/highscore" className='btn btn-outline-info'>High Scores</Link>
+              <Link to="/" onClick={logOut} className='btn btn-outline-info'>Logout</Link>
+            </div>
+          </nav>
+        </div>
+      }
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

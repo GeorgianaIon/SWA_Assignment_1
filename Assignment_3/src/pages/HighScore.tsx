@@ -24,7 +24,7 @@ const HighScorePage = () => {
     if (games.length === 0) {
         getAllGames(token).then(result => { 
             setGames(mapToModel(result))
-        })
+        }).catch(_ => alert("Could not get the high scores"))
     }
               
     const top10Games = games.sort((a,b) => a.score - b.score).reverse().slice(0, 10)
