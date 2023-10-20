@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useState } from "react";
 import { createUser } from "../api/gameapi";
 import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";

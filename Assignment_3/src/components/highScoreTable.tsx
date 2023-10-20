@@ -1,4 +1,4 @@
-import { GameModel } from "../reducers/game";
+import { GameModel } from "../models/apiModels";
 
 interface HighScoreTableProps {
     games: GameModel[]
@@ -8,10 +8,10 @@ const HighScoreTable: React.FC<HighScoreTableProps> = ({games}) => {
     return (
     <table>
         <tbody>
-            {games.map((game) => { return (
-                <tr>
+            {games.map((game, index) => { return (
+                <tr key={index}>
                     <td>
-                        {game.user}
+                        {index + 1}.
                     </td>
                     <td>
                         {game.score}

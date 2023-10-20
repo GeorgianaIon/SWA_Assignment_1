@@ -1,11 +1,11 @@
 import * as React from  'react';
-import Image from './image';
-import { useSelector } from 'react-redux';
+import Image from './Image';
 import { Board } from '../models/board';
-import { ImageModel } from '../reducers/game';
+import { StateData } from '../reducers/game';
+import { useAppSelector } from '../config/store';
 
 const BoardGame: React.FC = () => {
-    const board : Board<ImageModel> = useSelector((state : any) => state).games.board
+    const board : Board<string> = useAppSelector((state : StateData) => state.board)
     return (
         <table>
             <tbody>
@@ -13,7 +13,7 @@ const BoardGame: React.FC = () => {
                     <tr key={ir}>
                         {row.map((col, ic) => { return (
                             <td key={ic}>
-                                <Image src={col.src}/>
+                                <Image src={col}/>
                             </td>)
                         })}
                     </tr>)

@@ -1,70 +1,66 @@
+import { LoginModel } from '../models/apiModels'
 import * as BoardModel from '../models/board'
-import { Generator } from '../models/board'
-import { GameData } from '../models/gameData'
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+let images: string[] = ["../images/cat1.png", "../images/cat2.png", "../images/cat3.png", "../images/cat4.png", "../images/cat5.jpg"]
 
-// to be replaced with a random image
-class RandomGenerator implements Generator<ImageModel> {
-    private sequence: ImageModel[]
+export interface StateData {
+    token: string,
+    userId: number,
+    score: number,
+    gameId: number,
+    maxMoveNumber: number,
+    currentMoveNumber: number,
+    board: BoardModel.Board<string>
+}
 
-    constructor(sequence: ImageModel[]) {
+class RandomGenerator implements BoardModel.Generator<string> {
+    private sequence: string[]
+
+    constructor(sequence: string[]) {
         this.sequence = sequence
     }
 
-    next(): ImageModel {
+    next(): string {
         return this.sequence[Math.floor(Math.random() * this.sequence.length)]
     }
 }
 
-let images: ImageModel[] = [{src : "../images/cat1.png"}, {src : "../images/cat2.png"}, {src : "../images/cat3.png"}, {src : "../images/cat5.jpg"}]
 const generator: RandomGenerator = new RandomGenerator(images)
 
-const initialState = {
-    userId: 0,
+const initialState : StateData = {
+    token: "",
+    userId: -1,
+    gameId: -1,
     score: 0,
     maxMoveNumber: 25,
-    currentMoveNumber: 0
+    currentMoveNumber: 0,
+    board: BoardModel.create(generator, 6, 6)
 }
 
-export const gameSlice = createSlice({
-    name: 'game',
+export const slice = createSlice ({
+    name: 'slice',
     initialState: initialState, 
     reducers : {
-        setInitialBoardGame: (state: GameData<ImageModel>) => {
-            const initialBoard = BoardModel.create(generator, 6, 6)
-            state = {...initialState, board: initialBoard}
+        login: (state: StateData, action: PayloadAction<LoginModel>) => {
+            state = { ...initialState };
+            state.token = action.payload.token
+            state.userId = action.payload.userId
             return state;
-        }
+        },
+        logout: (state: StateData) => {
+            state = { ...initialState };
+            return state;
+        },
+        setInitialBoardGame: (state: StateData) => {
+            state.board = BoardModel.create(generator, 6, 6)
+            return state;
+        },
     }
 })
 
-export const {setInitialBoardGame} = gameSlice.actions;
-export default gameSlice.reducer
-
-
-// export function reduce<T>(state: GameData, action : Action<T>) {
-//     switch(action.type) {
-//         case 'reset':
-//             return BoardModel.create(generator,6,6);
-//         default: 
-//             return state;
-//     }
-// }
-
-
-interface Action<T> {
-    type: string;
-    payload: T
-}
-
-export interface ImageModel {
-    src: string
-}
-
-export interface GameModel {
-    id: number,
-    user: number,
-    score: number,
-    completed: boolean
-}
+export const {
+    login,
+    logout,
+    setInitialBoardGame} = slice.actions;
+export default slice.reducer

@@ -1,8 +1,6 @@
-import {GameData} from '../models/gameData'
+import { GameModel, UserModel } from '../models/apiModels'
 const PATH = `http://localhost:9090/`
 const headers = { "Content-Type": "application/json", Accept: "application/json" }
-
-// must be handled with tokens
 
 interface FetchAsyncOptions {
     headers?: Record<string, string>
@@ -14,14 +12,14 @@ interface ModifyFetchAsyncOptions extends FetchAsyncOptions {
 }
 
 
-async function getFetchAsync({url}: FetchAsyncOptions) {
+async function getFetchAsync({url}: FetchAsyncOptions) : Promise<any> {
     const response = await fetch(url, { method: 'GET' })
 
     if (!response.ok) {
         console.log(response.statusText)
     }
 
-    return await response.json()
+    return response
 }
 	
 async function postFetchAsync({ data, url }: ModifyFetchAsyncOptions): Promise<any> {
@@ -32,7 +30,7 @@ async function postFetchAsync({ data, url }: ModifyFetchAsyncOptions): Promise<a
         console.log(response.statusText)
     }
   
-    return await response.json()
+    return response
 }
 
 async function patchFetchAsync({data, url}: ModifyFetchAsyncOptions): Promise<any> {
@@ -42,39 +40,7 @@ async function patchFetchAsync({data, url}: ModifyFetchAsyncOptions): Promise<an
         console.log(response.statusText)
     }
   
-    return response.json()
-}
-
-export async function getAllGames(token: string) {
-    const url = `${PATH}${`games?token=`}` + token
-    const response = await getFetchAsync({url})
-    if(!response.ok) {
-        console.log(response.statusText)
-        return
-    }
-    return await response.json()
-}
-
-export async function createGame(token: string) {
-    // Not sure if we should include a body here bcs it says the request body is ignored?
-    const url = `${PATH}${`games?token=`}` + token
-    const response = await postFetchAsync({url})
-    if(!response.ok) {
-        console.log(response.statusText)
-        return
-    }
-    return await response.json()
-}
-
-export async function updateGame<T>(id: number, token: string, gameData: GameData<T>) {
-    const url = `${PATH}/${`games/`+ id + `?token=` + token}`
-    const data = JSON.stringify(gameData)
-    const response = await patchFetchAsync({data, url})
-    if(!response.ok) {
-        console.log(response.statusText)
-        return
-    }
-    return await response.json()
+    return response
 }
 
 export async function createUser(username: string, password: string) {
@@ -82,7 +48,6 @@ export async function createUser(username: string, password: string) {
     const data = {username, password}
     const response = await postFetchAsync({data, url})
     if(!response.ok) {
-        console.log(response.statusText)
         return
     }
     return await response.json()
@@ -93,9 +58,84 @@ export async function loginUser(username: string, password: string) {
     const data = {username, password}
     const response = await postFetchAsync({data, url})
     if(!response.ok) {
-        console.log(response.statusText)
         return
     }
     return await response.json()
 }
 
+export async function logoutUser(token: string) {
+    const url = `${PATH}${`logout?token=`}` + token
+    const data = {}
+    const response = await postFetchAsync({data, url})
+    if(!response.ok) {
+        return
+    }
+    return await response
+}
+
+export async function getAllUsers(token: string) {
+    const url = `${PATH}${`users?token=`}` + token
+    const response = await getFetchAsync({url})
+    if(!response.ok) {
+        return
+    }
+    return await response.json()
+}
+
+export async function getUser(token: string, id: number) {
+    const url = `${PATH}${`users/${id}?token=`}` + token
+    const response = await getFetchAsync({url})
+    if(!response.ok) {
+        return
+    }
+    return await response.json()
+}
+
+export async function updateUser(token: string, user: UserModel) {
+    const url = `${PATH}/${`users/`+ user.id + `?token=` + token}`
+    const data = JSON.stringify(user)
+    const response = await patchFetchAsync({data, url})
+    if(!response.ok) {
+        return
+    }
+    return await response.json()
+}
+
+export async function getAllGames(token: string) {
+    const url = `${PATH}${`games?token=`}` + token
+    const response = await getFetchAsync({url})
+    if(!response.ok) {
+        return
+    }
+    return await response.json()
+}
+
+export async function createGame(token: string) {
+    // Not sure if we should include a body here bcs it says the request body is ignored?
+    const url = `${PATH}${`games?token=`}` + token
+    const data = {}
+    const response = await postFetchAsync({data, url})
+    if(!response.ok) {
+        return
+    }
+    return await response.json()
+}
+
+export async function getGame(token: string, game: GameModel) {
+    const url = `${PATH}${`games/${game.id}?token=`}` + token
+    const response = await getFetchAsync({url})
+    if(!response.ok) {
+        return
+    }
+    return await response.json()
+}
+
+export async function updateGame<T>(token: string, game: GameModel) {
+    const url = `${PATH}/${`games/`+ game.id + `?token=` + token}`
+    const data = JSON.stringify(game)
+    const response = await patchFetchAsync({data, url})
+    if(!response.ok) {
+        return
+    }
+    return await response.json()
+}
