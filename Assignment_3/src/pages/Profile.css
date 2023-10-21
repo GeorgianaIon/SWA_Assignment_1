@@ -1,0 +1,18 @@
+.profile-wrapper {
+    margin: 2rem;
+}
+
+.password-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    width: fit-content;
+}
+
+#password {
+    margin-right: .3rem;
+}
+
+button {
+    width: fit-content;
+}

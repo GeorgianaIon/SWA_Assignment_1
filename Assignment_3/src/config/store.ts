@@ -1,9 +1,13 @@
 import {  TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit'
-import gameReducer from '../reducers/game'
+import gameReducer from '../reducers/gameReducer'
+import userReducer from '../reducers/userReducer';
 
 export const store = configureStore({
-    reducer: gameReducer
+    reducer: {
+        gameReducer,
+        userReducer
+    }
 })
 
 export type AppDispatch = typeof store.dispatch

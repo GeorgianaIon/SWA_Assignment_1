@@ -8,11 +8,11 @@ export interface GameModel {
 export interface UserModel {
     username: string,
     password: string,
-    id : number,
-    admin: boolean 
+    id: number,
+    admin: boolean
 }
 
 export interface LoginModel {
     token: string 
-    userId : number,
+    userId: number,
 }

@@ -1,9 +1,9 @@
-import { loginUser } from "../api/gameapi";
+import { getUser, loginUser } from "../api/gameapi";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../config/store";
 import Form from "../components/Form";
 import LoginLink from "../components/LoginLink";
-import { login } from "../reducers/game";
+import { loginAction } from "../reducers/userReducer";
 
 const LoginPage: React.FC = () => {
   let navigate = useNavigate();
@@ -14,12 +14,10 @@ const LoginPage: React.FC = () => {
     password: string;
   }) => {
     try {
-      await loginUser(credentials.username, credentials.password).then(result => {
-        if (result.token) {
-          dispatch(login(result))
-          navigate("/board");
-        }
-      })
+      const result = await loginUser(credentials.username, credentials.password)
+      const userData = await getUser(result.token, result.userId)
+      dispatch(loginAction({ ...userData, token: result.token }))
+      navigate("/board");
     } catch (error) {
       alert("Login failed");
     }

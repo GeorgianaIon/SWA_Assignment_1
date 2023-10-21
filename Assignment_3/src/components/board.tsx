@@ -1,11 +1,10 @@
 import * as React from  'react';
-import Image from './Image';
+import Image from './image';
 import { Board } from '../models/board';
-import { StateData } from '../reducers/game';
 import { useAppSelector } from '../config/store';
 
 const BoardGame: React.FC = () => {
-    const board : Board<string> = useAppSelector((state : StateData) => state.board)
+    const board : Board<string> = useAppSelector((state) => state.gameReducer.board)
     return (
         <table>
             <tbody>

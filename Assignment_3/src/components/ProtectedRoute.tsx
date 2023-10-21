@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../config/store";
-import { StateData } from "../reducers/game";
 
 const ProtectedRoute = () => {
-    const token: string = useAppSelector((state: StateData) => state.token);
+    const token: string = useAppSelector((state) => state.userReducer.token);
+
     return (
         token ? <Outlet /> : <Navigate to='/' />
     )
