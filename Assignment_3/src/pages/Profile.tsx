@@ -39,7 +39,6 @@ const Profile: React.FC = () => {
         }
     }
 
-    // TODO - Change to use 'FormGroup' component?
     return (
         <div className="profile-wrapper">
             <h3>Welcome to your profile</h3>
@@ -51,7 +50,7 @@ const Profile: React.FC = () => {
                     <label htmlFor="password">Change password</label>
                     <div>
                         <input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <button onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide password" : "Show password"}</button>
+                        <button onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide" : "Show"}</button>
                     </div>
                     <button onClick={changePassword}>Change password</button>
                 </div>
