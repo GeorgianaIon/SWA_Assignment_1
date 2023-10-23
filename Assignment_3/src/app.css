@@ -96,3 +96,22 @@ nav a:hover {
   color: rgba(19, 82, 55, 0.438);;
   background-color: #eee;
 }
+
+.profile-wrapper {
+  margin: 2rem;
+}
+
+.password-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  width: fit-content;
+}
+
+#password {
+  margin-right: .3rem;
+}
+
+button {
+  width: fit-content;
+}
