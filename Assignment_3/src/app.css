@@ -115,3 +115,15 @@ nav a:hover {
 button {
   width: fit-content;
 }
+
+table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem;
+}
+
+img {
+  width: 5rem;
+  height:5rem;
+}
