@@ -25,7 +25,7 @@ class RandomGenerator implements BoardModel.Generator<string> {
 
 const generator: RandomGenerator = new RandomGenerator(images)
 
-const initialState : StateData = {
+const initialState: StateData = {
     gameId: -1,
     score: 0,
     maxMoveNumber: 25,
@@ -34,12 +34,14 @@ const initialState : StateData = {
 }
 
 export const slice = createSlice ({
-    name: 'slice',
+    name: 'game',
     initialState: initialState, 
     reducers : {
-        setInitialBoardGame: (state: StateData) => {
-            state.board = BoardModel.create(generator, 6, 6)
-            return state;
+        setInitialBoardGame: (state) => {
+            return {
+                ...state,
+                board: BoardModel.create(generator, 6, 6)
+            }
         },
     }
 })

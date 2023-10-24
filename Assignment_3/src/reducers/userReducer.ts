@@ -21,16 +21,20 @@ const slice = createSlice({
     initialState,
     reducers: {
         loginAction: (state, action: PayloadAction<LoggedInUserModel>) => {
-            state = { ...action.payload }
-            return state
+            return {
+                ...action.payload
+            }
         },
-        logoutAction: (state) => {
-            state = { ...initialState }
-            return state
+        logoutAction: () => {
+            return {
+                ...initialState
+            }
         },
         updateUserAction: (state, action: PayloadAction<LoggedInUserModel>) => {
-            state.password = action.payload.password
-            return state
+            return {
+                ...state,
+                password: action.payload.password
+            }
         }
     }
 })
