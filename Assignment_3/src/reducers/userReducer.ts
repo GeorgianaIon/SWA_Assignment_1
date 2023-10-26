@@ -8,12 +8,16 @@ interface LoggedInUserModel {
     token: string
 }
 
+const loadTokenFromStorage = () => {
+    return localStorage.getItem('token') 
+  }
+
 const initialState: LoggedInUserModel = {
     id: undefined,
     username: undefined,
     password: undefined,
     admin: undefined,
-    token: undefined
+    token: loadTokenFromStorage()
 }
 
 const slice = createSlice({
@@ -21,11 +25,14 @@ const slice = createSlice({
     initialState,
     reducers: {
         loginAction: (state, action: PayloadAction<LoggedInUserModel>) => {
+            localStorage.setItem('token', action.payload.token);
+
             return {
                 ...action.payload
             }
         },
         logoutAction: () => {
+            localStorage.removeItem('token');
             return {
                 ...initialState
             }
