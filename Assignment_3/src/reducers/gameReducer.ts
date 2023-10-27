@@ -1,7 +1,5 @@
 import * as BoardModel from '../models/board'
-import { createSlice } from '@reduxjs/toolkit'
-
-let images: string[] = ["../images/cat1.png", "../images/cat2.png", "../images/cat3.png", "../images/cat4.png", "../images/cat5.jpg"]
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 export interface StateData {
     score: number,
@@ -11,40 +9,35 @@ export interface StateData {
     board: BoardModel.Board<string>
 }
 
-class RandomGenerator implements BoardModel.Generator<string> {
-    private sequence: string[]
-
-    constructor(sequence: string[]) {
-        this.sequence = sequence
-    }
-
-    next(): string {
-        return this.sequence[Math.floor(Math.random() * this.sequence.length)]
-    }
-}
-
-const generator: RandomGenerator = new RandomGenerator(images)
-
 const initialState: StateData = {
     gameId: -1,
     score: 0,
     maxMoveNumber: 25,
     currentMoveNumber: 0,
-    board: BoardModel.create(generator, 6, 6)
+    board: undefined,
 }
 
 export const slice = createSlice ({
     name: 'game',
     initialState: initialState, 
     reducers : {
-        setInitialBoardGame: (state) => {
+        setInitialBoardGame: (state, action: PayloadAction<{board: BoardModel.Board<string>, gameId: number}>) => {
+            return {
+                ...initialState,
+                board: action.payload.board,
+                gameId: action.payload.gameId,
+            }
+        },
+        boardMoveUpdate: (state, action: PayloadAction<{board: BoardModel.Board<string>, score: number}>) => {
             return {
                 ...state,
-                board: BoardModel.create(generator, 6, 6)
+                board: action.payload.board,
+                score: state.score + action.payload.score,
+                currentMoveNumber: state.currentMoveNumber + 1
             }
         },
     }
 })
 
-export const { setInitialBoardGame } = slice.actions;
+export const { setInitialBoardGame, boardMoveUpdate } = slice.actions;
 export default slice.reducer

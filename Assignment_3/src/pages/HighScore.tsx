@@ -25,15 +25,15 @@ const HighScorePage = () => {
         }).catch(_ => alert("Could not get the high scores"))
     }
               
-    const top10Games = games.sort((a,b) => a.score - b.score).reverse().slice(0, 10)
-    const top3OwnGames = games.filter(game => game.user == user.id).sort((a,b) => a.score - b.score).reverse().slice(0,3)
+    const top10Games = games.filter(game => game.completed).sort((a,b) => a.score - b.score).reverse().slice(0, 10)
+    const top3OwnGames = games.filter(game => game.user == user.id && game.completed).sort((a,b) => a.score - b.score).reverse().slice(0,3)
 
     return ( 
         <div className ="highscores">
-            <h2>High score</h2>
+            <h2>High scores</h2>
             <HighScoreTable games={top10Games}/>
             <br/>
-            <h2>Own high score</h2>
+            <h2>Own high scores</h2>
             <HighScoreTable games={top3OwnGames}/>
         </div>
     )
