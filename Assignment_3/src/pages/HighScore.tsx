@@ -1,8 +1,8 @@
 import { getAllGames } from "../api/gameapi";
 import { GameModel } from "../models/apiModels";
-import HighScoreTable from "../components/highScoreTable";
 import { useAppSelector } from "../config/store";
 import { useState } from "react";
+import HighScoreTable from "../components/HighScoreTable";
 
 const mapToModel = (result: any): GameModel[] => {
     return result.map((game: any) => { 

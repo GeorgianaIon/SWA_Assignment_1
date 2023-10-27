@@ -6,9 +6,15 @@ body {
   width: 100%;
 }
 
+#root {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
 .container{
   display: flex;
-  height: 100vh;
+  flex: 1 1 auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -73,7 +79,6 @@ body {
 }
 
 nav {
-  height: auto;
   text-decoration: none;
   padding: 20px;
   font-weight: bold;
@@ -99,6 +104,9 @@ nav a:hover {
 
 .profile-wrapper {
   margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .password-wrapper {
@@ -116,7 +124,7 @@ button {
   width: fit-content;
 }
 
-table {
+.board {
   display: flex;
   justify-content: center;
   align-items: center;

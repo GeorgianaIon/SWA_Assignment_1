@@ -8,11 +8,18 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
 
   const logOut = async () => {
-    const response = await logoutUser(token);
-    if (response.ok) {
+    try {
+      const response = await logoutUser(token);
+      if (response.ok) {
+        dispatch(logoutAction());
+      } else {
+        dispatch(logoutAction());
+        console.error(response);
+      }
+    }
+    catch
+    {
       dispatch(logoutAction());
-    } else {
-      console.error(response);
     }
   };
 
