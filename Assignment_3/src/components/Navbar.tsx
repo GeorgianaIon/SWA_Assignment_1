@@ -16,9 +16,7 @@ const Navbar = () => {
         dispatch(logoutAction());
         console.error(response);
       }
-    }
-    catch
-    {
+    } catch {
       dispatch(logoutAction());
     }
   };
@@ -26,11 +24,12 @@ const Navbar = () => {
   return (
     <nav>
       <div>
+        <h3>Kitty Crush</h3>
+      </div>
+      <div>
         {token ? (
           <>
-            <Link to="/board" className="btn btn-outline-info">
-              Board
-            </Link>
+            <Link to="/board">Board</Link>
             <Link to="/highscore" className="btn btn-outline-info">
               High Scores
             </Link>
