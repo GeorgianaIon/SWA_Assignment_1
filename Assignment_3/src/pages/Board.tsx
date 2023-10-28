@@ -6,10 +6,12 @@ const BoardPage = () => {
 
   return (
     <div className="board-page">
-      <h1 className="board-text">Score: {game.score}</h1>
-      <p className="board-text">
-        Moves left: {game.maxMoveNumber - game.currentMoveNumber}
-      </p>
+      <div className="text-container">
+        <h1 className="board-text">Score: {game.score}</h1>
+        <p className="board-text">
+          Moves left: {game.maxMoveNumber - game.currentMoveNumber}
+        </p>
+      </div>
       <Board />
     </div>
   );

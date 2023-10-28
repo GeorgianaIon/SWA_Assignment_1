@@ -175,15 +175,16 @@ img {
   border: solid 1px yellow !important;
 }
 
-.board-text {
-  margin: 0;
-  color: #3A4D39
+.text-container {
+  margin: 1rem 0;
 }
 
-p {
-  font-weight: lighter;
-  border: 1px solid red
+.board-text {
+  margin: 0;
+  color: #3A4D39;
+  text-align: center;
 }
+
 .reset-button {
   margin: 1rem;
   padding: 10px 15px;
@@ -204,4 +205,10 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.board-container {
+  border: 1px solid black;
+  margin-top: 1rem;
+  border-radius: 1rem;
 }

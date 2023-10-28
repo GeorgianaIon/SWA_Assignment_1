@@ -107,33 +107,36 @@ const BoardGame: React.FC = () => {
 
   return (
     <div className="board">
-      <table>
-        <tbody>
-          {game.board.pieces?.map((row, ir) => {
-            return (
-              <tr key={ir}>
-                {row.map((col, ic) => {
-                  return (
-                    <td
-                      key={ic}
-                      className={`tile ${
-                        selectedPosition &&
-                        selectedPosition.col == ic &&
-                        selectedPosition.row == ir
-                          ? "selected-tile"
-                          : ""
-                      }`}
-                      onClick={() => selectTile(ir, ic)}
-                    >
-                      <Image src={col} />
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="board-container">
+        <table>
+          <tbody>
+            {game.board.pieces?.map((row, ir) => {
+              return (
+                <tr key={ir}>
+                  {row.map((col, ic) => {
+                    return (
+                      <td
+                        key={ic}
+                        className={`tile ${
+                          selectedPosition &&
+                          selectedPosition.col == ic &&
+                          selectedPosition.row == ir
+                            ? "selected-tile"
+                            : ""
+                        }`}
+                        onClick={() => selectTile(ir, ic)}
+                      >
+                        <Image src={col} />
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
       <button className="reset-button" onClick={() => resetGame()}>
         Reset
       </button>
