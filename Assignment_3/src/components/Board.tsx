@@ -141,4 +141,4 @@ const BoardGame: React.FC = () => {
   );
 };
 
-export default BoardGame; 
+export default BoardGame;

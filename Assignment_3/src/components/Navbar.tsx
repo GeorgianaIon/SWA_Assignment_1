@@ -24,9 +24,9 @@ const Navbar = () => {
   return (
     <nav>
       <div>
-        <h3>Kitty Crush</h3>
+        <h2>Kitty Crush</h2>
       </div>
-      <div>
+      <div className="menu">
         {token ? (
           <>
             <Link to="/board">Board</Link>

@@ -1,12 +1,13 @@
 body {
-  background-color: #f5f5f5;
+  background-color: #ECE3CE;
   margin: 0;
   padding: 0;
   height: 100vh;
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Agbalumo', cursive;
+
 }
 
 #root {
@@ -88,10 +89,17 @@ nav {
   background-color: #739072;
   display: flex;
   justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 nav a {
-  margin: 1rem;
   text-decoration: none;
   padding: 5px 10px;
   border: 1px solid #eee;
@@ -101,10 +109,11 @@ nav a {
   background-color: rgba(54, 156, 100, 0.5);
   transition: 0.3s ease;
 }
-h3 {
+h2 {
   margin: 0;
   padding: 0;
   color: #eee;
+  font-size: 2rem;
 }
 
 nav a:hover {
@@ -167,12 +176,18 @@ img {
 }
 
 .board-text {
-  margin: 15px;
+  margin: 0;
+  color: #3A4D39
+}
+
+p {
+  font-weight: lighter;
+  border: 1px solid red
 }
 .reset-button {
   margin: 1rem;
   padding: 10px 15px;
-  border: 1px solid rgba(54, 156, 100);;
+  border: 1px solid rgba(54, 156, 100);
   border-radius: 5px;
   color: #eee;
   font-weight: bold;
@@ -182,4 +197,11 @@ img {
 .reset-button:hover {
   color: rgba(54, 156, 100);
   background-color: #eee;
+}
+
+.board-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
