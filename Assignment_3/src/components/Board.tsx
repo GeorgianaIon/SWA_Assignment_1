@@ -106,8 +106,8 @@ const BoardGame: React.FC = () => {
   };
 
   return (
-    <div className="board">
-      <div className="board-container">
+    <div className="board-container">
+      <div className="board">
         <table>
           <tbody>
             {game.board.pieces?.map((row, ir) => {
