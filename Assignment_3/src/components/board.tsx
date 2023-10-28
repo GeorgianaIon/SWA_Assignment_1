@@ -109,7 +109,7 @@ const BoardGame: React.FC = () => {
     <div className="board">
       <table>
         <tbody>
-          {game.board.pieces.map((row, ir) => {
+          {game.board.pieces?.map((row, ir) => {
             return (
               <tr key={ir}>
                 {row.map((col, ic) => {

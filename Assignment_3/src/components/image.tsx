@@ -12,6 +12,7 @@ const Image: React.FC<ImageProps> = ({src}) => {
         "../images/cat4.png": require("../images/cat4.png").default,
         "../images/cat5.jpg": require("../images/cat5.jpg").default,
     };
+    
     const imagePath = imageMapping[src] || "";
     return (
         <img src={imagePath} alt="Image" />
