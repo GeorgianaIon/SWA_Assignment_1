@@ -35,25 +35,24 @@ const Form: React.FC<FormProps> = ({ onSubmit, isRegister = false }) => {
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="content-wrapper" onSubmit={handleSubmit}>
       <FormGroup
         label="Username:"
-        type="text"
         value={username}
         onChange={handleUsernameChange}
       />
       <FormGroup
         label="Password:"
-        type="password"
         value={password}
         onChange={handlePasswordChange}
+        isPassword={true}
       />
       {isRegister && (
         <FormGroup
           label="Confirm Password:"
-          type="password"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
+          isPassword={true}
         />
       )}
       <button className="form-button" type="submit">
