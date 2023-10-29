@@ -59,12 +59,15 @@ const BoardGame: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(getAllGamesThunk(user.token));
+  }, [dispatch, user.token]);
+
+  React.useEffect(() => {
     if (!gameStarted) {
       }
       if (game.games) {
         setGames(game.games);
       }
-  }, [gameStarted]);
+  }, [gameStarted, game.games]);
 
   const resetGame = async () => {
     setSelectedPosition(undefined);
