@@ -1,42 +1,34 @@
 import { getAllGames } from "../api/gameapi";
 import { GameModel } from "../models/apiModels";
 import { useAppSelector } from "../config/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HighScoreTable from "../components/HighScoreTable";
-
-const mapToModel = (result: any): GameModel[] => {
-  return result.map((game: any) => {
-    return {
-      id: game.id,
-      user: game.user,
-      score: game.score,
-      completed: game.completed,
-    };
-  });
-};
 
 const HighScorePage = () => {
   const user = useAppSelector((state) => state.userReducer);
   const [games, setGames] = useState<GameModel[]>([]);
 
-  if (games.length === 0) {
+  useEffect(() => {
     getAllGames(user.token)
-      .then((result) => {
-        setGames(mapToModel(result));
+      .then((result: GameModel[]) => {
+        const highestScores = Object.values(
+          result.reduce((acc, game) => {
+            if (!acc[game.user] || acc[game.user].score < game.score) {
+              acc[game.user] = game;
+            }
+            return acc;
+          }, {} as { [key: string]: GameModel })
+        ).sort((a, b) => b.score - a.score);
+
+        setGames(highestScores);
       })
       .catch((_) => alert("Could not get the high scores"));
-  }
-
-  const top10Games = games
-    .filter((game) => game.completed)
-    .sort((a, b) => a.score - b.score)
-    .reverse()
-    .slice(0, 10);
+  }, [user.token]);
 
   return (
     <div className="highscores">
-      <h2>High scores</h2>
-      <HighScoreTable games={top10Games} />
+      <h3 className="bigger-font">High scores</h3>
+      <HighScoreTable games={games} />
       <br />
     </div>
   );
