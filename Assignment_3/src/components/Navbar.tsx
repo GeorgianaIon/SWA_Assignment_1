@@ -19,9 +19,7 @@ const Navbar = () => {
         dispatch(deleteState);
         console.error(response);
       }
-    }
-    catch
-    {
+    } catch {
       dispatch(logoutAction());
     }
   };
@@ -29,28 +27,31 @@ const Navbar = () => {
   return (
     <nav>
       <div>
+        <h2>Kitty Crush</h2>
+      </div>
+      <div className="menu">
         {token ? (
           <>
-            <Link to="/board" className="btn btn-outline-info">
-              Board
+            <Link to="/board">
+              <button className="button">Board</button>
             </Link>
-            <Link to="/highscore" className="btn btn-outline-info">
-              High Scores
+            <Link to="/highscore">
+              <button className="button">High Scores</button>
             </Link>
-            <Link to="/profile" className="btn btn-outline-info">
-              My Profile
+            <Link to="/profile">
+              <button className="button">My Profile</button>
             </Link>
-            <Link to="/" onClick={logOut} className="btn btn-outline-info">
-              Logout
+            <Link to="/" onClick={logOut}>
+              <button className="button">Logout</button>
             </Link>
           </>
         ) : (
           <>
-            <Link to="/register" className="btn btn-outline-info">
-              Register
+            <Link to="/register">
+              <button className="button">Register</button>
             </Link>
-            <Link to="/" className="btn btn-outline-info">
-              Login
+            <Link to="/">
+              <button className="button">Login</button>
             </Link>
           </>
         )}

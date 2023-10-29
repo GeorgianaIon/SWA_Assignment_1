@@ -1,15 +1,42 @@
 import React, { useState } from "react";
-import { UserModel } from "../models/apiModels";
-import { updateUser } from "../api/gameapi";
+import { GameModel, UserModel } from "../models/apiModels";
+import { getAllGames, updateUser } from "../api/gameapi";
 import { useAppDispatch, useAppSelector } from "../config/store";
 import { updateUserAction } from "../reducers/userReducer";
+import HighScoreTable from "../components/HighScoreTable";
+import FormGroup from "../components/FormGroup";
 
 const Profile: React.FC = () => {
   const userData = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
+  const mapToModel = (result: any): GameModel[] => {
+    return result.map((game: any) => {
+      return {
+        id: game.id,
+        user: game.user,
+        score: game.score,
+        completed: game.completed,
+      };
+    });
+  };
 
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState(userData.password);
+  const [games, setGames] = useState<GameModel[]>([]);
+
+  if (games.length === 0) {
+    getAllGames(userData.token)
+      .then((result) => {
+        setGames(mapToModel(result));
+      })
+      .catch((_) => alert("Could not get the high scores"));
+  }
+
+  const top3OwnGames = games
+    .filter((game) => game.user == userData.id && game.completed)
+    .sort((a, b) => a.score - b.score)
+    .reverse()
+    .slice(0, 3);
 
   const changePassword = async () => {
     if (password === userData.password) {
@@ -41,30 +68,29 @@ const Profile: React.FC = () => {
 
   return (
     <div className="profile-wrapper">
-      <h3>Welcome to your profile</h3>
-      <div>
-        <p>
-          User id: <strong>{userData.id}</strong>
-        </p>
-        <p>
-          Username: <strong>{userData.username}</strong>
-        </p>
-        <p>
-          Is administrator: <strong>{userData.admin ? "Yes" : "No"}</strong>
-        </p>
+      <h1>Welcome to your profile</h1>
+      <div className="content-wrapper">
+        <h3>
+          Username: <strong className="bigger-font">{userData.username}</strong>
+        </h3>
+        <h3>
+          Is administrator:{" "}
+          <strong className="bigger-font">
+            {userData.admin ? "Yes" : "No"}
+          </strong>
+        </h3>
+        <h3>Top 3 high scores</h3>
+        <HighScoreTable games={top3OwnGames} />
         <div className="password-wrapper">
-          <label htmlFor="password">Change password</label>
           <div>
-            <input
-              id="password"
-              type={showPassword ? "text" : "password"}
+            <FormGroup
+              label="Change Password:"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              isPassword={true}
             />
-            <button onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? "Hide" : "Show"}
-            </button>
           </div>
+
           <button onClick={changePassword}>Change password</button>
         </div>
       </div>

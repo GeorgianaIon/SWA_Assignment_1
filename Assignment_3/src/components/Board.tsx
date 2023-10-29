@@ -104,6 +104,7 @@ const BoardGame: React.FC = () => {
   };
 
   return (
+    <div className="board-container">
     <div className="board"> 
        { gameStarted ? (
        <button className="reset-button" onClick={() => continueGame(game.gameId)}>Resume unfinished game</button>
@@ -148,7 +149,8 @@ const BoardGame: React.FC = () => {
        Start a new game
        </button>
     </div>
+    </div>
     );
 };
 
-export default BoardGame; 
+export default BoardGame;
