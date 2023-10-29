@@ -5,24 +5,8 @@ import { useAppDispatch, useAppSelector } from "../config/store";
 import { setInitialBoardGame, boardMoveUpdate, setPreviousGame } from "../reducers/gameReducer";
 import { createGame, updateGame, getGame } from "../api/gameapi";
 import { GameModel } from "../models/apiModels";
-import { createGameThunk, updateGameThunk, getAllGamesThunk, getUserGame } from "../config/thunks";
+import { createGameThunk, updateGameThunk, getAllGamesThunk, getUserGame, setSelectTile } from "../config/thunks";
 import { createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom'
-
-
-class RandomGenerator implements Generator<string> {
-  images: string[] = [
-    "../images/cat1.png",
-    "../images/cat2.png",
-    "../images/cat3.png",
-    "../images/cat4.png",
-    "../images/cat5.jpg",
-  ];
-
-  next(): string {
-    return this.images[Math.floor(Math.random() * this.images.length)];
-  }
-}
-const generator: RandomGenerator = new RandomGenerator();
 
 const BoardGame: React.FC = () => {
   const game = useAppSelector((state) => state.gameReducer);
@@ -54,17 +38,7 @@ const BoardGame: React.FC = () => {
       if (selectedPosition === undefined) {
         setSelectedPosition({ row: ir, col: ic });
       } else {
-        const newBoard: Board<string> = JSON.parse(JSON.stringify(game.board));
-        const result = move(generator, newBoard, selectedPosition, {
-          row: ir,
-          col: ic,
-        });
-        if (result.effects.length > 0) {
-          const score =
-            result.effects.filter((effect) => effect.kind == "Match").length *
-            5;
-          dispatch(boardMoveUpdate({ board: result.board, score: score, completed: false }));
-        }
+        dispatch(setSelectTile(selectedPosition, ir, ic, game));
         setSelectedPosition(undefined);
       }
     }
@@ -86,16 +60,11 @@ const BoardGame: React.FC = () => {
   React.useEffect(() => {
     dispatch(getAllGamesThunk(user.token));
     if (!gameStarted) {
-
-      // if(game.gameId != -1) {
-      //   getGame(user.token, game.gameId).then((result) => { 
-      //     dispatch(setPreviousGame(result)) })
-      // }
       }
       if (game.games) {
         setGames(game.games);
       }
-  }, [gameStarted, game.games]);
+  }, [gameStarted]);
 
   const resetGame = async () => {
     setSelectedPosition(undefined);

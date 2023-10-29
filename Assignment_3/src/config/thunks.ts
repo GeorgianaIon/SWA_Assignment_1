@@ -1,5 +1,5 @@
 import { AppDispatch, RootState}  from "./store"
-import { gameSlice } from "../reducers/gameReducer";
+import { StateData, gameSlice } from "../reducers/gameReducer";
 import { userSlice } from "../reducers/userReducer"
 import { GameModel } from "../models/apiModels";
 import { NavigateFunction } from 'react-router'
@@ -39,6 +39,26 @@ export const createGameThunk = (userToken: string) => {
       { alert("Could not create a new game");}
     };
 };
+
+export const setSelectTile = (selectedPosition: Position, ir: number, ic: number, game: StateData) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    try {
+      const newBoard: Board<string> = JSON.parse(JSON.stringify(game.board));
+      const result = move(generator, newBoard, selectedPosition, {
+        row: ir,
+        col: ic
+      });
+      if (result.effects.length > 0) {
+        const score =
+          result.effects.filter((effect) => effect.kind == "Match").length * 5;
+        dispatch(gameSlice.actions.boardMoveUpdate({ board: result.board, score: score, completed: false }));
+      }
+    } 
+    catch (error) 
+    { alert("Could not make move");}
+  };
+  
+}
 
 export const getUserGame = (userToken: string, gameId: number) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
