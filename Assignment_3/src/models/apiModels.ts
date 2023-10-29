@@ -1,8 +1,12 @@
+import * as BoardModel from '../models/board'
+
 export interface GameModel {
     id: number,
     user: number,
     score: number,
-    completed: boolean
+    completed: boolean,
+    currentMoveNumber: number,
+    board: BoardModel.Board<string>
 }
 
 export interface UserModel {

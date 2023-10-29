@@ -1,4 +1,6 @@
 import { GameModel, LoginModel, UserModel } from '../models/apiModels'
+import * as BoardModel from '../models/board'
+
 const PATH = `http://localhost:9090`
 const headers = { "Content-Type": "application/json", Accept: "application/json" }
 
@@ -118,8 +120,8 @@ export async function createGame(token: string): Promise<GameModel> {
     return await response.json()
 }
 
-export async function getGame(token: string, game: GameModel): Promise<GameModel> {
-    const url = `${PATH}/games/${game.id}?token=${token}`
+export async function getGame(token: string, gameId: number): Promise<GameModel> {
+    const url = `${PATH}/games/${gameId}?token=${token}`
     const response = await getFetchAsync({url})
     if(!response.ok) {
         return

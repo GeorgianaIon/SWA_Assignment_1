@@ -2,9 +2,12 @@ import * as React from "react";
 import Image from "./Image";
 import { Position, move, Generator, create, Board } from "../models/board";
 import { useAppDispatch, useAppSelector } from "../config/store";
-import { setInitialBoardGame, boardMoveUpdate } from "../reducers/gameReducer";
-import { createGame, updateGame } from "../api/gameapi";
+import { setInitialBoardGame, boardMoveUpdate, setPreviousGame } from "../reducers/gameReducer";
+import { createGame, updateGame, getGame } from "../api/gameapi";
 import { GameModel } from "../models/apiModels";
+import { createGameThunk, updateGameThunk, getAllGamesThunk, getUserGame } from "../config/thunks";
+import { createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom'
+
 
 class RandomGenerator implements Generator<string> {
   images: string[] = [
@@ -21,35 +24,30 @@ class RandomGenerator implements Generator<string> {
 }
 const generator: RandomGenerator = new RandomGenerator();
 
-const mapToModel = (result: any): GameModel => {
-  return {
-    id: result.id,
-    user: result.user,
-    score: result.score,
-    completed: result.completed,
-  };
-};
-
 const BoardGame: React.FC = () => {
   const game = useAppSelector((state) => state.gameReducer);
   const user = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
-  const [selectedPosition, setSelectedPosition] =
-    React.useState<Position>(undefined);
+  const [selectedPosition, setSelectedPosition] = React.useState<Position>(undefined);
+  const [gameStarted, setGameStarted] = React.useState<boolean>(false);
+  const [games, setGames] = React.useState<GameModel[]>([]);
 
-  if (game.board === undefined) {
-    createGame(user.token)
-      .then((result) => {
-        var game = mapToModel(result);
-        dispatch(
-          setInitialBoardGame({
-            board: create(generator, 6, 6),
-            gameId: game.id,
-          })
-        );
-      })
-      .catch((_) => alert("Could create a new game"));
-  }
+  React.useEffect(() => {
+    if (game.board === undefined) {
+      dispatch(createGameThunk(user.token));
+    }
+  }, []);
+
+  const mapToModel = (result: any): GameModel => {
+    return {
+      id: game.gameId,
+      user: user.id,
+      score: result.score,
+      currentMoveNumber: result.currentMoveNumber,
+      completed: result.completed,
+      board: result.board
+    };
+  };
 
   const selectTile = async (ir: number, ic: number) => {
     if (game.currentMoveNumber < game.maxMoveNumber) {
@@ -65,80 +63,92 @@ const BoardGame: React.FC = () => {
           const score =
             result.effects.filter((effect) => effect.kind == "Match").length *
             5;
-          dispatch(boardMoveUpdate({ board: result.board, score: score }));
+          dispatch(boardMoveUpdate({ board: result.board, score: score, completed: false }));
         }
         setSelectedPosition(undefined);
       }
     }
-  };
+  }; 
+
+  const continueGame = async (id: number) => {
+    setGameStarted(true);
+    dispatch(getUserGame(user.token, game.gameId))
+  }
 
   React.useEffect(() => {
     if (game.currentMoveNumber < game.maxMoveNumber) {
-      updateGame(user.token, {
-        id: game.gameId,
-        user: user.id,
-        score: game.score,
-        completed: false,
-      }).catch((_) => alert("Could not update the game"));
+      dispatch(updateGameThunk(user.token, mapToModel(game)))
     } else {
-      updateGame(user.token, {
-        id: game.gameId,
-        user: user.id,
-        score: game.score,
-        completed: true,
-      }).catch((_) => alert("Could not update the game"));
+      dispatch(updateGameThunk(user.token, mapToModel(game)))
     }
   }, [game.currentMoveNumber, game.score]);
 
+  React.useEffect(() => {
+    dispatch(getAllGamesThunk(user.token));
+    if (!gameStarted) {
+
+      // if(game.gameId != -1) {
+      //   getGame(user.token, game.gameId).then((result) => { 
+      //     dispatch(setPreviousGame(result)) })
+      // }
+      }
+      if (game.games) {
+        setGames(game.games);
+      }
+  }, [gameStarted, game.games]);
+
   const resetGame = async () => {
     setSelectedPosition(undefined);
-    createGame(user.token)
-      .then((result) => {
-        var game = mapToModel(result);
-        dispatch(
-          setInitialBoardGame({
-            board: create(generator, 6, 6),
-            gameId: game.id,
-          })
-        );
-      })
-      .catch((_) => alert("Could create a new game"));
+    setGameStarted(true);
+    dispatch(createGameThunk(user.token));
   };
 
   return (
-    <div className="board">
-      <table>
-        <tbody>
-          {game.board.pieces?.map((row, ir) => {
-            return (
-              <tr key={ir}>
+    <div className="board"> 
+       { gameStarted ? (
+       <button className="reset-button" onClick={() => continueGame(game.gameId)}>Resume unfinished game</button>
+       ) : 
+       <table>
+          <tbody>
+             {game.board?.pieces?.map((row, ir) => {
+             return (
+             <tr key={ir}>
                 {row.map((col, ic) => {
-                  return (
-                    <td
-                      key={ic}
-                      className={`tile ${
-                        selectedPosition &&
-                        selectedPosition.col == ic &&
-                        selectedPosition.row == ir
-                          ? "selected-tile"
-                          : ""
-                      }`}
-                      onClick={() => selectTile(ir, ic)}
-                    >
-                      <Image src={col} />
-                    </td>
-                  );
+                return (
+                <td
+                key={ic}
+                className={`tile ${
+                selectedPosition &&
+                selectedPosition.col == ic &&
+                selectedPosition.row == ir
+                ? "selected-tile"
+                : ""
+                }`}
+                onClick={() => selectTile(ir, ic)}
+                >
+                <Image src={col} />
+                </td>
+                );
                 })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <button className="reset-button" onClick={() => resetGame()}>
-        Reset
-      </button>
+             </tr>
+             );
+             })}
+          </tbody>
+       </table>
+       }
+       <h2>Resume your games:</h2>
+        <div className='container'>
+            <div className='row'>
+                {games?.filter((game) => !game.completed && game.user === user.id && game.board).map((game) => (
+                    <button className="reset-button" key={game.id} onClick={() => continueGame(game.id)}> Game {game.id}</button>
+                ))}
+            </div>
+        </div>
+       <button className="reset-button" onClick={() => resetGame()}>
+       Start a new game
+       </button>
     </div>
-  );
+    );
 };
 
 export default BoardGame; 
