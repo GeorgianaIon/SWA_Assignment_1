@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../config/store";
 import { logoutAction } from "../reducers/userReducer";
 import { logoutUser } from "../api/gameapi";
+import { deleteState } from "../config/localStorage";
 
 const Navbar = () => {
   const token = useAppSelector((state) => state.userReducer.token);
@@ -12,8 +13,10 @@ const Navbar = () => {
       const response = await logoutUser(token);
       if (response.ok) {
         dispatch(logoutAction());
+        dispatch(deleteState);
       } else {
         dispatch(logoutAction());
+        dispatch(deleteState);
         console.error(response);
       }
     } catch {

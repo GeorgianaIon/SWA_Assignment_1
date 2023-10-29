@@ -16,7 +16,7 @@ const initialState: LoggedInUserModel = {
     token: localStorage.getItem('userToken') // get token from local storage
 }
 
-const slice = createSlice({
+export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
@@ -41,5 +41,5 @@ const slice = createSlice({
     }
 })
 
-export const { loginAction, logoutAction, updateUserAction } = slice.actions
-export default slice.reducer
+export const { loginAction, logoutAction, updateUserAction } = userSlice.actions
+export default userSlice.reducer

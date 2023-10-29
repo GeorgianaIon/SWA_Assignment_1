@@ -16,3 +16,10 @@ export const loadState = () => {
       localStorage.setItem(KEY, serializedState);
     } catch {}
   };
+
+  export const deleteState = () => {
+    try {
+      localStorage.removeItem(KEY);
+    }
+    catch {}
+  }
