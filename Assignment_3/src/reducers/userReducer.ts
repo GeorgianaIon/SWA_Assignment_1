@@ -13,7 +13,7 @@ const initialState: LoggedInUserModel = {
     username: undefined,
     password: undefined,
     admin: undefined,
-    token: undefined
+    token: localStorage.getItem('userToken')
 }
 
 export const userSlice = createSlice({
@@ -21,11 +21,13 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         loginAction: (state, action: PayloadAction<LoggedInUserModel>) => {
+            localStorage.setItem('userToken', action.payload.token) 
             return {
                 ...action.payload
             }
         },
         logoutAction: () => {
+            localStorage.removeItem('userToken') 
             return {
                 ...initialState
             }
