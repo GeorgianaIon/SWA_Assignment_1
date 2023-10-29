@@ -105,7 +105,7 @@ const BoardGame: React.FC = () => {
 
   return (
     <div className="board-container">
-    <div className="board"> 
+    <div className="board">
        { gameStarted ? (
        <button className="reset-button" onClick={() => continueGame(game.gameId)}>Resume unfinished game</button>
        ) : 
@@ -137,7 +137,8 @@ const BoardGame: React.FC = () => {
           </tbody>
        </table>
        }
-       <h2>Resume your games:</h2>
+       </div>
+       Resume your games:
         <div className='container'>
             <div className='row'>
                 {games?.filter((game) => !game.completed && game.user === user.id && game.board).map((game) => (
@@ -149,7 +150,7 @@ const BoardGame: React.FC = () => {
        Start a new game
        </button>
     </div>
-    </div>
+    
     );
 };
 
