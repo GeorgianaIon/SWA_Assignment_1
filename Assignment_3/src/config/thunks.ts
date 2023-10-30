@@ -85,7 +85,6 @@ export const getAllGamesThunk = (userToken: string) => {
 export const updateGameThunk = (userToken: string, gameModel: GameModel) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
-      console.log("here");
       await api.updateGame(userToken, {
           id: gameModel.id,
           user: gameModel.user,
