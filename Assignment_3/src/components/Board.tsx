@@ -67,7 +67,7 @@ const BoardGame: React.FC = () => {
     if (game.gameId !== -1 && game.currentMoveNumber < game.maxMoveNumber) {
       dispatch(updateGameThunk(user.token, mapToModel(game)));
     }
-    else
+    else if(game.gameId !== -1)
     {
       dispatch(updateGameThunk(user.token, mapToModel({id: game.gameId, user: user.id, score: game.score, completed: true})));
     }
