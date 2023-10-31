@@ -31,11 +31,12 @@ const BoardGame: React.FC = () => {
   const [gameStarted, setGameStarted] = React.useState<boolean>(false);
   const [games, setGames] = React.useState<GameModel[]>([]);
 
-  React.useEffect(() => {
-    if (game.board === undefined) {
-      dispatch(createGameThunk(user.token));
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (game.board === undefined) {
+  //     dispatch(createGameThunk(user.token));
+  //     setGameStarted(true);
+  //   }
+  // }, []);
 
   const mapToModel = (result: any): GameModel => {
     return {
@@ -67,9 +68,8 @@ const BoardGame: React.FC = () => {
     if (game.gameId !== -1 && game.currentMoveNumber < game.maxMoveNumber) {
       dispatch(updateGameThunk(user.token, mapToModel(game)));
     }
-    else if(game.gameId !== -1)
-    {
-      dispatch(updateGameThunk(user.token, mapToModel({id: game.gameId, user: user.id, score: game.score, completed: true})));
+    else if (game.gameId !== -1) {
+      dispatch(updateGameThunk(user.token, mapToModel({ id: game.gameId, user: user.id, score: game.score, completed: true })));
     }
   }, [game.currentMoveNumber, game.score]);
 
@@ -86,72 +86,83 @@ const BoardGame: React.FC = () => {
   }, [gameStarted, game.games]);
 
   const resetGame = async () => {
+    setGameStarted(true);
     setSelectedPosition(undefined);
     dispatch(createGameThunk(user.token));
   };
 
   return (
-    <div className="board-container">
-      <div className="board">
+    <div>
+      <div className="text-container">
+        <h1 className="board-text">Score: {game.score}</h1>
+        <p className="board-text">
+          Moves left: {game.maxMoveNumber - game.currentMoveNumber}
+        </p>
+      </div>
+      <div className="board-container">
         {gameStarted ? (
-          <button
-            className="reset-button"
-            onClick={() => continueGame(game.gameId)}
-          >
-            Resume unfinished game
-          </button>
+          <>
+            <button
+              className="reset-button"
+              onClick={() => continueGame(game.gameId)}>
+              Resume unfinished game
+            </button>
+            <div className="container">
+              Resume your games:
+              <div className="row">
+                {games
+                  ?.filter(
+                    (game) => !game.completed && game.user === user.id && game.board
+                  )
+                  .map((game) => (
+                    <button
+                      className="reset-button"
+                      key={game.id}
+                      onClick={() => continueGame(game.id)}
+                    >
+                      {" "}
+                      Game {game.id}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          </>
         ) : (
-          <table>
-            <tbody>
-              {game.board?.pieces?.map((row, ir) => {
-                return (
-                  <tr key={ir}>
-                    {row.map((col, ic) => {
-                      return (
-                        <td
-                          key={ic}
-                          className={`tile ${
-                            selectedPosition &&
-                            selectedPosition.col == ic &&
-                            selectedPosition.row == ir
+          <div className="board">
+
+            <table>
+              <tbody>
+                {game.board?.pieces?.map((row, ir) => {
+                  return (
+                    <tr key={ir}>
+                      {row.map((col, ic) => {
+                        return (
+                          <td
+                            key={ic}
+                            className={`tile ${selectedPosition &&
+                              selectedPosition.col == ic &&
+                              selectedPosition.row == ir
                               ? "selected-tile"
                               : ""
-                          }`}
-                          onClick={() => selectTile(ir, ic)}
-                        >
-                          <Image src={col} />
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                              }`}
+                            onClick={() => selectTile(ir, ic)}
+                          >
+                            <Image src={col} />
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
-      </div>
-      Resume your games:
-      <div className="container">
-        <div className="row">
-          {games
-            ?.filter(
-              (game) => !game.completed && game.user === user.id && game.board
-            )
-            .map((game) => (
-              <button
-                className="reset-button"
-                key={game.id}
-                onClick={() => continueGame(game.id)}
-              >
-                {" "}
-                Game {game.id}
-              </button>
-            ))}
-        </div>
-      </div>
-      <button className="reset-button" onClick={() => resetGame()}>
-        Start a new game
-      </button>
+        Or:
+        < button className="reset-button" onClick={() => resetGame()}>
+          Start a new game
+        </button>
+      </div >
     </div>
   );
 };
