@@ -42,7 +42,7 @@ const GameMenu: React.FC = () => {
         <div className="row">
           {games
             ?.filter(
-              (game) => !game.completed && game.user === user.id && game.board
+              (game) => !game.completed && game.user === user.id && game.board && game.score !== 0
             )
             .map((game) => (
               <button
