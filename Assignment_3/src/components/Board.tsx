@@ -1,26 +1,9 @@
 import * as React from "react";
 import Image from "./Image";
-import { Position, move, Generator, create, Board } from "../models/board";
+import { Position } from "../models/board";
 import { useAppDispatch, useAppSelector } from "../config/store";
-import {
-  setInitialBoardGame,
-  boardMoveUpdate,
-  setPreviousGame,
-} from "../reducers/gameReducer";
-import { createGame, updateGame, getGame } from "../api/gameapi";
 import { GameModel } from "../models/apiModels";
-import {
-  createGameThunk,
-  updateGameThunk,
-  getAllGamesThunk,
-  getUserGame,
-  setSelectTile,
-} from "../config/thunks";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useNavigate,
-} from "react-router-dom";
+import { updateGameThunk, setSelectTile } from "../config/thunks";
 
 const BoardGame: React.FC = () => {
   const game = useAppSelector((state) => state.gameReducer);
@@ -28,8 +11,6 @@ const BoardGame: React.FC = () => {
   const dispatch = useAppDispatch();
   const [selectedPosition, setSelectedPosition] =
     React.useState<Position>(undefined);
-  const [gameStarted, setGameStarted] = React.useState<boolean>(false);
-  const [games, setGames] = React.useState<GameModel[]>([]);
 
   // React.useEffect(() => {
   //   if (game.board === undefined) {
@@ -60,11 +41,6 @@ const BoardGame: React.FC = () => {
     }
   };
 
-  const continueGame = async (id: number) => {
-    dispatch(getUserGame(user.token, id));
-    setGameStarted(true);
-  };
-
   React.useEffect(() => {
     if (game.gameId !== -1 && game.currentMoveNumber < game.maxMoveNumber) {
       dispatch(updateGameThunk(user.token, mapToModel(game)));
@@ -83,94 +59,45 @@ const BoardGame: React.FC = () => {
     }
   }, [game.currentMoveNumber, game.score]);
 
-  React.useEffect(() => {
-    dispatch(getAllGamesThunk(user.token));
-  }, [dispatch, user.token]);
-
-  React.useEffect(() => {
-    if (!gameStarted) {
-    }
-    if (game.games) {
-      setGames(game.games);
-    }
-  }, [gameStarted, game.games]);
-
-  const resetGame = async () => {
-    setGameStarted(true);
-    setSelectedPosition(undefined);
-    dispatch(createGameThunk(user.token));
-  };
-
   return (
     <div>
-      {gameStarted ? (
-        <>
-          <div className="text-container">
-            <h1 className="board-text">Score: {game.score}</h1>
-            <p className="board-text">
-              Moves left: {game.maxMoveNumber - game.currentMoveNumber}
-            </p>
-          </div>
-          <div className="board-container">
-            <div className="board">
-              <table>
-                <tbody>
-                  {game.board?.pieces?.map((row, ir) => {
-                    return (
-                      <tr key={ir}>
-                        {row.map((col, ic) => {
-                          return (
-                            <td
-                              key={ic}
-                              className={`tile ${
-                                selectedPosition &&
-                                selectedPosition.col == ic &&
-                                selectedPosition.row == ir
-                                  ? "selected-tile"
-                                  : ""
-                              }`}
-                              onClick={() => selectTile(ir, ic)}
-                            >
-                              <Image src={col} />
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="board-body">
-          <div className="start-container">
-            <h1>Resume your games:</h1>
-            <div className="row">
-              {games
-                ?.filter(
-                  (game) =>
-                    !game.completed && game.user === user.id && game.board
-                )
-                .map((game) => (
-                  <button
-                    className="start-game"
-                    key={game.id}
-                    onClick={() => continueGame(game.id)}
-                  >
-                    {" "}
-                    Game {game.id}
-                  </button>
-                ))}
-            </div>
-          </div>
-          <h3>Or</h3>
-          <button className="start-new" onClick={() => resetGame()}>
-            Start a new game
-          </button>
+      <div className="text-container">
+        <h1 className="board-text">Score: {game.score}</h1>
+        <p className="board-text">
+          Moves left: {game.maxMoveNumber - game.currentMoveNumber}
+        </p>
+      </div>
+      <div className="board-container">
+        <div className="board">
+          <table>
+            <tbody>
+              {game.board?.pieces?.map((row, ir) => {
+                return (
+                  <tr key={ir}>
+                    {row.map((col, ic) => {
+                      return (
+                        <td
+                          key={ic}
+                          className={`tile ${
+                            selectedPosition &&
+                            selectedPosition.col == ic &&
+                            selectedPosition.row == ir
+                              ? "selected-tile"
+                              : ""
+                          }`}
+                          onClick={() => selectTile(ir, ic)}
+                        >
+                          <Image src={col} />
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
     </div>
   );
 };

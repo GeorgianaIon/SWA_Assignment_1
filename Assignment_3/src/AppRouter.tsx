@@ -6,6 +6,7 @@ import HighScorePage from "./pages/HighScore";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
+import GameMenu from "./pages/GameMenu";
 
 const AppRouter = () => {
   return (
@@ -18,6 +19,7 @@ const AppRouter = () => {
           <Route path="/board" element={<BoardPage />} />
           <Route path="/highscore" element={<HighScorePage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/menu" element={<GameMenu />} />
         </Route>
       </Routes>
     </BrowserRouter>

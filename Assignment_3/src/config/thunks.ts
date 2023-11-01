@@ -1,13 +1,8 @@
 import { AppDispatch, RootState}  from "./store"
 import { StateData, gameSlice } from "../reducers/gameReducer";
-import { userSlice } from "../reducers/userReducer"
 import { GameModel } from "../models/apiModels";
-import { NavigateFunction } from 'react-router'
-import { ThunkAction } from 'redux-thunk';
-import { AnyAction } from 'redux';
 import { Position, move, Generator, create, Board } from "../models/board";
 import * as api from "../api/gameapi";
-import { useState } from "react";
 
 class RandomGenerator implements Generator<string> {
     images: string[] = [

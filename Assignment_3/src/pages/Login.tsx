@@ -14,10 +14,13 @@ const LoginPage: React.FC = () => {
     password: string;
   }) => {
     try {
-      const result = await loginUser(credentials.username, credentials.password)
-      const userData = await getUser(result.token, result.userId)
-      dispatch(loginAction({ ...userData, token: result.token }))
-      navigate("/board");
+      const result = await loginUser(
+        credentials.username,
+        credentials.password
+      );
+      const userData = await getUser(result.token, result.userId);
+      dispatch(loginAction({ ...userData, token: result.token }));
+      navigate("/menu");
     } catch (error) {
       alert("Login failed");
     }
