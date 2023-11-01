@@ -102,3 +102,12 @@ export const updateUserThunk = (token: string, userModel: UserModel) => {
     catch(error) { alert("Could not update the user");}
   }
 }
+
+export const createUserThunk = (username: string, password: string) => {
+  return async () => {
+    try {
+      await api.createUser(username, password)
+    }
+    catch(error) { alert("Could not register user");}
+  }
+}
