@@ -11,25 +11,38 @@ const HighScorePage = () => {
   useEffect(() => {
     getAllGames(user.token)
       .then((result: GameModel[]) => {
-        const highestScores = Object.values(
-          result.reduce((acc, game) => {
-            if (!acc[game.user] || acc[game.user].score < game.score) {
-              acc[game.user] = game;
-            }
-            return acc;
-          }, {} as { [key: string]: GameModel })
-        ).sort((a, b) => b.score - a.score);
-
-        setGames(highestScores);
+        setGames(result);
       })
       .catch((_) => alert("Could not get the high scores"));
   }, [user.token]);
 
+  const top10Games = games
+    .filter((game) => game.completed)
+    .sort((a, b) => a.score - b.score)
+    .reverse()
+    .slice(0, 10);
+  const top3OwnGames = games
+    .filter((game) => game.user == user.id && game.completed)
+    .sort((a, b) => a.score - b.score)
+    .reverse()
+    .slice(0, 3);
+
   return (
     <div className="highscores">
-      <h3 className="bigger-font">High scores</h3>
-      <HighScoreTable games={games} />
+      {top10Games.length !== 0 && (
+        <>
+          <h3 className="bigger-font">High scores</h3>
+          <HighScoreTable games={top10Games} />
+        </>
+      )}
       <br />
+      {top3OwnGames.length !== 0 && (
+        <>
+          {" "}
+          <h3>Top 3 high scores</h3>
+          <HighScoreTable games={top3OwnGames} />
+        </>
+      )}
     </div>
   );
 };

@@ -7,17 +7,8 @@ import { updateUserThunk } from "../config/thunks";
 
 const Profile: React.FC = () => {
   const userData = useAppSelector((state) => state.userReducer);
-  const game = useAppSelector((state) => state.gameReducer);
   const dispatch = useAppDispatch();
   const [password, setPassword] = useState(userData.password);
-  const [games, setGames] = useState<GameModel[]>([])
-
-  React.useEffect(() => {
-    setGames(game?.games
-      .filter((game) => game.user == userData.id && game.completed)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3))
-  }, [game.games])
 
   const changePassword = async () => {
     if (password === userData.password) {
@@ -36,7 +27,7 @@ const Profile: React.FC = () => {
       admin: userData.admin,
     };
 
-    dispatch(updateUserThunk(userData.token, updatedUser))
+    dispatch(updateUserThunk(userData.token, updatedUser));
   };
 
   return (
@@ -52,8 +43,6 @@ const Profile: React.FC = () => {
             {userData.admin ? "Yes" : "No"}
           </strong>
         </h3>
-        <h3>Top 3 high scores</h3>
-        <HighScoreTable games={games} />
         <div className="password-wrapper">
           <div>
             <FormGroup
