@@ -45,6 +45,7 @@ export const gameSlice = createSlice ({
         setPreviousGame: (state, action: PayloadAction<{game: GameModel}>) => {
             return {
                 ...state,
+                gameId: action.payload.game.id,
                 board: action.payload.game.board,
                 score: action.payload.game.score,
                 completed: action.payload.game.completed,

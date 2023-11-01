@@ -129,7 +129,7 @@ export async function getGame(token: string, gameId: number): Promise<GameModel>
     return await response.json()
 }
 
-export async function updateGame<T>(token: string, game: GameModel) {
+export async function updateGame(token: string, game: GameModel) {
     const url = `${PATH}/games/${game.id}?token=${token}`
     const data = game
     const response = await patchFetchAsync({data, url})
