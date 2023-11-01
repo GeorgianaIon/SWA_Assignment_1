@@ -37,9 +37,18 @@ export const userSlice = createSlice({
                 ...state,
                 password: action.payload.password
             }
+        },
+        updateUser: (state, action: PayloadAction<LoggedInUserModel>) => {
+            return {
+                admin: action.payload.admin,
+                id: action.payload.id,
+                password: action.payload.password,
+                token: action.payload.token,
+                username: action.payload.username
+            }
         }
     }
 })
 
-export const { loginAction, logoutAction, updateUserAction } = userSlice.actions
+export const { loginAction, logoutAction, updateUserAction, updateUser } = userSlice.actions
 export default userSlice.reducer

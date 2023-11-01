@@ -2,12 +2,6 @@ import * as React from "react";
 import Image from "./Image";
 import { Position, move, Generator, create, Board } from "../models/board";
 import { useAppDispatch, useAppSelector } from "../config/store";
-import {
-  setInitialBoardGame,
-  boardMoveUpdate,
-  setPreviousGame,
-} from "../reducers/gameReducer";
-import { createGame, updateGame, getGame } from "../api/gameapi";
 import { GameModel } from "../models/apiModels";
 import {
   createGameThunk,
@@ -122,13 +116,12 @@ const BoardGame: React.FC = () => {
                           return (
                             <td
                               key={ic}
-                              className={`tile ${
-                                selectedPosition &&
+                              className={`tile ${selectedPosition &&
                                 selectedPosition.col == ic &&
                                 selectedPosition.row == ir
-                                  ? "selected-tile"
-                                  : ""
-                              }`}
+                                ? "selected-tile"
+                                : ""
+                                }`}
                               onClick={() => selectTile(ir, ic)}
                             >
                               <Image src={col} />
