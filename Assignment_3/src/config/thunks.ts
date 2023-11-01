@@ -1,6 +1,7 @@
 import { AppDispatch, RootState}  from "./store"
 import { StateData, gameSlice } from "../reducers/gameReducer";
-import { GameModel } from "../models/apiModels";
+import { userSlice } from "../reducers/userReducer"
+import { GameModel, UserModel } from "../models/apiModels";
 import { Position, move, Generator, create, Board } from "../models/board";
 import * as api from "../api/gameapi";
 
@@ -18,8 +19,6 @@ class RandomGenerator implements Generator<string> {
     }
   }
 const generator: RandomGenerator = new RandomGenerator();
-
-type Thunk = (dispatch: AppDispatch, getState: RootState) => Promise<void>
 
 export const createGameThunk = (userToken: string) => {
     return async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -92,3 +91,23 @@ export const updateGameThunk = (userToken: string, gameModel: GameModel) => {
       { alert("Could not update a new game");}
   };
 };
+
+export const updateUserThunk = (token: string, userModel: UserModel) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await api.updateUser(token, userModel)
+      dispatch(userSlice.actions.updateUserAction({...userModel, token: token}))
+      alert("Your password was successfully changed!");
+    }
+    catch(error) { alert("Could not update the user");}
+  }
+}
+
+export const createUserThunk = (username: string, password: string) => {
+  return async () => {
+    try {
+      await api.createUser(username, password)
+    }
+    catch(error) { alert("Could not register user");}
+  }
+}

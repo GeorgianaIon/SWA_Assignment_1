@@ -1,24 +1,18 @@
-import { useState } from "react";
-import { createUser } from "../api/gameapi";
 import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
+import { createUserThunk } from "../config/thunks";
+import { useAppDispatch } from "../config/store";
 
 const RegisterPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   let navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (credentials: {
     username: string;
     password: string;
   }) => {
-    try {
-      await createUser(credentials.username, credentials.password);
-      navigate("/");
-    } catch (error) {
-      alert("Register failed");
-    }
+    dispatch(createUserThunk(credentials.username, credentials.password))
+    navigate("/");
   };
 
   return (
