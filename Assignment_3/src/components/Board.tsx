@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../config/store";
 import { GameModel } from "../models/apiModels";
 import { updateGameThunk, setSelectTile } from "../config/thunks";
 import { useEffect } from "react";
+import Score from "./Score";
 
 const BoardGame: React.FC = () => {
   const game = useAppSelector((state) => state.gameReducer);
@@ -56,12 +57,11 @@ const BoardGame: React.FC = () => {
 
   return (
     <div>
-      <div className="text-container">
-        <h1 className="board-text">Score: {game.score}</h1>
-        <p className="board-text">
-          Moves left: {game.maxMoveNumber - game.currentMoveNumber}
-        </p>
-      </div>
+      <Score
+        score={game.score}
+        maxMoveNumber={game.maxMoveNumber}
+        currentMoveNumber={game.currentMoveNumber}
+      />
       <div className="board-container">
         <div className="board">
           <table>
