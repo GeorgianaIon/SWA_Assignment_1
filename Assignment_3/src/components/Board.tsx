@@ -37,9 +37,12 @@ const BoardGame: React.FC = () => {
   };
 
   useEffect(() => {
-    if (game.gameId !== -1 && game.currentMoveNumber < game.maxMoveNumber) {
+    if (game.gameId === -1) {
+      return;
+    }
+
+    if (game.currentMoveNumber < game.maxMoveNumber) {
       dispatch(updateGameThunk(user.token, mapToModel(game)));
-      console.log(game);
     } else if (game.gameId !== -1) {
       dispatch(
         updateGameThunk(
