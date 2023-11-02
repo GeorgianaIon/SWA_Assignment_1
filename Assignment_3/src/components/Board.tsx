@@ -36,7 +36,6 @@ const BoardGame: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(game?.board);
     if (game.gameId !== -1 && game.currentMoveNumber < game.maxMoveNumber) {
       dispatch(updateGameThunk(user.token, mapToModel(game)));
       console.log(game);
