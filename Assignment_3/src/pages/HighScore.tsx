@@ -1,30 +1,27 @@
-import { getAllGames } from "../api/gameapi";
 import { GameModel } from "../models/apiModels";
-import { useAppSelector } from "../config/store";
+import { useAppDispatch, useAppSelector } from "../config/store";
 import { useEffect, useState } from "react";
 import HighScoreTable from "../components/HighScoreTable";
 
 const HighScorePage = () => {
   const user = useAppSelector((state) => state.userReducer);
+  const game = useAppSelector((state) => state.gameReducer);
   const [games, setGames] = useState<GameModel[]>([]);
 
   useEffect(() => {
-    getAllGames(user.token)
-      .then((result: GameModel[]) => {
-        setGames(result);
-      })
-      .catch((_) => alert("Could not get the high scores"));
-  }, [user.token]);
+    if (game.games) {
+      setGames(game.games);
+    }
+  }, [game.games]);
 
   const top10Games = games
     .filter((game) => game.completed)
-    .sort((a, b) => a.score - b.score)
-    .reverse()
+    .sort((a, b) => b.score - a.score)
     .slice(0, 10);
+
   const top3OwnGames = games
     .filter((game) => game.user == user.id && game.completed)
-    .sort((a, b) => a.score - b.score)
-    .reverse()
+    .sort((a, b) => b.score - a.score)
     .slice(0, 3);
 
   return (
