@@ -9,7 +9,7 @@ interface LoggedInUserModel {
 }
 
 const initialState: LoggedInUserModel = {
-    id: undefined,
+    id: parseInt(localStorage.getItem('userId')),
     username: undefined,
     password: undefined,
     admin: undefined,
@@ -22,12 +22,14 @@ export const userSlice = createSlice({
     reducers: {
         loginAction: (state, action: PayloadAction<LoggedInUserModel>) => {
             localStorage.setItem('userToken', action.payload.token) 
+            localStorage.setItem('userId', action.payload.id.toString()) 
             return {
                 ...action.payload
             }
         },
         logoutAction: () => {
-            localStorage.removeItem('userToken') 
+            localStorage.removeItem('userToken')
+            localStorage.removeItem('userId')  
             return {
                 ...initialState
             }

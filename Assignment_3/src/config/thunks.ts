@@ -4,6 +4,9 @@ import { userSlice } from "../reducers/userReducer"
 import { GameModel, UserModel } from "../models/apiModels";
 import { Position, move, Generator, create, Board } from "../models/board";
 import * as api from "../api/gameapi";
+import { deleteState } from "../config/localStorage";
+import { NavigateFunction } from 'react-router'
+import { Navigate } from "react-router-dom";
 
 class RandomGenerator implements Generator<string> {
     images: string[] = [
@@ -28,7 +31,7 @@ export const createGameThunk = (userToken: string) => {
           board: create(generator, 6,6),
           gameId: game.id
         }));
-      } 
+      }
       catch (error) 
       { alert("Could not create a new game");}
     };
@@ -112,15 +115,30 @@ export const createUserThunk = (username: string, password: string) => {
   }
 }
 
-export const loginUserThunk = (username: string, password: string) => {
+export const loginUserThunk = (username: string, password: string, navigate: NavigateFunction) => {
   return async (dispatch: AppDispatch) => {
     try {
         let result = await api.loginUser(username, password)
         const userData = await api.getUser(result.token, result.userId);
         dispatch(userSlice.actions.loginAction({ ...userData, token: result.token }))
+        navigate("/menu");
     }
     catch(error) {
       alert("Login failed");
+    }
+  }
+}
+
+export const logoutUserThunk = (token: string, navigate: NavigateFunction) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await api.logoutUser(token);
+      dispatch(userSlice.actions.logoutAction())
+      dispatch(deleteState);
+      navigate("/")
+    }
+    catch(error) {
+      dispatch(userSlice.actions.logoutAction());
     }
   }
 }

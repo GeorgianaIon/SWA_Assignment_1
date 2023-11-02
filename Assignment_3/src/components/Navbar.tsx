@@ -1,27 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../config/store";
 import { logoutAction } from "../reducers/userReducer";
 import { logoutUser } from "../api/gameapi";
 import { deleteState } from "../config/localStorage";
+import { logoutUserThunk } from "../config/thunks";
 
 const Navbar = () => {
   const token = useAppSelector((state) => state.userReducer.token);
   const dispatch = useAppDispatch();
+  let navigate = useNavigate();
 
   const logOut = async () => {
-    try {
-      const response = await logoutUser(token);
-      if (response.ok) {
-        dispatch(logoutAction());
-        dispatch(deleteState);
-      } else {
-        dispatch(logoutAction());
-        dispatch(deleteState);
-        console.error(response);
-      }
-    } catch {
-      dispatch(logoutAction());
-    }
+      dispatch(logoutUserThunk(token, navigate))
   };
 
   return (

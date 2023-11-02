@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { GameModel, UserModel } from "../models/apiModels";
+import { UserModel } from "../models/apiModels";
 import { useAppDispatch, useAppSelector } from "../config/store";
-import HighScoreTable from "../components/HighScoreTable";
 import FormGroup from "../components/FormGroup";
 import { updateUserThunk } from "../config/thunks";
 

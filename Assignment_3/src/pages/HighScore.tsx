@@ -1,5 +1,5 @@
 import { GameModel } from "../models/apiModels";
-import { useAppDispatch, useAppSelector } from "../config/store";
+import { useAppSelector } from "../config/store";
 import { useEffect, useState } from "react";
 import HighScoreTable from "../components/HighScoreTable";
 
