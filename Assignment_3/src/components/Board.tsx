@@ -6,6 +6,7 @@ import { GameModel } from "../models/apiModels";
 import { updateGameThunk, setSelectTile } from "../config/thunks";
 import { useEffect } from "react";
 import Score from "./Score";
+import { StateData } from "../reducers/gameReducer";
 
 const BoardGame: React.FC = () => {
   const game = useAppSelector((state) => state.gameReducer);
@@ -14,7 +15,7 @@ const BoardGame: React.FC = () => {
   const [selectedPosition, setSelectedPosition] =
     React.useState<Position>(undefined);
 
-  const mapToModel = (result: any): GameModel => {
+  const mapToModel = (result: StateData): GameModel => {
     return {
       id: game.gameId,
       user: user.id,
@@ -48,9 +49,7 @@ const BoardGame: React.FC = () => {
         updateGameThunk(
           user.token,
           mapToModel({
-            id: game.gameId,
-            user: user.id,
-            score: game.score,
+            ...game,
             completed: true,
           })
         )
