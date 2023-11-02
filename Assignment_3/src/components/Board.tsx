@@ -10,7 +10,8 @@ const BoardGame: React.FC = () => {
   const game = useAppSelector((state) => state.gameReducer);
   const user = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
-  const [selectedPosition, setSelectedPosition] = React.useState<Position>(undefined);
+  const [selectedPosition, setSelectedPosition] =
+    React.useState<Position>(undefined);
 
   const mapToModel = (result: any): GameModel => {
     return {
@@ -35,8 +36,10 @@ const BoardGame: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log(game?.board);
     if (game.gameId !== -1 && game.currentMoveNumber < game.maxMoveNumber) {
       dispatch(updateGameThunk(user.token, mapToModel(game)));
+      console.log(game);
     } else if (game.gameId !== -1) {
       dispatch(
         updateGameThunk(

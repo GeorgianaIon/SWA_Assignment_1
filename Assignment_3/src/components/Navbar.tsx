@@ -32,8 +32,8 @@ const Navbar = () => {
       <div className="menu">
         {token ? (
           <>
-            <Link to="/board">
-              <button className="button">Board</button>
+            <Link to="/menu">
+              <button className="button">Menu</button>
             </Link>
             <Link to="/highscore">
               <button className="button">High Scores</button>
