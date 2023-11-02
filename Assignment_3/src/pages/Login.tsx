@@ -4,6 +4,7 @@ import { useAppDispatch } from "../config/store";
 import Form from "../components/Form";
 import LoginLink from "../components/LoginLink";
 import { loginAction } from "../reducers/userReducer";
+import { loginUserThunk } from "../config/thunks";
 
 const LoginPage: React.FC = () => {
   let navigate = useNavigate();
@@ -13,17 +14,8 @@ const LoginPage: React.FC = () => {
     username: string;
     password: string;
   }) => {
-    try {
-      const result = await loginUser(
-        credentials.username,
-        credentials.password
-      );
-      const userData = await getUser(result.token, result.userId);
-      dispatch(loginAction({ ...userData, token: result.token }));
+      dispatch(loginUserThunk(credentials.username, credentials.password))
       navigate("/menu");
-    } catch (error) {
-      alert("Login failed");
-    }
   };
 
   return (

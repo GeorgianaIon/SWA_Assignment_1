@@ -4,20 +4,13 @@ import { Position } from "../models/board";
 import { useAppDispatch, useAppSelector } from "../config/store";
 import { GameModel } from "../models/apiModels";
 import { updateGameThunk, setSelectTile } from "../config/thunks";
+import { useEffect } from "react";
 
 const BoardGame: React.FC = () => {
   const game = useAppSelector((state) => state.gameReducer);
   const user = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
-  const [selectedPosition, setSelectedPosition] =
-    React.useState<Position>(undefined);
-
-  // React.useEffect(() => {
-  //   if (game.board === undefined) {
-  //     dispatch(createGameThunk(user.token));
-  //     setGameStarted(true);
-  //   }
-  // }, []);
+  const [selectedPosition, setSelectedPosition] = React.useState<Position>(undefined);
 
   const mapToModel = (result: any): GameModel => {
     return {
@@ -41,7 +34,7 @@ const BoardGame: React.FC = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (game.gameId !== -1 && game.currentMoveNumber < game.maxMoveNumber) {
       dispatch(updateGameThunk(user.token, mapToModel(game)));
     } else if (game.gameId !== -1) {

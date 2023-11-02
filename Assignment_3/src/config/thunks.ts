@@ -111,3 +111,16 @@ export const createUserThunk = (username: string, password: string) => {
     catch(error) { alert("Could not register user");}
   }
 }
+
+export const loginUserThunk = (username: string, password: string) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+        let result = await api.loginUser(username, password)
+        const userData = await api.getUser(result.token, result.userId);
+        dispatch(userSlice.actions.loginAction({ ...userData, token: result.token }))
+    }
+    catch(error) {
+      alert("Login failed");
+    }
+  }
+}
