@@ -1,8 +1,5 @@
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../config/store";
-import { logoutAction } from "../reducers/userReducer";
-import { logoutUser } from "../api/gameapi";
-import { deleteState } from "../config/localStorage";
 import { logoutUserThunk } from "../config/thunks";
 import AuthNav from "./AuthNav";
 import NotAuthNav from "./NotAuthNav";

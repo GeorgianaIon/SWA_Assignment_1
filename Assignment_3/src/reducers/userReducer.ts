@@ -30,8 +30,11 @@ export const userSlice = createSlice({
         logoutAction: () => {
             localStorage.removeItem('userToken')
             localStorage.removeItem('userId')  
+            localStorage.removeItem('gameId')  
             return {
-                ...initialState
+                ...initialState,
+                id: undefined,
+                token: undefined
             }
         },
         updateUserAction: (state, action: PayloadAction<LoggedInUserModel>) => {

@@ -4,9 +4,7 @@ import { userSlice } from "../reducers/userReducer"
 import { GameModel, UserModel } from "../models/apiModels";
 import { Position, move, Generator, create, Board } from "../models/board";
 import * as api from "../api/gameapi";
-import { deleteState } from "../config/localStorage";
 import { NavigateFunction } from 'react-router'
-import { Navigate } from "react-router-dom";
 
 class RandomGenerator implements Generator<string> {
     images: string[] = [
@@ -38,7 +36,7 @@ export const createGameThunk = (userToken: string) => {
 };
 
 export const setSelectTile = (selectedPosition: Position, ir: number, ic: number, game: StateData) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const newBoard: Board<string> = JSON.parse(JSON.stringify(game.board));
       const result = move(generator, newBoard, selectedPosition, {
@@ -58,7 +56,7 @@ export const setSelectTile = (selectedPosition: Position, ir: number, ic: number
 }
 
 export const getUserGame = (userToken: string, gameId: number) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const game: GameModel = await api.getGame(userToken, gameId);
       dispatch(gameSlice.actions.setPreviousGame({game}));
@@ -69,7 +67,7 @@ export const getUserGame = (userToken: string, gameId: number) => {
 }
 
 export const getAllGamesThunk = (userToken: string) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const games: GameModel[] = await api.getAllGames(userToken);
       dispatch(gameSlice.actions.setUserGames({games}));
@@ -80,7 +78,7 @@ export const getAllGamesThunk = (userToken: string) => {
 }
 
 export const updateGameThunk = (userToken: string, gameModel: GameModel) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+  return async () => {
     try {
       await api.updateGame(userToken, {
           id: gameModel.id,
@@ -115,6 +113,18 @@ export const createUserThunk = (username: string, password: string) => {
   }
 }
 
+export const getUserThunk = (token: string, userId: number) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+        const userData = await api.getUser(token, userId);
+        dispatch(userSlice.actions.loginAction({ ...userData, token: token }))
+    }
+    catch(error) {
+      alert("Login failed");
+    }
+  }
+}
+
 export const loginUserThunk = (username: string, password: string, navigate: NavigateFunction) => {
   return async (dispatch: AppDispatch) => {
     try {
@@ -134,7 +144,6 @@ export const logoutUserThunk = (token: string, navigate: NavigateFunction) => {
     try {
       await api.logoutUser(token);
       dispatch(userSlice.actions.logoutAction())
-      dispatch(deleteState);
       navigate("/")
     }
     catch(error) {

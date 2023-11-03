@@ -3,7 +3,7 @@ import Image from "./Image";
 import { Position } from "../models/board";
 import { useAppDispatch, useAppSelector } from "../config/store";
 import { GameModel } from "../models/apiModels";
-import { updateGameThunk, setSelectTile } from "../config/thunks";
+import { updateGameThunk, setSelectTile, getUserGame } from "../config/thunks";
 import { useEffect } from "react";
 import Score from "./Score";
 import { StateData } from "../reducers/gameReducer";
@@ -38,6 +38,10 @@ const BoardGame: React.FC = () => {
   };
 
   useEffect(() => {
+    if (game.gameId === -1 && parseInt(localStorage.getItem("gameId"))) {
+      dispatch(getUserGame(user.token, parseInt(localStorage.getItem("gameId"))));
+    }
+
     if (game.gameId === -1) {
       return;
     }

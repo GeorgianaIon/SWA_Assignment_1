@@ -27,6 +27,7 @@ export const gameSlice = createSlice ({
     initialState: initialState, 
     reducers : {
         setInitialBoardGame: (_, action: PayloadAction<{board: BoardModel.Board<string>, gameId: number}>) => {
+            localStorage.setItem('gameId', action.payload.gameId.toString()) 
             return {
                 ...initialState,
                 board: action.payload.board,
@@ -43,6 +44,7 @@ export const gameSlice = createSlice ({
             }
         },
         setPreviousGame: (state, action: PayloadAction<{game: GameModel}>) => {
+            localStorage.setItem('gameId', action.payload.game.id.toString()) 
             return {
                 ...state,
                 gameId: action.payload.game.id,

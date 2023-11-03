@@ -1,5 +1,4 @@
 import { GameModel, LoginModel, UserModel } from '../models/apiModels'
-import * as BoardModel from '../models/board'
 
 const PATH = `http://localhost:9090`
 const headers = { "Content-Type": "application/json", Accept: "application/json" }
@@ -71,15 +70,6 @@ export async function logoutUser(token: string) {
     const data = {}
     const response = await postFetchAsync({data, url})
     return response
-}
-
-export async function getAllUsers(token: string): Promise<UserModel[]> {
-    const url = `${PATH}/users?token=${token}`
-    const response = await getFetchAsync({url})
-    if(!response.ok) {
-        return
-    }
-    return await response.json()
 }
 
 export async function getUser(token: string, id: number): Promise<UserModel> {

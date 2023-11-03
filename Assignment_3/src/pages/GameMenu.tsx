@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../config/store";
-import {
-  createGameThunk,
-  getAllGamesThunk,
-  getUserGame,
-} from "../config/thunks";
+import { createGameThunk, getAllGamesThunk, getUserGame } from "../config/thunks";
 import { GameModel } from "../models/apiModels";
 
 const GameMenu: React.FC = () => {

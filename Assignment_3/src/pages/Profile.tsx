@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserModel } from "../models/apiModels";
 import { useAppDispatch, useAppSelector } from "../config/store";
 import FormGroup from "../components/FormGroup";
-import { updateUserThunk } from "../config/thunks";
+import { getUserThunk, updateUserThunk } from "../config/thunks";
 
 const Profile: React.FC = () => {
   const userData = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
   const [password, setPassword] = useState(userData.password);
+
+  useEffect(() => {
+    {
+      dispatch(getUserThunk(userData.token, userData.id));
+    }
+  }, [dispatch, userData.token]);
+  
 
   const changePassword = async () => {
     if (password === userData.password) {
