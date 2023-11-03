@@ -1,12 +1,18 @@
 import { GameModel } from "../models/apiModels";
-import { useAppSelector } from "../config/store";
+import { useAppDispatch, useAppSelector } from "../config/store";
 import { useEffect, useState } from "react";
 import HighScoreTable from "../components/HighScoreTable";
+import { getAllGamesThunk } from "../config/thunks";
 
 const HighScorePage = () => {
   const user = useAppSelector((state) => state.userReducer);
   const game = useAppSelector((state) => state.gameReducer);
   const [games, setGames] = useState<GameModel[]>([]);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAllGamesThunk(user.token));
+  }, [dispatch, user.token]);
 
   useEffect(() => {
     if (game.games) {

@@ -1,5 +1,4 @@
 import Board from "../components/Board";
-import { useAppSelector } from "../config/store";
 
 const BoardPage = () => {
   return (
