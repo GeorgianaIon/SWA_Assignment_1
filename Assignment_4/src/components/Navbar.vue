@@ -17,7 +17,7 @@
   export default {
     data() {
       return {
-        token: 1,// user token
+        token: 1,// user token to be changed
       };
     },
     methods: {
@@ -33,6 +33,6 @@
   </script>
   
   <style scoped>
-  /* Your component-specific styles */
+
   </style>
   
