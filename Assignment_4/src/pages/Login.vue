@@ -1,38 +1,34 @@
-<template>
-    <div>
-        <h1>Login</h1>
-        <form>
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" v-model="username">
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" v-model="password">
-            </div>
-            <button type="submit" @click.prevent="login">Login</button>
-        </form>
+<template >
+    <div class="container">
+      <h1>Login</h1>
+      <Form @onSubmit="handleLogin" />
+      <LoginLink />
     </div>
-</template>
+  </template>
+  
+  <script lang="ts">
+  import Form from "../components/Form.vue"; 
+  import LoginLink from "../components/LoginLink.vue";
+  
+  interface Credentials {
+  username: string;
+  password: string;
+}
 
-<script lang="ts" scoped>
-import { defineComponent } from 'vue';
-
-
-export default defineComponent({
-    name: 'Login',
-    data() {
-        return {
-            username: '',
-            password: ''
-        }
+  export default {
+    components: {
+      Form,
+      LoginLink,
     },
     methods: {
-        login() {
-            console.log(`Logging in with username: ${this.username} and password: ${this.password}`);
-        }
-    }
-})
-</script>
+      handleLogin(credentials: Credentials) {
+        console.log(credentials)
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
 
-
+  </style>
+  
