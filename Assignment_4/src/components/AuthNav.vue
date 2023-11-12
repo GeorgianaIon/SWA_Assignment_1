@@ -9,13 +9,18 @@
   
   <script lang="ts">
   import NavButton from "./NavButton.vue";
+  import { defineEmits } from "vue";
   
+  defineEmits(["onLogout"]);
+
   export default {
-    props: {
-      onLogout: Function,
-    },
     components: {
       NavButton,
+    },
+    methods: {
+      onLogout() {
+        this.$emit("onLogout");
+      },
     },
   };
   </script>

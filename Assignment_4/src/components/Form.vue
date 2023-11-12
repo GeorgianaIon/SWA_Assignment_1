@@ -1,5 +1,5 @@
 <template>
-    <form class="content-wrapper" @submit.prevent="handleSubmit"> <!-- emit better? -->
+    <form class="content-wrapper" @submit.prevent="handleSubmit">
       <FormGroup label="Username:" :value="username" @input="handleUsernameChange" />
       <FormGroup label="Password:" :value="password" @input="handlePasswordChange" isPassword />
       <FormGroup
@@ -17,7 +17,8 @@
   
   <script lang="ts">
   import FormGroup from './FormGroup.vue';
-  
+  import { defineEmits } from 'vue';
+  defineEmits(['onSubmit'])
   export default {
     components: {
       FormGroup,
@@ -50,6 +51,11 @@
             alert('Passwords do not match');
             return;
         }
+
+        this.$emit('onSubmit', {
+            username: this.username,
+            password: this.password,
+        });
         },
     },
 

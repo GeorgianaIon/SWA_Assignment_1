@@ -4,7 +4,7 @@
         <h2>Kitty Crush</h2>
       </div>
       <div class="menu">
-        <AuthNav v-if="token" @logout="logOut" />
+        <AuthNav v-if="token" @on-logout="logOut" />
         <NotAuthNav v-else />
       </div>
     </nav>

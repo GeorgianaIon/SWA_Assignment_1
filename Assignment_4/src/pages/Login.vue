@@ -1,7 +1,7 @@
 <template >
     <div class="container">
       <h1>Login</h1>
-      <Form @onSubmit="handleLogin" />
+      <Form @on-submit="handleLogin" />
       <LoginLink />
     </div>
   </template>
