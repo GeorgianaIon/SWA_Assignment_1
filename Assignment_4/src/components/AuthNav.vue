@@ -9,9 +9,6 @@
   
   <script lang="ts">
   import NavButton from "./NavButton.vue";
-  import { defineEmits } from "vue";
-  
-  defineEmits(["onLogout"]);
 
   export default {
     components: {
@@ -22,6 +19,7 @@
         this.$emit("onLogout");
       },
     },
+    emits: ["onLogout"],
   };
   </script>
   

@@ -17,8 +17,7 @@
   
   <script lang="ts">
   import FormGroup from './FormGroup.vue';
-  import { defineEmits } from 'vue';
-  defineEmits(['onSubmit'])
+
   export default {
     components: {
       FormGroup,
@@ -29,6 +28,7 @@
         default: false,
       },
     },
+    emits: ['onSubmit'],
     data() {
       return {
         username: '',
