@@ -12,6 +12,7 @@
 }
 
   import { defineComponent } from 'vue';
+  import * as api from '../api/gameapi'
   import Form from '../components/Form.vue'; 
   
   export default defineComponent({
@@ -20,7 +21,7 @@
     },
     methods: {
       async handleSubmit(credentials: Credentials) {
-        console.log(credentials);
+        api.createUser(credentials.username, credentials.password)
         this.$router.push('/');
       },
     },

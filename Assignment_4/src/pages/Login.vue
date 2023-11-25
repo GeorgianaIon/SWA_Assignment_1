@@ -27,7 +27,7 @@ export default {
       api.loginUser(credentials.username, credentials.password).then((result) => {
                 if (result) {
                     model.login(result.userId, result.token);
-                    this.$router.push({name: "menu"});
+                    this.$router.push('/menu');
                 }
             });
     },
