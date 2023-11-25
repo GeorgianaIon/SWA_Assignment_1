@@ -1,11 +1,5 @@
-<script lang="ts">
-    export default {
-        data() {
-            return { 
+<script setup lang="ts">
     
-            }
-        },
-    }
 </script>
 
 <template>

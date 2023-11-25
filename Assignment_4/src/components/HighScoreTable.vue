@@ -1,13 +1,13 @@
-<script lang="ts">
-import { GameModel } from '../models/apiModels'
-export default{
-    props: {
+<script setup lang="ts">
+    import { GameModel } from '../models/apiModels'
+
+    defineProps({
         games: {
             type: Array<GameModel>,
             default: []
-        }
-    }
-}
+        },
+    })
+
 </script>
 
 <template>
