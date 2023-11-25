@@ -16,10 +16,22 @@
 
 <template>
     <div class="highscores">
-        <h3 className="bigger-font">High scores</h3>
+        <h3 class="title">High scores</h3>
         <HighScoreTable :games="top10Games"/>
         <br />
         <h3>Top 3 high scores</h3>
         <HighScoreTable :games="top3OwnGames" />
   </div>
 </template>
+
+<style scoped>
+.title {
+    font-size: 2rem;
+}
+
+.highscores{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+</style>
