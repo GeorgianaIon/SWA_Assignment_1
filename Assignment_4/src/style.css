@@ -9,7 +9,7 @@ body {
   font-family: 'Agbalumo', cursive;
 }
 
-#root {
+#app {
   height: 100%;
   display: flex;
   flex-flow: column;
@@ -21,7 +21,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 100px);
 }
 
 .start-container{
@@ -120,7 +119,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 25rem;
+  gap: 1rem;
 }
 
 button {

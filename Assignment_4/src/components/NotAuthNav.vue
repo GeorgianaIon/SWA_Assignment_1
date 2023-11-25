@@ -1,9 +1,7 @@
 <template>
-    <div>
       <NavButton to="/register" label="Register" />
       <NavButton to="/" label="Login" />
-    </div>
-  </template>
+</template>
   
   <script lang="ts">
   import NavButton from "./NavButton.vue";
