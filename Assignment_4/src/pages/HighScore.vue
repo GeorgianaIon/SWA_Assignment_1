@@ -17,7 +17,7 @@
         },
         mounted() {
             if (model.token !== undefined) {
-                api.getAllGames(model.token!).then((result: GameModel[]) => {
+                api.getAllGames(model.token).then((result: GameModel[]) => {
                     model.games = result
                 })
             }

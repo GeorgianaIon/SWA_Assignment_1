@@ -17,29 +17,31 @@ class RandomGenerator implements BoardModel.Generator<string> {
   }
 
 const generator: RandomGenerator = new RandomGenerator();
-const initBoard = BoardModel.create(generator, 5, 5);
+const initGame = {
+    id: parseInt(localStorage.getItem('gameId') ?? "-1"),
+        user: -1,
+        score: 0,
+        completed: false,
+        currentMoveNumber: 0,
+        board: BoardModel.create(generator, 5, 5)
+}
 
 export type Model = {
     token: string,
     games: GameModel[],
-    game: Readonly<GameModel>,
+    game: GameModel,
     user: Readonly<UserModel>,
 
+    createGame(gameId: number): void,
+    selectGame(game: GameModel): void,
     login(userid: number, token: string): void,
     logout(): void
 }
 
 export const model: Model = reactive({
-    games: [] as GameModel[],
     token: localStorage.getItem('userToken') ?? '',
-    game: {
-        id: 0,
-        user: 0,
-        score: 0,
-        completed: false,
-        currentMoveNumber: 0,
-        board: initBoard
-    } as GameModel,
+    games: [] as GameModel[],
+    game: initGame,
     user: {
         username: '',
         password: '',
@@ -47,6 +49,14 @@ export const model: Model = reactive({
         admin: false
     } as UserModel,
     
+    createGame(gameId: number) {
+        localStorage.setItem('gameId', gameId.toString())
+        this.game = {...initGame, id: gameId, user: this.user.id}
+    },
+    selectGame(game: GameModel) {
+        localStorage.setItem('gameId', game.id.toString())
+        this.game = game
+    },
     login(userid: number, token: string) {
         this.user.id = userid
         this.token = token
@@ -62,7 +72,8 @@ export const model: Model = reactive({
         },
         this.token = ''
         localStorage.removeItem('userToken')
-         localStorage.removeItem('userId')  
+        localStorage.removeItem('userId')  
+        localStorage.removeItem('gameId')  
     }
 })
 
