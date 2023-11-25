@@ -18,14 +18,15 @@
         },
         methods: {
             continueGame(gameId : number) {
-                api.getGame(model.token, gameId).then((result : GameModel) => 
-                {
+                api.getGame(model.token, gameId).then((result : GameModel) => {
                     model.selectGame(result)
+                    this.$router.push('/board');
                 }
             )},
             newGame() {
                 api.createGame(model.token).then((result : GameModel) => {
                     model.createGame(result.id)
+                    this.$router.push('/board');
                 })
 
             }
