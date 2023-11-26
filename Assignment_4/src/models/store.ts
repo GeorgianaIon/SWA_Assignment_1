@@ -37,7 +37,8 @@ export type Model = {
     selectGame(game: GameModel): void,
     login(userid: number, token: string): void,
     logout(): void,
-    updateBoard(board: BoardModel.Board<string>, score: number) : void
+    updateBoard(board: BoardModel.Board<string>, score: number) : void,
+    setGame(newGame: GameModel) : void
 }
 
 export const model: Model = reactive({
@@ -81,6 +82,9 @@ export const model: Model = reactive({
         this.game.board = board,
         this.game.currentMoveNumber += 1,
         this.game.score += score
+    },
+    setGame(newGame: GameModel) {
+        this.game = newGame
     }
 })
 

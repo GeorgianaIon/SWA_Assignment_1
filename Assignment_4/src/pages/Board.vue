@@ -10,13 +10,11 @@
     const selectedPosition = ref<Position | undefined>(undefined); 
 
     onMounted(async () => {
-        if (model.game.id === -1 && parseInt(localStorage.getItem("gameId") ?? '-1')) {
-            model.game = await getGame(model.token, model.game.id)
-        }
-        if (model.game.id === -1) {
-            return;
-        }
+      model.setGame(await getGame(model.token, model.game.id));
+
+      if (model.game.id !== -1) {
         await onMoveUpdate();
+      }
     });
 
     const onMoveUpdate = async () => {
