@@ -7,6 +7,7 @@
           :type="inputType"
           :value="value"
           @input="(event: Event) => onChange && onChange(event as InputEvent)"
+          required
         />
         <button
           v-if="isPassword"

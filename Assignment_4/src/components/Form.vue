@@ -1,7 +1,7 @@
 <template>
     <form class="content-wrapper" @submit.prevent="handleSubmit">
-      <FormGroup label="Username:" :value="username" @input="handleUsernameChange" />
-      <FormGroup label="Password:" :value="password" @input="handlePasswordChange" isPassword />
+      <FormGroup label="Username:" :value="username" @input="handleUsernameChange"/>
+      <FormGroup label="Password:" :value="password" @input="handlePasswordChange" isPassword/>
       <FormGroup
         v-if="isRegister"
         label="Confirm Password:"
@@ -61,8 +61,5 @@
 
   };
   </script>
-  
-  <style scoped>
 
-  </style>
   
