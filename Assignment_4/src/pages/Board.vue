@@ -6,7 +6,7 @@
     import { model, generator } from '../models/store'
     import { onMounted, ref } from 'vue'
 
-    const maxMoveNumber = 3;
+    const maxMoveNumber = 25;
     const selectedPosition = ref<Position | undefined>(undefined); 
 
     onMounted(async () => {
