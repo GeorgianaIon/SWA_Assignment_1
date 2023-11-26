@@ -16,7 +16,8 @@ class RandomGenerator implements BoardModel.Generator<string> {
     }
   }
 
-const generator: RandomGenerator = new RandomGenerator();
+export const generator: RandomGenerator = new RandomGenerator();
+
 const initGame = {
     id: parseInt(localStorage.getItem('gameId') ?? "-1"),
         user: -1,
@@ -35,7 +36,8 @@ export type Model = {
     createGame(gameId: number): void,
     selectGame(game: GameModel): void,
     login(userid: number, token: string): void,
-    logout(): void
+    logout(): void,
+    updateBoard(board: Board<string>, score: number) : void
 }
 
 export const model: Model = reactive({
@@ -74,6 +76,11 @@ export const model: Model = reactive({
         localStorage.removeItem('userToken')
         localStorage.removeItem('userId')  
         localStorage.removeItem('gameId')  
+    },
+    updateBoard(board: Board<string>, score: number) {
+        this.game.board = board,
+        this.game.currentMoveNumber += 1,
+        this.game.score = score
     }
 })
 
