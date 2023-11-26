@@ -12,19 +12,19 @@ class RandomGenerator implements BoardModel.Generator<string> {
     ];
   
     next(): string {
-      return this.images[Math.floor(Math.random() * this.images.length)];
+        return this.images[Math.floor(Math.random() * this.images.length)];
     }
-  }
+}
 
 export const generator: RandomGenerator = new RandomGenerator();
 
 const initGame = {
     id: parseInt(localStorage.getItem('gameId') ?? "-1"),
-        user: -1,
-        score: 0,
-        completed: false,
-        currentMoveNumber: 0,
-        board: BoardModel.create(generator, 5, 5)
+    user: -1,
+    score: 0,
+    completed: false,
+    currentMoveNumber: 0,
+    board: BoardModel.create(generator, 6, 6)
 }
 
 export type Model = {
@@ -37,7 +37,7 @@ export type Model = {
     selectGame(game: GameModel): void,
     login(userid: number, token: string): void,
     logout(): void,
-    updateBoard(board: Board<string>, score: number) : void
+    updateBoard(board: BoardModel.Board<string>, score: number) : void
 }
 
 export const model: Model = reactive({
@@ -53,7 +53,7 @@ export const model: Model = reactive({
     
     createGame(gameId: number) {
         localStorage.setItem('gameId', gameId.toString())
-        this.game = {...initGame, id: gameId, user: this.user.id}
+        this.game = {...initGame, id: gameId, user: this.user.id, board: BoardModel.create(generator, 6, 6)}
     },
     selectGame(game: GameModel) {
         localStorage.setItem('gameId', game.id.toString())
@@ -77,10 +77,10 @@ export const model: Model = reactive({
         localStorage.removeItem('userId')  
         localStorage.removeItem('gameId')  
     },
-    updateBoard(board: Board<string>, score: number) {
+    updateBoard(board: BoardModel.Board<string>, score: number) {
         this.game.board = board,
         this.game.currentMoveNumber += 1,
-        this.game.score = score
+        this.game.score += score
     }
 })
 

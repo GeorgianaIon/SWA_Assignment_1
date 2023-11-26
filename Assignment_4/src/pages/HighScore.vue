@@ -6,21 +6,27 @@
 
     onMounted(async () => {
         if (model.token !== undefined) {
-            model.games = await api.getAllGames(model.token)
+            const res = await api.getAllGames(model.token)
+            model.games = res
         }
     })
 
-    const top10Games = model.games.filter((game) => game.completed).sort((a, b) => b.score - a.score).slice(0, 10)
-    const top3OwnGames = model.games.filter((game) => game.user == model.user.id && game.completed).sort((a, b) => b.score - a.score).slice(0, 3)
+    const top10Games = () => {
+      return model.games.filter((game) => game.completed).sort((a, b) => b.score - a.score).slice(0, 10)
+    }
+      
+    const top3OwnGames = () => {
+      return model.games.filter((game) => game.user == model.user.id && game.completed).sort((a, b) => b.score - a.score).slice(0, 3)
+    }
 </script>
 
 <template>
     <div class="highscores">
         <h3 class="title">High scores</h3>
-        <HighScoreTable :games="top10Games"/>
+        <HighScoreTable :games="top10Games()"/>
         <br />
         <h3>Top 3 high scores</h3>
-        <HighScoreTable :games="top3OwnGames" />
+        <HighScoreTable :games="top3OwnGames()" />
   </div>
 </template>
 

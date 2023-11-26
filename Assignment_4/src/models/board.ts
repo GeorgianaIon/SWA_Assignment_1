@@ -1,8 +1,8 @@
 export type Generator<T>= { next:() => T } 
 
 export type Position = {
-    row?: number,
-    col?: number
+    row: number,
+    col: number
 }    
 
 export type Match<T> = {

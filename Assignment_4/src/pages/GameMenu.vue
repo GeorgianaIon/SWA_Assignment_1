@@ -31,7 +31,7 @@
     <div class ="board-body">
         <div class ="start-container">
             <h1>Resume your games:</h1>
-            <div class ="row" v-for="game in model.games.filter((game) => !game.completed && game.user === model.user.id && game.board && game.score !== 0)">
+            <div class ="row" v-for="game in model.games.filter((game) => !game.completed && game.user === model.user.id)">
               <button class ="start-game" v-on:click="continueGame(game.id)">
                 Game {{game.id}}
               </button>
