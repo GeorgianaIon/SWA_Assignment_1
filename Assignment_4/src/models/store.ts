@@ -38,7 +38,8 @@ export type Model = {
     login(userid: number, token: string): void,
     logout(): void,
     updateBoard(board: BoardModel.Board<string>, score: number) : void,
-    setGame(newGame: GameModel) : void
+    setGame(newGame: GameModel) : void,
+    setUserGames(newGames: GameModel[]) : void
 }
 
 export const model: Model = reactive({
@@ -85,6 +86,9 @@ export const model: Model = reactive({
     },
     setGame(newGame: GameModel) {
         this.game = newGame
+    },
+    setUserGames(newGames: GameModel[]){
+        this.games = newGames;
     }
 })
 

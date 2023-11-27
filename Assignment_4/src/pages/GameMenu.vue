@@ -1,15 +1,15 @@
 <script setup lang="ts">
     import * as api from '../api/gameapi'
-    import { model } from "../models/store"
+    import { model  } from "../models/store"
     import { GameModel } from '../models/apiModels';
     import { onMounted } from 'vue';
     import { useRouter } from 'vue-router';
-
     const router = useRouter()
+
     onMounted(async () => {
         if (model.token !== undefined) {
-            api.getAllGames(model.token).then((result: GameModel[]) => {
-                model.games = result
+            await api.getAllGames(model.token).then((result: GameModel[]) => {
+                model.setUserGames(result.filter((game) => !game.completed && game.user === model.user.id));
             })
         }
     })
@@ -31,14 +31,14 @@
 <template>
     <div class ="board-body">
         <div class ="start-container">
-            <h1>Resume your games:</h1>
-            <div class ="row" v-for="game in model.games.filter((game) => !game.completed && game.user === model.user.id)">
+            <h1 v-if="model.games.length">Resume your games:</h1>
+            <div class ="row" v-for="game in model.games" :key="game.id">  
               <button class ="start-game" v-on:click="continueGame(game.id)">
                 Game {{game.id}}
               </button>
             </div>
         </div>
-        <h3>Or</h3>
+        <h3 v-if="model.games.length">Or</h3>
         <button v-on:click="newGame" class="start-new" >
         Start a new game
         </button>
