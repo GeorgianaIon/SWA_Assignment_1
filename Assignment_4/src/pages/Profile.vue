@@ -90,4 +90,8 @@
     gap: .3rem;
     width: fit-content;
   }
+
+  .bigger-font {
+    font-size: 2rem;
+  }
 </style>

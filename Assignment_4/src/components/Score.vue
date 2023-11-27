@@ -16,3 +16,11 @@ defineProps<{
       </p>
     </div>
 </template>
+
+<style scoped>
+
+.text-container {
+  margin: 1rem 0;
+}
+
+</style>

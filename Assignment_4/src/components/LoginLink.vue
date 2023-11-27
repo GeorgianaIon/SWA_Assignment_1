@@ -11,7 +11,14 @@
   };
   </script>
   
-  <style scoped>
+<style scoped>
+  .go-to-register {
+    text-align: center;
+  }
 
-  </style>
+  .go-to-register a {
+    color: #003c63;
+    text-decoration: none;
+  }
+</style>
   

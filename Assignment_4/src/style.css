@@ -38,42 +38,6 @@ body {
 
 }
 
-.form-group{
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-}
-
-.form-label{
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: #3A4D39
-}
-
-.form-input{
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 1.2rem;
-}
-
-.input {
-  display: flex;
-}
-
-.go-to-register {
-  text-align: center;
-}
-
-.go-to-register a {
-  color: #003c63;
-  text-decoration: none;
-}
-
-.bigger-font {
-  font-size: 2rem;
-}
-
 button {
   padding: 5px 10px;
   border: 1px solid #eee;
@@ -104,56 +68,12 @@ button:hover {
   background-color: #eee;
 }
 
-.profile-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.password-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: .3rem;
-  width: fit-content;
-}
-
 #password {
   margin-right: .3rem;
-}
-
-.text-container {
-  margin: 1rem 0;
 }
 
 p, h1 {
   margin: 0;
   color: #3A4D39;
   text-align: center;
-}
-
-.board-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.board{
-  border: 1px solid black;
-  margin: 1rem 0;
-  border-radius: 1rem;
-}
-
-.eye-icon {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: #3A4D39;
-  margin-left: -40px;
-}
-
-.eye-icon:hover {
-  background-color: transparent;
 }

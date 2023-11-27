@@ -51,7 +51,39 @@
   };
   </script>
   
-  <style scoped>
-  /* Your component-specific styles */
-  </style>
+<style scoped>
+  .eye-icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #3A4D39;
+    margin-left: -40px;
+  }
+
+  .eye-icon:hover {
+    background-color: transparent;
+  }
+  .form-input{
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 1.2rem;
+  }
+  
+  .input {
+    display: flex;
+  }
+
+  .form-group{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .form-label{
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #3A4D39
+  }
+</style>
   
