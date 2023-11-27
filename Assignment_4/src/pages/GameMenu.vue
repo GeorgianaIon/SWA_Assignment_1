@@ -23,6 +23,7 @@
     const newGame = async() => {
         const result = await api.createGame(model.token)
         model.createGame(result.id)
+        await api.updateGame(model.token, model.game)
         router.push('/board')
         }
 </script>
